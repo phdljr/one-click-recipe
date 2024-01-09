@@ -10,7 +10,7 @@ import org.springeel.oneclickrecipe.sample.entity.Test;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-01-09T21:22:44+0900",
+    date = "2024-01-09T22:07:17+0900",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21 (Oracle Corporation)"
 )
 public class TestMapperImpl implements TestMapper {
