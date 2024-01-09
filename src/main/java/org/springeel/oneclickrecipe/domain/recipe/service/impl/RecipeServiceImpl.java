@@ -13,8 +13,8 @@ public class RecipeServiceImpl {
 
     private final RecipeRepository recipeRepository;
 
-    public void create(final RecipeCreateServiceRequestDto testRequestDto) {
-        Recipe recipe = RecipeMapper.INSTANCE.toRecipe(testRequestDto);
+    public void create(final RecipeCreateServiceRequestDto requestDto) {
+        Recipe recipe = RecipeMapper.INSTANCE.toRecipe(requestDto);
         recipeRepository.save(recipe);
     }
 

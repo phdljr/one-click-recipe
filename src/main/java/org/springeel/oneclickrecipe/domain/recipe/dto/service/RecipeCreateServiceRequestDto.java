@@ -6,7 +6,7 @@ public record RecipeCreateServiceRequestDto(
     String title,
     String intro,
     Byte serving,
-    MultipartFile multipartFile
+    String videoPath
 ) {
 
 }
