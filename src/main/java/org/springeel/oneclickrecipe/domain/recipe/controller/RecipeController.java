@@ -23,7 +23,7 @@ public class RecipeController {
     private final RecipeService recipeService;
     private final RecipeDtoMapper recipeDtoMapper;
 
-    @PostMapping("/recipes성")
+    @PostMapping("/recipes")
     public ResponseEntity<?> create(
         @RequestBody RecipeCreateControllerRequestDto controllerRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetails
