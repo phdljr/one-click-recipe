@@ -24,7 +24,7 @@ public class ReviewController {
     ) {
         ReviewCreateServiceRequestDto serviceRequestDto =
             ReviewMapper.INSTANCE.toReviewServiceRequestDto(controllerRequestDto);
-        reviewService.createReview(userDetails.getUser(), serviceRequestDto, recipeId);
+        reviewService.createReview(userDetails.user(), serviceRequestDto, recipeId);
 
     }
 
