@@ -11,5 +11,5 @@ public interface TestService {
 
     TestReadResponseDto get(Long id);
 
-    List<TestReadResponseDto> gets();
+    List<TestReadResponseDto> getAll();
 }
