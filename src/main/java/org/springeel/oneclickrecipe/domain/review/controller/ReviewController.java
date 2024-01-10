@@ -17,7 +17,8 @@ public class ReviewController {
     @PostMapping("{recipeId}/reviews") //후기작성
     public void create(
         @RequestBody ReviewCreateControllerRequestDto controllerRequestDto,
-        @PathVariable(name = "recipeId") Long recipeId) {
+        @PathVariable(name = "recipeId") Long recipeId
+    ) {
         ReviewCreateServiceRequestDto serviceRequestDto =
             ReviewMapper.INSTANCE.toReviewServiceRequestDto(controllerRequestDto);
         reviewService.createReview(serviceRequestDto, recipeId);
