@@ -46,7 +46,7 @@ public class TestServiceImpl implements TestService {
 
     // List<Test> -> List<TestCreateServiceRequestDto>
     @Override
-    public List<TestReadResponseDto> gets() {
+    public List<TestReadResponseDto> getAll() {
         List<Test> tests = testRepository.findAll();
         return testEntityMapper.toTestReadResponseDtos(tests);
     }
