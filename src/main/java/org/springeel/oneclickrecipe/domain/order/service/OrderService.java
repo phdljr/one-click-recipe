@@ -1,10 +1,11 @@
 package org.springeel.oneclickrecipe.domain.order.service;
 
+import org.springeel.oneclickrecipe.domain.order.dto.service.OrderCreateResponseDto;
 import org.springeel.oneclickrecipe.domain.order.dto.service.OrderCreateServiceRequestDto;
-import org.springeel.oneclickrecipe.domain.order.entity.Order;
+import org.springeel.oneclickrecipe.domain.user.entity.User;
 
 public interface OrderService {
 
-    Order createOrder(OrderCreateServiceRequestDto serviceRequestDto);
+    OrderCreateResponseDto createOrder(OrderCreateServiceRequestDto serviceRequestDto, User user);
 
 }
