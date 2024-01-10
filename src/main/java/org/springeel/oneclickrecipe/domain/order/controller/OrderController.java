@@ -30,7 +30,7 @@ public class OrderController {
         OrderCreateServiceRequestDto serviceRequestDto = orderDtoMapper.toOrderServiceRequestDto(
             createControllerRequestDto);
         OrderCreateResponseDto responseDto = orderService.createOrder(serviceRequestDto,
-            userDetailsImpl.getUser());
+            userDetailsImpl.user());
         return ResponseEntity.ok(responseDto);
     }
 }
