@@ -7,13 +7,10 @@ import org.springeel.oneclickrecipe.domain.order.dto.service.OrderCreateResponse
 import org.springeel.oneclickrecipe.domain.order.dto.service.OrderCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.order.entity.Order;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface OrderMapper {
 
-    OrderMapper INSTANCE = Mappers.getMapper(OrderMapper.class);
-
-    OrderCreateServiceRequestDto toServiceDto(OrderCreateControllerRequestDto controllerRequestDto,
-        Long userId);
+    OrderCreateServiceRequestDto toServiceDto(OrderCreateControllerRequestDto controllerRequestDto, Long userId);
 
     OrderCreateResponseDto toControllerResponseDto(Order order);
 
