@@ -6,6 +6,8 @@ import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springeel.oneclickrecipe.sample.dto.service.TestCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.sample.dto.service.TestReadResponseDto;
 import org.springeel.oneclickrecipe.sample.entity.Test;
+import org.springeel.oneclickrecipe.sample.exception.NotFoundTestException;
+import org.springeel.oneclickrecipe.sample.exception.TestErrorCode;
 import org.springeel.oneclickrecipe.sample.mapper.entity.TestEntityMapper;
 import org.springeel.oneclickrecipe.sample.repository.TestRepository;
 import org.springeel.oneclickrecipe.sample.service.TestService;
@@ -37,13 +39,14 @@ public class TestServiceImpl implements TestService {
     // Test -> TestCreateServiceRequestDto
     @Override
     public TestReadResponseDto get(Long id) {
-        Test test = testRepository.findById(id).get();
+        Test test = testRepository.findById(id)
+            .orElseThrow(() -> new NotFoundTestException(TestErrorCode.NOT_FOUND_TEST));
         return testEntityMapper.toTestReadResponseDto(test);
     }
 
     // List<Test> -> List<TestCreateServiceRequestDto>
     @Override
-    public List<TestReadResponseDto> gets() {
+    public List<TestReadResponseDto> getAll() {
         List<Test> tests = testRepository.findAll();
         return testEntityMapper.toTestReadResponseDtos(tests);
     }
