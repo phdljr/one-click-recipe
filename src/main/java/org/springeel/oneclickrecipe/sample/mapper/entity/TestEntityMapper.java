@@ -1,24 +1,18 @@
-package org.springeel.oneclickrecipe.sample.mapper;
+package org.springeel.oneclickrecipe.sample.mapper.entity;
 
 import java.util.List;
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
-import org.springeel.oneclickrecipe.sample.dto.controller.TestCreateControllerRequestDto;
+import org.mapstruct.MappingConstants.ComponentModel;
 import org.springeel.oneclickrecipe.sample.dto.service.TestCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.sample.dto.service.TestReadResponseDto;
 import org.springeel.oneclickrecipe.sample.entity.Test;
 
-@Mapper
-public interface TestMapper {
-
-    TestMapper INSTANCE = Mappers.getMapper(TestMapper.class);
+@Mapper(componentModel = ComponentModel.SPRING)
+public interface TestEntityMapper {
 
     Test toTest(TestCreateServiceRequestDto testRequestDto);
 
     TestReadResponseDto toTestReadResponseDto(Test test);
 
     List<TestReadResponseDto> toTestReadResponseDtos(List<Test> test);
-
-    TestCreateServiceRequestDto toTestServiceRequestDto(
-        TestCreateControllerRequestDto controllerRequestDto);
 }
