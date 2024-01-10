@@ -2,11 +2,13 @@ package org.springeel.oneclickrecipe.sample.controller;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springeel.oneclickrecipe.global.security.UserDetailsImpl;
 import org.springeel.oneclickrecipe.sample.dto.controller.TestCreateControllerRequestDto;
 import org.springeel.oneclickrecipe.sample.dto.service.TestCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.sample.dto.service.TestReadResponseDto;
 import org.springeel.oneclickrecipe.sample.mapper.dto.TestDtoMapper;
 import org.springeel.oneclickrecipe.sample.service.impl.TestServiceImpl;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,10 +36,11 @@ public class TestController {
 
     @PostMapping
     public void create(
-        @RequestBody TestCreateControllerRequestDto controllerRequestDto
+        @RequestBody TestCreateControllerRequestDto controllerRequestDto,
+        @AuthenticationPrincipal UserDetailsImpl userDetailsImpl
     ) {
         TestCreateServiceRequestDto serviceRequestDto = testDtoMapper.toTestServiceRequestDto(
             controllerRequestDto);
-        testService.create(serviceRequestDto);
+        testService.create(serviceRequestDto, userDetailsImpl.getUser());
     }
 }
