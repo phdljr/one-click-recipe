@@ -7,6 +7,7 @@ import org.springeel.oneclickrecipe.sample.dto.controller.TestCreateControllerRe
 import org.springeel.oneclickrecipe.sample.dto.service.TestCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.sample.dto.service.TestReadResponseDto;
 import org.springeel.oneclickrecipe.sample.mapper.dto.TestDtoMapper;
+import org.springeel.oneclickrecipe.sample.service.TestService;
 import org.springeel.oneclickrecipe.sample.service.impl.TestServiceImpl;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TestController {
 
-    private final TestServiceImpl testService;
+    private final TestService testService;
     private final TestDtoMapper testDtoMapper;
 
     @GetMapping("/{testId}")
@@ -41,6 +42,6 @@ public class TestController {
     ) {
         TestCreateServiceRequestDto serviceRequestDto = testDtoMapper.toTestServiceRequestDto(
             controllerRequestDto);
-        testService.create(serviceRequestDto, userDetailsImpl.getUser());
+        testService.create(serviceRequestDto, userDetailsImpl.user());
     }
 }
