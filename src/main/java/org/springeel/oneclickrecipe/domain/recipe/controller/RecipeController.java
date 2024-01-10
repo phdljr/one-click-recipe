@@ -23,7 +23,8 @@ public class RecipeController {
     @PostMapping("/{userId}/recipes")
     public void create(
         @RequestBody RecipeCreateControllerRequestDto controllerRequestDto,
-        @PathVariable Long userId) {
+        @PathVariable Long userId
+    ) {
         RecipeCreateServiceRequestDto serviceRequestDto =
             RecipeMapper.INSTANCE.toRecipeServiceRequestDto(controllerRequestDto);
         recipeService.createRecipe(serviceRequestDto, userId);
