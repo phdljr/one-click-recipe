@@ -8,8 +8,7 @@ public record OrderCreateServiceRequestDto(
     String address,
     String addressDetail,
     String requirement,
-    Integer totalPrice,
-    Long userId
+    Integer totalPrice
 ) {
 
 }

@@ -21,7 +21,16 @@ public class TestServiceImpl implements TestService {
     // TestCreateServiceRequestDto -> Test
     @Override
     public void create(final TestCreateServiceRequestDto testRequestDto, User user) {
+        // Mapper로 만들기
         Test test = testEntityMapper.toTest(testRequestDto);
+
+        /* Builder로 만들기
+            Test test = Test.builder()
+            .name(testRequestDto.name())
+            .age(testRequestDto.age())
+            .build();
+         */
+
         testRepository.save(test);
     }
 
