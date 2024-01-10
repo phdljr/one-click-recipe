@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.sample.dto.controller.TestCreateControllerRequestDto;
 import org.springeel.oneclickrecipe.sample.dto.service.TestCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.sample.dto.service.TestReadResponseDto;
+import org.springeel.oneclickrecipe.sample.mapper.dto.TestDtoMapper;
 import org.springeel.oneclickrecipe.sample.service.impl.TestServiceImpl;
-import org.springeel.oneclickrecipe.sample.mapper.TestMapper;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,9 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
 
     private final TestServiceImpl testService;
+    private final TestDtoMapper testDtoMapper;
 
     @GetMapping("/{testId}")
-    public TestReadResponseDto get(@PathVariable(name = "testId") Long testId) {
+    public TestReadResponseDto get(
+        @PathVariable(name = "testId") Long testId
+    ) {
         return testService.get(testId);
     }
 
@@ -33,8 +36,8 @@ public class TestController {
     public void create(
         @RequestBody TestCreateControllerRequestDto controllerRequestDto
     ) {
-        TestCreateServiceRequestDto serviceRequestDto =
-            TestMapper.INSTANCE.toTestServiceRequestDto(controllerRequestDto);
+        TestCreateServiceRequestDto serviceRequestDto = testDtoMapper.toTestServiceRequestDto(
+            controllerRequestDto);
         testService.create(serviceRequestDto);
     }
 }
