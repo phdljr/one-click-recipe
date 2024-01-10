@@ -18,8 +18,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderEntityMapper orderEntityMapper; // Mapper 추가
 
     @Override
-    public OrderCreateResponseDto createOrder(OrderCreateServiceRequestDto serviceRequestDto,
-        User user) {
+    public OrderCreateResponseDto createOrder(OrderCreateServiceRequestDto serviceRequestDto, User user) {
 
         Order order = orderEntityMapper.toEntity(serviceRequestDto, user); // Mapper를 이용한 객체 생성
         order = orderRepository.save(order);
