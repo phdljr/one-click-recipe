@@ -6,6 +6,7 @@ import org.mapstruct.factory.Mappers;
 import org.springeel.oneclickrecipe.domain.recipe.dto.controller.RecipeCreateControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;
+import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springeel.oneclickrecipe.sample.entity.Test;
 
 @Mapper
