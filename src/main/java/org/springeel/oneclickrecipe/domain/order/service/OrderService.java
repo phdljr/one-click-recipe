@@ -17,20 +17,20 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
 
-    public Order createOrder(OrderCreateServiceRequestDto dto) {
+    public Order createOrder(OrderCreateServiceRequestDto serviceRequestDto) {
 
-        User user = userRepository.findById(dto.userId())
-            .orElseThrow(() -> new EntityNotFoundException("해당 유저를 찾을 수 없습니다." + dto.userId()));
+        User user = userRepository.findById(serviceRequestDto.userId())
+            .orElseThrow(() -> new EntityNotFoundException("해당 유저를 찾을 수 없습니다." + serviceRequestDto.userId()));
 
         Order order = new Order(
-            dto.receiverName(),
-            dto.receiverPhoneNumber(),
-            dto.senderName(),
-            dto.senderPhoneNumber(),
-            dto.address(),
-            dto.addressDetail(),
-            dto.requirement(),
-            dto.totalPrice(),
+            serviceRequestDto.receiverName(),
+            serviceRequestDto.receiverPhoneNumber(),
+            serviceRequestDto.senderName(),
+            serviceRequestDto.senderPhoneNumber(),
+            serviceRequestDto.address(),
+            serviceRequestDto.addressDetail(),
+            serviceRequestDto.requirement(),
+            serviceRequestDto.totalPrice(),
             OrderStatus.WAITING,
             user
         );
