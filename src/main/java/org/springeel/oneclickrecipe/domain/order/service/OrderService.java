@@ -1,6 +1,7 @@
 package org.springeel.oneclickrecipe.domain.order.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.order.dto.service.OrderCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.order.entity.Order;
@@ -17,6 +18,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
 
+    // 주문 생성
     public Order createOrder(OrderCreateServiceRequestDto serviceRequestDto) {
 
         User user = userRepository.findById(serviceRequestDto.userId())
@@ -36,5 +38,10 @@ public class OrderService {
         );
 
         return orderRepository.save(order);
+    }
+
+    // 주문 내역 목록 조회
+    public List<Order> getUserOrders(Long userId) {
+        return orderRepository.findAllByUserId(userId);
     }
 }
