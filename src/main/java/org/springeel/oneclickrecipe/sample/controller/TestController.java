@@ -8,6 +8,8 @@ import org.springeel.oneclickrecipe.sample.dto.service.TestCreateServiceRequestD
 import org.springeel.oneclickrecipe.sample.dto.service.TestReadResponseDto;
 import org.springeel.oneclickrecipe.sample.mapper.dto.TestDtoMapper;
 import org.springeel.oneclickrecipe.sample.service.TestService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,24 +27,27 @@ public class TestController {
     private final TestDtoMapper testDtoMapper;
 
     @GetMapping("/tests/{testId}")
-    public TestReadResponseDto get(
+    public ResponseEntity<TestReadResponseDto> get(
         @PathVariable(name = "testId") Long testId
     ) {
-        return testService.get(testId);
+        TestReadResponseDto responseDto = testService.get(testId);
+        return ResponseEntity.ok(responseDto);
     }
 
     @GetMapping("/tests")
-    public List<TestReadResponseDto> getAll() {
-        return testService.getAll();
+    public ResponseEntity<List<TestReadResponseDto>> getAll() {
+        List<TestReadResponseDto> responseDto = testService.getAll();
+        return ResponseEntity.ok(responseDto);
     }
 
     @PostMapping("/tests")
-    public void create(
+    public ResponseEntity<Void> create(
         @RequestBody TestCreateControllerRequestDto controllerRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetailsImpl
     ) {
         TestCreateServiceRequestDto serviceRequestDto = testDtoMapper.toTestServiceRequestDto(
             controllerRequestDto);
         testService.create(serviceRequestDto, userDetailsImpl.user());
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
