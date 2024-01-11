@@ -26,6 +26,7 @@ public class OrderController {
     private final OrderDtoMapper orderDtoMapper;
     private final OrderService orderService;
 
+    // 주문 생성
     @PostMapping("")
     public ResponseEntity<OrderCreateResponseDto> createOrder(
         @RequestBody OrderCreateControllerRequestDto createControllerRequestDto,
