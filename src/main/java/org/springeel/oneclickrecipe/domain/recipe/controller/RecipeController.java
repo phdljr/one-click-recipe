@@ -43,7 +43,7 @@ public class RecipeController {
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         RecipeDeleteServiceRequestDto serviceRequestDto =
-            recipeDtoMapper.toRecipeServiceDeleteRequestDto(controllerRequestDto);
+            recipeDtoMapper.toRecipeDeleteServiceRequestDto(controllerRequestDto);
         recipeService.deleteRecipe(serviceRequestDto, userDetails.user());
         return ResponseEntity.status(HttpStatus.OK).build();
     }
