@@ -6,9 +6,10 @@ import org.springeel.oneclickrecipe.domain.order.dto.service.OrderCreateResponse
 import org.springeel.oneclickrecipe.domain.order.dto.service.OrderCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.order.dto.service.OrderReadResponseDto;
 import org.springeel.oneclickrecipe.domain.order.entity.Order;
+import org.springeel.oneclickrecipe.domain.orderdetail.mapper.OrderDetailMapper;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {OrderDetailMapper.class})
 public interface OrderEntityMapper {
 
     Order toEntity(OrderCreateServiceRequestDto dto, User user);
@@ -20,5 +21,6 @@ public interface OrderEntityMapper {
     @Mapping(source = "id", target = "orderId")
     @Mapping(source = "status", target = "orderStatus")
     OrderCreateResponseDto toResponseDto(Order order);
+    @Mapping(target = "orderDetails", source = "orderDetails")
     OrderReadResponseDto toOrderReadResponseDto(Order order);
 }
