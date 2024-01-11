@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.order.dto.service.OrderCreateResponseDto;
 import org.springeel.oneclickrecipe.domain.order.dto.service.OrderCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.order.dto.service.OrderReadAllResponseDto;
 import org.springeel.oneclickrecipe.domain.order.dto.service.OrderReadResponseDto;
 import org.springeel.oneclickrecipe.domain.order.entity.Order;
 import org.springeel.oneclickrecipe.domain.order.mapper.entity.OrderEntityMapper;
@@ -34,10 +35,10 @@ public class OrderServiceImpl implements OrderService {
 
     // 주문 내역 목록 조회
     @Override
-    public List<OrderReadResponseDto> getUserOrders(Long userId) {
+    public List<OrderReadAllResponseDto> getAllUserOrders(Long userId) {
         List<Order> orders = orderRepository.findByUserId(userId);
         return orders.stream()
-            .map(orderEntityMapper::toOrderReadResponseDto)
+            .map(orderEntityMapper::toOrderReadAllResponseDto) // Order를 OrderReadAllResponseDto로 변환
             .collect(Collectors.toList());
     }
 
