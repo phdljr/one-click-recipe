@@ -13,7 +13,7 @@ import org.springeel.oneclickrecipe.domain.user.entity.UserRole;
 )
 public interface UserEntityMapper {
 
-    @Mapping(target = "password", qualifiedBy = EncodePassword.class)
+    @Mapping(source = "password", target = "password", qualifiedBy = EncodePassword.class)
     @Mapping(source = "userRole", target = "role")
     User toUser(UserSignUpServiceRequestDto serviceRequestDto, UserRole userRole);
 }
