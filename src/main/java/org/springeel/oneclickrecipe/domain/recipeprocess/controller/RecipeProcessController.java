@@ -18,13 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/recipes")
 public class RecipeProcessController {
 
     private final RecipeProcessService processService;
     private final RecipeProcessDtoMapper processDtoMapper;
 
-    @PostMapping("/{recipeId}/process")
+    @PostMapping("/{recipeId}/processes")
     public ResponseEntity<?> create(
         @RequestBody RecipeProcessCreateControllerRequestDto controllerRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetails,
