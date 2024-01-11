@@ -41,8 +41,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderReadResponseDto getOrderById(Long orderId, Long userId) {
-        Order order = orderRepository.findByIdAndUserId(orderId, userId)
-            .orElseThrow(() -> new EntityNotFoundException("주문내역을 찾을 수 없습니다."));
+        Order order = orderRepository.findByIdAndUserIdWithDetails(orderId, userId)
+            .orElseThrow(() -> new EntityNotFoundException("Order not found for id: " + orderId));
+
+        // 매퍼를 사용하여 Order 엔티티를 OrderReadResponseDto로 변환
         return orderEntityMapper.toOrderReadResponseDto(order);
     }
 }
