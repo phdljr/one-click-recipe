@@ -5,7 +5,7 @@ import org.springeel.oneclickrecipe.domain.review.dto.controller.ReviewCreateCon
 import org.springeel.oneclickrecipe.domain.review.dto.controller.ReviewUpdateControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.review.dto.service.ReviewCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.review.dto.service.ReviewUpdateServiceRequestDto;
-import org.springeel.oneclickrecipe.domain.review.mapper.ReviewMapper;
+import org.springeel.oneclickrecipe.domain.review.mapper.dto.ReviewDtoMapper;
 import org.springeel.oneclickrecipe.domain.review.service.ReviewService;
 import org.springeel.oneclickrecipe.global.security.UserDetailsImpl;
 import org.springframework.http.HttpStatus;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/recipes")
 public class ReviewController {
 
+    private final ReviewDtoMapper reviewDtoMapper;
     private final ReviewService reviewService;
 
     @PostMapping("/{recipeId}/reviews") //후기작성
@@ -27,7 +28,7 @@ public class ReviewController {
         @PathVariable(name = "recipeId") Long recipeId
     ) {
         ReviewCreateServiceRequestDto serviceRequestDto =
-            ReviewMapper.INSTANCE.toReviewCreateServiceRequestDto(createControllerRequestDto);
+            reviewDtoMapper.toReviewCreateServiceRequestDto(createControllerRequestDto);
         reviewService.createReview(userDetails.user(), serviceRequestDto, recipeId);
     }
 
@@ -35,13 +36,14 @@ public class ReviewController {
     public ResponseEntity<?> update(
         @PathVariable(name = "recipeId") Long recipeId,
         @AuthenticationPrincipal UserDetailsImpl userDetails,
-        @RequestBody ReviewUpdateControllerRequestDto toReviewUpdateServiceRequestDto
+        @RequestBody ReviewUpdateControllerRequestDto ReviewUpdateServiceRequestDto
     ) {
         ReviewUpdateServiceRequestDto serviceRequestDto =
-            ReviewMapper.INSTANCE.toReviewUpdateServiceRequestDto(toReviewUpdateServiceRequestDto);
+            reviewDtoMapper.toReviewUpdateServiceRequestDto(ReviewUpdateServiceRequestDto);
         reviewService.updateReview(userDetails.user(), serviceRequestDto, recipeId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+
 }
 
 
