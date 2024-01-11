@@ -1,5 +1,5 @@
 package org.springeel.oneclickrecipe.domain.recipeprocess.service.impl;
 
-public class RecipeProcessImpl {
+public class RecipeProcessServiceImpl {
 
 }
