@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.order.dto.controller.OrderCreateControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.order.dto.service.OrderCreateResponseDto;
 import org.springeel.oneclickrecipe.domain.order.dto.service.OrderCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.order.dto.service.OrderReadAllResponseDto;
 import org.springeel.oneclickrecipe.domain.order.dto.service.OrderReadResponseDto;
 import org.springeel.oneclickrecipe.domain.order.mapper.dto.OrderDtoMapper;
 import org.springeel.oneclickrecipe.domain.order.service.OrderService;
@@ -41,12 +42,13 @@ public class OrderController {
 
     // 주문 내역 목록 조회
     @GetMapping("")
-    public ResponseEntity<List<OrderReadResponseDto>> getUserOrders(
+    public ResponseEntity<List<OrderReadAllResponseDto>> getAllUserOrders(
         @AuthenticationPrincipal UserDetailsImpl userDetailsImpl
     ) {
-        List<OrderReadResponseDto> orderList = orderService.getUserOrders(userDetailsImpl.user()
-            .getId());
-        return ResponseEntity.ok(orderList);
+        List<OrderReadAllResponseDto> orderReadAllResponseDtoList = orderService.getAllUserOrders(
+            userDetailsImpl.user()
+                .getId());
+        return ResponseEntity.ok(orderReadAllResponseDtoList);
     }
 
     // 주문 내역 단건 조회
