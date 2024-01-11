@@ -11,8 +11,6 @@ public interface OrderService {
 
     OrderCreateResponseDto createOrder(OrderCreateServiceRequestDto serviceRequestDto, User user);
 
-    List<OrderReadResponseDto> getUserOrders(Long userId);
-
     OrderReadResponseDto getOrderById(Long orderId, Long userId);
 
     List<OrderReadAllResponseDto> getAllUserOrders(Long userId);
