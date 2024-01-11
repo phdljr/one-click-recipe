@@ -9,5 +9,5 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
     List<Recipe> findByRecipeId(Long recipeId);
 
-    
+
 }
