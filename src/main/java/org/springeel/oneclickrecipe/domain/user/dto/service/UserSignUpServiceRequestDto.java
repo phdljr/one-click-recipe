@@ -1,10 +1,10 @@
 package org.springeel.oneclickrecipe.domain.user.dto.service;
 
-public record UserCreateServiceRequestDto(
+public record UserSignUpServiceRequestDto(
     String email,
     String nickname,
     String password,
-    String passwordConfirm
+    String confirmPassword
 ) {
 
 }
