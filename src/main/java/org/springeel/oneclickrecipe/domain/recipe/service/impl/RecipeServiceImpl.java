@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeDeleteServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;
+import org.springeel.oneclickrecipe.domain.recipe.exception.NotFoundRecipeException;
+import org.springeel.oneclickrecipe.domain.recipe.exception.RecipeErrorCode;
 import org.springeel.oneclickrecipe.domain.recipe.mapper.entity.RecipeEntityMapper;
 import org.springeel.oneclickrecipe.domain.recipe.repository.RecipeRepository;
 import org.springeel.oneclickrecipe.domain.recipe.service.RecipeService;
@@ -25,21 +27,9 @@ public class RecipeServiceImpl implements RecipeService {
         recipeRepository.save(recipe);
     }
 
-//    public void deleteRecipe(final RecipeDeleteServiceRequestDto requestDto, Long userId) {
-//        Recipe recipe = recipeRepository.findRecipeByIdAndUser_Id(requestDto.recipeId(), userId);
-//        if (recipe == null) {
-//            throw new RuntimeException("recipe 값이 없습니다");
-//        }
-//        recipeRepository.delete(recipe);
-//    }
-
     public void deleteRecipe(final RecipeDeleteServiceRequestDto requestDto, User user) {
-        Recipe recipe = recipeRepository.findRecipeByIdAndUser_Id(
-            requestDto.recipeId(),
-            user.getId());
-        if (recipe == null) {
-            throw new RuntimeException("recipe 값이 없습니다");
-        }
+        Recipe recipe = recipeRepository.findByIdAndUser(requestDto.recipeId(), user)
+            .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
         recipeRepository.delete(recipe);
     }
 }
