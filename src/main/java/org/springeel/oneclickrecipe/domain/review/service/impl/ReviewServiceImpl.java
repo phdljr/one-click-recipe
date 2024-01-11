@@ -1,7 +1,10 @@
 package org.springeel.oneclickrecipe.domain.review.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;
+import org.springeel.oneclickrecipe.domain.recipe.exception.NotFoundRecipeException;
+import org.springeel.oneclickrecipe.domain.recipe.exception.RecipeErrorCode;
 import org.springeel.oneclickrecipe.domain.recipe.repository.RecipeRepository;
 import org.springeel.oneclickrecipe.domain.review.dto.service.ReviewCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.review.dto.service.ReviewUpdateServiceRequestDto;
@@ -22,17 +25,19 @@ public class ReviewServiceImpl implements ReviewService {
     private final RecipeRepository recipeRepository;
     private final ReviewEntityMapper reviewEntityMapper;
 
-
     @Override
     public void createReview(User user, ReviewCreateServiceRequestDto serviceRequestDto, Long recipeId) {
-        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(NullPointerException::new);
+        Recipe recipe = recipeRepository.findById(recipeId)
+            .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
         Review review = reviewEntityMapper.toReview(serviceRequestDto, user, recipe);
         reviewRepository.save(review);
     }
 
+    @Transactional
+    @Override
     public void updateReview(User user, ReviewUpdateServiceRequestDto serviceRequestDto, Long recipeId) {
 
-        Review review = reviewRepository.findById(recipeId)
+        Review review = reviewRepository.findByIdAndUser(recipeId, user)
             .orElseThrow(() -> new NotFoundReviewException(ReviewErrorCode.NOT_FOUND_REVIEW));
 
         review.update(review.getContent(), review.getStar());
