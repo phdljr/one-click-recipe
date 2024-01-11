@@ -4,6 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springeel.oneclickrecipe.domain.order.dto.service.OrderCreateResponseDto;
 import org.springeel.oneclickrecipe.domain.order.dto.service.OrderCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.order.dto.service.OrderReadResponseDto;
 import org.springeel.oneclickrecipe.domain.order.entity.Order;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 
@@ -19,4 +20,5 @@ public interface OrderEntityMapper {
     @Mapping(source = "id", target = "orderId")
     @Mapping(source = "status", target = "orderStatus")
     OrderCreateResponseDto toResponseDto(Order order);
+    OrderReadResponseDto toOrderReadResponseDto(Order order);
 }
