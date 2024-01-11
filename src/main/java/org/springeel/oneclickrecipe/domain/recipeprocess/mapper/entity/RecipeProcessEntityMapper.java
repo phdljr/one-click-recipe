@@ -9,6 +9,6 @@ import org.springeel.oneclickrecipe.domain.user.entity.User;
 @Mapper(componentModel = ComponentModel.SPRING)
 public interface RecipeProcessEntityMapper {
 
-    RecipeProcess toRecipeProcess(RecipeProcessCreateServiceRequestDto requestDto);
+    RecipeProcess toRecipeProcess(RecipeProcessCreateServiceRequestDto requestDto, Long recipeId);
 
 }
