@@ -1,4 +1,4 @@
-package org.springeel.oneclickrecipe.domain.recipefood.controller;
+package org.springeel.oneclickrecipe.domain.recipeprocess.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
