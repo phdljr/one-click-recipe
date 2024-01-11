@@ -51,7 +51,7 @@ public class OrderController {
     // 주문 내역 단건 조회
     @GetMapping("/{orderId}")
     public ResponseEntity<OrderReadResponseDto> getOrderById(
-        @PathVariable Long orderId,
+        @PathVariable(name = "orderId") Long orderId,
         @AuthenticationPrincipal UserDetailsImpl userDetailsImpl
     ) {
         OrderReadResponseDto readResponseDto = orderService.getOrderById(orderId,
