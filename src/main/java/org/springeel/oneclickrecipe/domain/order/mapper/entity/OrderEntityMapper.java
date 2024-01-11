@@ -12,6 +12,7 @@ import org.springeel.oneclickrecipe.domain.user.entity.User;
 @Mapper(componentModel = "spring", uses = {OrderDetailMapper.class})
 public interface OrderEntityMapper {
 
+    @Mapping(target = "status", expression = "java(OrderStatus.WAITING)")
     Order toEntity(OrderCreateServiceRequestDto dto, User user);
 
     /**

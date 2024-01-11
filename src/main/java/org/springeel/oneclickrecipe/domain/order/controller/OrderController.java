@@ -26,7 +26,7 @@ public class OrderController {
     private final OrderDtoMapper orderDtoMapper;
     private final OrderService orderService;
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<OrderCreateResponseDto> createOrder(
         @RequestBody OrderCreateControllerRequestDto createControllerRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetailsImpl
@@ -39,7 +39,7 @@ public class OrderController {
     }
 
     // 주문 내역 목록 조회
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<List<OrderReadResponseDto>> getUserOrders(
         @AuthenticationPrincipal UserDetailsImpl userDetailsImpl
     ) {
