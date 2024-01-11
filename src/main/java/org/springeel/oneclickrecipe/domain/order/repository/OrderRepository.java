@@ -13,8 +13,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     List<Order> findByUserId(Long userId);
 
-    Optional<Order> findByIdAndUserId(Long orderId, Long userId);
-
     @EntityGraph
     Optional<Order> findByIdAndUserIdWithDetails(Long orderId, Long userId);
 }
