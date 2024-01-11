@@ -21,6 +21,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderEntityMapper orderEntityMapper; // Mapper 추가
 
+    // 주문 생성
     @Override
     public OrderCreateResponseDto createOrder(OrderCreateServiceRequestDto serviceRequestDto,
         User user) {
@@ -31,6 +32,7 @@ public class OrderServiceImpl implements OrderService {
         return orderEntityMapper.toResponseDto(order);
     }
 
+    // 주문 내역 목록 조회
     @Override
     public List<OrderReadResponseDto> getUserOrders(Long userId) {
         List<Order> orders = orderRepository.findByUserId(userId);
@@ -39,6 +41,7 @@ public class OrderServiceImpl implements OrderService {
             .collect(Collectors.toList());
     }
 
+    // 주문 내역 단건 조회
     @Override
     public OrderReadResponseDto getOrderById(Long orderId, Long userId) {
         Order order = orderRepository.findByIdAndUserId(orderId, userId)
