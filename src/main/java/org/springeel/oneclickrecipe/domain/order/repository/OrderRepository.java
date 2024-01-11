@@ -3,6 +3,7 @@ package org.springeel.oneclickrecipe.domain.order.repository;
 import java.util.List;
 import java.util.Optional;
 import org.springeel.oneclickrecipe.domain.order.entity.Order;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
@@ -13,4 +14,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByUserId(Long userId);
 
     Optional<Order> findByIdAndUserId(Long orderId, Long userId);
+
+    @EntityGraph
+    Optional<Order> findByIdAndUserIdWithDetails(Long orderId, Long userId);
 }
