@@ -1,12 +1,6 @@
 package org.springeel.oneclickrecipe.domain.review.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -50,5 +44,10 @@ public class Review extends BaseEntity {
         this.star = star;
         this.user = user;
         this.recipe = recipe;
+    }
+
+    public void update(String content, Byte star) {
+        this.content = content;
+        this.star = star;
     }
 }
