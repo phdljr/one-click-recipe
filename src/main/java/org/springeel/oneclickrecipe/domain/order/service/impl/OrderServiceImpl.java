@@ -1,5 +1,6 @@
 package org.springeel.oneclickrecipe.domain.order.service.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -36,5 +37,12 @@ public class OrderServiceImpl implements OrderService {
         return orders.stream()
             .map(orderEntityMapper::toOrderReadResponseDto)
             .collect(Collectors.toList());
+    }
+
+    @Override
+    public OrderReadResponseDto getOrderById(Long orderId, Long userId) {
+        Order order = orderRepository.findByIdAndUserId(orderId, userId)
+            .orElseThrow(() -> new EntityNotFoundException("주문내역을 찾을 수 없습니다."));
+        return orderEntityMapper.toOrderReadResponseDto(order);
     }
 }
