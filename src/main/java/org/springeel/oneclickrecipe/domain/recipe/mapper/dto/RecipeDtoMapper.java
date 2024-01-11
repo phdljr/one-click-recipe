@@ -13,7 +13,7 @@ public interface RecipeDtoMapper {
     RecipeCreateServiceRequestDto toRecipeServiceRequestDto(
         RecipeCreateControllerRequestDto controllerRequestDto);
 
-    RecipeDeleteServiceRequestDto toRecipeServiceDeleteRequestDto(
+    RecipeDeleteServiceRequestDto toRecipeDeleteServiceRequestDto(
         RecipeDeleteControllerRequestDto controllerRequestDto);
 
 }
