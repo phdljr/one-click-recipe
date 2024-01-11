@@ -8,4 +8,6 @@ public interface RecipeProcessService {
     void createRecipeProcess(RecipeProcessCreateServiceRequestDto requestDto, User user,
         Long recipe_Id);
 
+    void deleteRecipeProcess(Long recipeId, User user, Long processId);
+
 }
