@@ -19,14 +19,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/orders")
 @RestController
 public class OrderController {
 
     private final OrderDtoMapper orderDtoMapper;
     private final OrderService orderService;
 
-    @PostMapping("/orders")
+    @PostMapping("/")
     public ResponseEntity<OrderCreateResponseDto> createOrder(
         @RequestBody OrderCreateControllerRequestDto createControllerRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetailsImpl
@@ -39,7 +39,7 @@ public class OrderController {
     }
 
     // 주문 내역 목록 조회
-    @GetMapping("/orders")
+    @GetMapping("/")
     public ResponseEntity<List<OrderReadResponseDto>> getUserOrders(
         @AuthenticationPrincipal UserDetailsImpl userDetailsImpl
     ) {
@@ -49,7 +49,7 @@ public class OrderController {
     }
 
     // 주문 내역 단건 조회
-    @GetMapping("/orders/{orderId}")
+    @GetMapping("/{orderId}")
     public ResponseEntity<OrderReadResponseDto> getOrderById(
         @PathVariable Long orderId,
         @AuthenticationPrincipal UserDetailsImpl userDetailsImpl
