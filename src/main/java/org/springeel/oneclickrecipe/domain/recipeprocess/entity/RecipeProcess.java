@@ -14,12 +14,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;
+import org.springeel.oneclickrecipe.global.entity.BaseEntity;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "TB_RECIPE_PROCESS")
 @Entity
-public class RecipeProcess {
+public class RecipeProcess extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
