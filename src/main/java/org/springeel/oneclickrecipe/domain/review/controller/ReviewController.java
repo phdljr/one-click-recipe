@@ -29,7 +29,6 @@ public class ReviewController {
         ReviewCreateServiceRequestDto serviceRequestDto =
             ReviewMapper.INSTANCE.toReviewCreateServiceRequestDto(createControllerRequestDto);
         reviewService.createReview(userDetails.user(), serviceRequestDto, recipeId);
-
     }
 
     @PutMapping("/{recipeId}/reviews/{reviewId}") //후기수정
