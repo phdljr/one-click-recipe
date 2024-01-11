@@ -14,7 +14,6 @@ import org.springeel.oneclickrecipe.domain.user.exception.UserErrorCode;
 import org.springeel.oneclickrecipe.domain.user.mapper.entity.UserEntityMapper;
 import org.springeel.oneclickrecipe.domain.user.repository.UserRepository;
 import org.springeel.oneclickrecipe.domain.user.service.UserService;
-import org.springeel.oneclickrecipe.global.util.JwtUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -42,14 +41,6 @@ public class UserServiceImpl implements UserService {
         if (!Objects.equals(serviceRequestDto.password(), serviceRequestDto.confirmPassword())) {
             throw new NotMatchPasswordException(UserErrorCode.NOT_MATCH_PASSWORD);
         }
-
-//        // 저장
-//        User user = User.builder()
-//            .email(serviceRequestDto.email())
-//            .nickname(serviceRequestDto.nickname())
-//            .password(passwordEncoder.encode(serviceRequestDto.password()))
-//            .role(UserRole.USER)
-//            .build();
 
         User user = userEntityMapper.toUser(serviceRequestDto, UserRole.USER);
 

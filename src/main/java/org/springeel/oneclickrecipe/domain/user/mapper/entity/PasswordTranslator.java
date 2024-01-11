@@ -11,7 +11,7 @@ public class PasswordTranslator {
     private final PasswordEncoder passwordEncoder;
 
     @EncodePassword
-    public String encodePassword(String password){
+    public String encodePassword(String password) {
         return passwordEncoder.encode(password);
     }
 }
