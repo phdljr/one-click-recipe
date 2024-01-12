@@ -9,6 +9,8 @@ import org.springeel.oneclickrecipe.domain.order.dto.service.OrderCreateServiceR
 import org.springeel.oneclickrecipe.domain.order.dto.service.OrderReadAllResponseDto;
 import org.springeel.oneclickrecipe.domain.order.dto.service.OrderReadResponseDto;
 import org.springeel.oneclickrecipe.domain.order.entity.Order;
+import org.springeel.oneclickrecipe.domain.order.exception.NotFoundOrderException;
+import org.springeel.oneclickrecipe.domain.order.exception.OrderErrorCode;
 import org.springeel.oneclickrecipe.domain.order.mapper.entity.OrderEntityMapper;
 import org.springeel.oneclickrecipe.domain.order.repository.OrderRepository;
 import org.springeel.oneclickrecipe.domain.order.service.OrderService;
@@ -46,7 +48,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderReadResponseDto getOrderById(Long orderId, Long userId) {
         Order order = orderRepository.findByIdAndUserId(orderId, userId)
-            .orElseThrow(() -> new EntityNotFoundException("Order not found for id: " + orderId));
+            .orElseThrow(() -> new NotFoundOrderException(OrderErrorCode.NOT_FOUND_ORDER));
 
         // 매퍼를 사용하여 Order 엔티티를 OrderReadResponseDto로 변환
         return orderEntityMapper.toOrderReadResponseDto(order);
