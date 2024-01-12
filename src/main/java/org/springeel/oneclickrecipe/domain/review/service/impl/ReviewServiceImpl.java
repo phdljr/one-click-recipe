@@ -35,11 +35,20 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Transactional
     @Override
-    public void updateReview(User user, ReviewUpdateServiceRequestDto serviceRequestDto, Long recipeId) {
+    public void updateReview(Long reviewId, User user, ReviewUpdateServiceRequestDto serviceRequestDto) {
 
-        Review review = reviewRepository.findByIdAndUser(recipeId, user)
+        Review review = reviewRepository.findByIdAndUser(reviewId, user)
             .orElseThrow(() -> new NotFoundReviewException(ReviewErrorCode.NOT_FOUND_REVIEW));
 
-        review.update(review.getContent(), review.getStar());
+        review.update(serviceRequestDto.content(), serviceRequestDto.star());
+        reviewRepository.save(review);
+    }
+
+    @Override
+    public void deleteReview(User user, Long reviewId) {
+
+        Review review = reviewRepository.findByIdAndUser(reviewId, user)
+            .orElseThrow(() -> new NotFoundReviewException(ReviewErrorCode.NOT_FOUND_REVIEW));
+        reviewRepository.delete(review);
     }
 }
