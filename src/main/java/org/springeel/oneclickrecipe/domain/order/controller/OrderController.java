@@ -46,8 +46,7 @@ public class OrderController {
         @AuthenticationPrincipal UserDetailsImpl userDetailsImpl
     ) {
         List<OrderReadAllResponseDto> orderReadAllResponseDtoList = orderService.getAllUserOrders(
-            userDetailsImpl.user()
-                .getId());
+            userDetailsImpl.user().getId());
         return ResponseEntity.ok(orderReadAllResponseDtoList);
     }
 
