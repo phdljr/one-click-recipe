@@ -2,8 +2,10 @@ package org.springeel.oneclickrecipe.domain.review.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.review.dto.controller.ReviewCreateControllerRequestDto;
+import org.springeel.oneclickrecipe.domain.review.dto.controller.ReviewDeleteControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.review.dto.controller.ReviewUpdateControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.review.dto.service.ReviewCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.review.dto.service.ReviewDeleteServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.review.dto.service.ReviewUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.review.mapper.dto.ReviewDtoMapper;
 import org.springeel.oneclickrecipe.domain.review.service.ReviewService;
@@ -41,6 +43,18 @@ public class ReviewController {
         ReviewUpdateServiceRequestDto serviceRequestDto =
             reviewDtoMapper.toReviewUpdateServiceRequestDto(ReviewUpdateServiceRequestDto);
         reviewService.updateReview(userDetails.user(), serviceRequestDto, recipeId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @DeleteMapping("/{recipeId}/reviews/{reviewsId}") //후기삭제
+    public ResponseEntity<Void> delete(
+        @RequestBody ReviewDeleteControllerRequestDto controllerRequestDto,
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
+        @PathVariable(name = "recipeId") Long recipeId
+    ) {
+        ReviewDeleteServiceRequestDto serviceRequestDto =
+            reviewDtoMapper.toReviewDeleteServiceRequestDto(controllerRequestDto);
+        reviewService.deleteReview(userDetails.user(), serviceRequestDto, recipeId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
