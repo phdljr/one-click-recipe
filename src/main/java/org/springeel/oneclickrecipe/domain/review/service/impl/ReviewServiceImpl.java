@@ -7,7 +7,6 @@ import org.springeel.oneclickrecipe.domain.recipe.exception.NotFoundRecipeExcept
 import org.springeel.oneclickrecipe.domain.recipe.exception.RecipeErrorCode;
 import org.springeel.oneclickrecipe.domain.recipe.repository.RecipeRepository;
 import org.springeel.oneclickrecipe.domain.review.dto.service.ReviewCreateServiceRequestDto;
-import org.springeel.oneclickrecipe.domain.review.dto.service.ReviewDeleteServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.review.dto.service.ReviewUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.review.entity.Review;
 import org.springeel.oneclickrecipe.domain.review.exception.NotFoundReviewException;
@@ -36,16 +35,17 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Transactional
     @Override
-    public void updateReview(User user, ReviewUpdateServiceRequestDto serviceRequestDto, Long recipeId) {
+    public void updateReview(Long recipeId, User user, ReviewUpdateServiceRequestDto serviceRequestDto) {
 
         Review review = reviewRepository.findByIdAndUser(recipeId, user)
             .orElseThrow(() -> new NotFoundReviewException(ReviewErrorCode.NOT_FOUND_REVIEW));
 
-        review.update(review.getContent(), review.getStar());
+        review.update(serviceRequestDto.content(), serviceRequestDto.star());
+        reviewRepository.save(review);
     }
 
     @Override
-    public void deleteReview(User user, ReviewDeleteServiceRequestDto serviceRequestDto, Long recipeId) {
+    public void deleteReview(User user, Long recipeId) {
 
         Review review = reviewRepository.findByIdAndUser(recipeId, user)
             .orElseThrow(() -> new NotFoundReviewException(ReviewErrorCode.NOT_FOUND_REVIEW));
