@@ -2,10 +2,8 @@ package org.springeel.oneclickrecipe.domain.recipe.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.recipe.dto.controller.RecipeCreateControllerRequestDto;
-import org.springeel.oneclickrecipe.domain.recipe.dto.controller.RecipeDeleteControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.controller.RecipeUpdateControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeCreateServiceRequestDto;
-import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeDeleteServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.mapper.dto.RecipeDtoMapper;
 import org.springeel.oneclickrecipe.domain.recipe.service.RecipeService;
@@ -40,14 +38,12 @@ public class RecipeController {
         return ResponseEntity.status(HttpStatus.CREATED).body("레시피 생성 완성");
     }
 
-    @DeleteMapping("/{userId}/recipes")
+    @DeleteMapping("/{userId}/{recipeId}")
     public ResponseEntity<?> delete(
-        @RequestBody RecipeDeleteControllerRequestDto controllerRequestDto,
+        @PathVariable Long recipeId,
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        RecipeDeleteServiceRequestDto serviceRequestDto =
-            recipeDtoMapper.toRecipeDeleteServiceRequestDto(controllerRequestDto);
-        recipeService.deleteRecipe(serviceRequestDto, userDetails.user());
+        recipeService.deleteRecipe(recipeId, userDetails.user());
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

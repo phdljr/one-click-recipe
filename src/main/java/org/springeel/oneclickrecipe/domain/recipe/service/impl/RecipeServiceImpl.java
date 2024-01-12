@@ -2,7 +2,6 @@ package org.springeel.oneclickrecipe.domain.recipe.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeCreateServiceRequestDto;
-import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeDeleteServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;
 import org.springeel.oneclickrecipe.domain.recipe.exception.NotFoundRecipeException;
@@ -26,8 +25,8 @@ public class RecipeServiceImpl implements RecipeService {
         recipeRepository.save(recipe);
     }
 
-    public void deleteRecipe(final RecipeDeleteServiceRequestDto requestDto, User user) {
-        Recipe recipe = recipeRepository.findByIdAndUser(requestDto.recipeId(), user)
+    public void deleteRecipe(Long recipeId, User user) {
+        Recipe recipe = recipeRepository.findByIdAndUser(recipeId, user)
             .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
         recipeRepository.delete(recipe);
     }
