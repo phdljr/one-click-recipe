@@ -28,7 +28,7 @@ public class OrderController {
     private final OrderService orderService;
 
     // 주문 생성
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<OrderCreateResponseDto> createOrder(
         @RequestBody OrderCreateControllerRequestDto createControllerRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetailsImpl
@@ -41,7 +41,7 @@ public class OrderController {
     }
 
     // 주문 내역 목록 조회
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<List<OrderReadAllResponseDto>> getAllUserOrders(
         @AuthenticationPrincipal UserDetailsImpl userDetailsImpl
     ) {
