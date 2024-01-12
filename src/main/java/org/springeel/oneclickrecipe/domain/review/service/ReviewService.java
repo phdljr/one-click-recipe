@@ -7,7 +7,7 @@ import org.springeel.oneclickrecipe.domain.user.entity.User;
 public interface ReviewService {
     void createReview(User user, ReviewCreateServiceRequestDto controllerRequestDto, Long recipeId);
 
-    void updateReview(Long recipeId, User user, ReviewUpdateServiceRequestDto serviceRequestDto);
+    void updateReview(Long reviewId, User user, ReviewUpdateServiceRequestDto serviceRequestDto);
 
-    void deleteReview(User user, Long recipeId);
+    void deleteReview(User user, Long reviewId);
 }

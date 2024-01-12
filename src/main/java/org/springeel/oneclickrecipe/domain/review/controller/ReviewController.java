@@ -15,41 +15,41 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/recipes")
+@RequestMapping("/api/v1")
 public class ReviewController {
 
     private final ReviewDtoMapper reviewDtoMapper;
     private final ReviewService reviewService;
 
-    @PostMapping("/{recipeId}/reviews") //후기작성
+    @PostMapping("/recipes/{recipeId}/reviews") //후기작성
     public void create(
+        @PathVariable(name = "recipeId") Long recipeId,
         @RequestBody ReviewCreateControllerRequestDto createControllerRequestDto,
-        @AuthenticationPrincipal UserDetailsImpl userDetails,
-        @PathVariable(name = "recipeId") Long recipeId
+        @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         ReviewCreateServiceRequestDto serviceRequestDto =
             reviewDtoMapper.toReviewCreateServiceRequestDto(createControllerRequestDto);
         reviewService.createReview(userDetails.user(), serviceRequestDto, recipeId);
     }
 
-    @PutMapping("/{recipeId}/reviews/{reviewId}") //후기수정
+    @PutMapping("/reviews/{reviewId}") //후기수정
     public ResponseEntity<?> update(
-        @PathVariable(name = "recipeId") Long recipeId,
-        @AuthenticationPrincipal UserDetailsImpl userDetails,
-        @RequestBody ReviewUpdateControllerRequestDto ReviewUpdateServiceRequestDto
+        @PathVariable(name = "reviewId") Long reviewId,
+        @RequestBody ReviewUpdateControllerRequestDto ReviewUpdateServiceRequestDto,
+        @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         ReviewUpdateServiceRequestDto serviceRequestDto =
             reviewDtoMapper.toReviewUpdateServiceRequestDto(ReviewUpdateServiceRequestDto);
-        reviewService.updateReview(recipeId, userDetails.user(), serviceRequestDto);
+        reviewService.updateReview(reviewId, userDetails.user(), serviceRequestDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @DeleteMapping("/{recipeId}/reviews/{reviewId}") //후기삭제
+    @DeleteMapping("/reviews/{reviewId}") //후기삭제
     public ResponseEntity<Void> delete(
-        @AuthenticationPrincipal UserDetailsImpl userDetails,
-        @PathVariable(name = "recipeId") Long recipeId
+        @PathVariable(name = "reviewId") Long reviewId,
+        @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        reviewService.deleteReview(userDetails.user(), recipeId);
+        reviewService.deleteReview(userDetails.user(), reviewId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
