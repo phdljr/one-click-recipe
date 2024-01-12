@@ -1,13 +1,15 @@
 package org.springeel.oneclickrecipe.domain.order.service.impl;
 
-import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.order.dto.service.OrderCreateResponseDto;
 import org.springeel.oneclickrecipe.domain.order.dto.service.OrderCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.order.dto.service.OrderReadAllResponseDto;
 import org.springeel.oneclickrecipe.domain.order.dto.service.OrderReadResponseDto;
 import org.springeel.oneclickrecipe.domain.order.entity.Order;
+import org.springeel.oneclickrecipe.domain.order.exception.NotFoundOrderException;
+import org.springeel.oneclickrecipe.domain.order.exception.OrderErrorCode;
 import org.springeel.oneclickrecipe.domain.order.mapper.entity.OrderEntityMapper;
 import org.springeel.oneclickrecipe.domain.order.repository.OrderRepository;
 import org.springeel.oneclickrecipe.domain.order.service.OrderService;
@@ -21,6 +23,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderEntityMapper orderEntityMapper; // Mapper 추가
 
+    // 주문 생성
     @Override
     public OrderCreateResponseDto createOrder(OrderCreateServiceRequestDto serviceRequestDto,
         User user) {
@@ -31,18 +34,26 @@ public class OrderServiceImpl implements OrderService {
         return orderEntityMapper.toResponseDto(order);
     }
 
+    // 주문 내역 목록 조회
     @Override
-    public List<OrderReadResponseDto> getUserOrders(Long userId) {
+    public List<OrderReadAllResponseDto> getAllUserOrders(Long userId) {
         List<Order> orders = orderRepository.findByUserId(userId);
+
+        if (orders.isEmpty()) {
+            throw new NotFoundOrderException(OrderErrorCode.NOT_FOUND_ORDER); // 주문 내역이 없는 경우 예외 처리
+        }
         return orders.stream()
-            .map(orderEntityMapper::toOrderReadResponseDto)
+            .map(orderEntityMapper::toOrderReadAllResponseDto) // Order를 OrderReadAllResponseDto로 변환
             .collect(Collectors.toList());
     }
 
+    // 주문 내역 단건 조회
     @Override
     public OrderReadResponseDto getOrderById(Long orderId, Long userId) {
         Order order = orderRepository.findByIdAndUserId(orderId, userId)
-            .orElseThrow(() -> new EntityNotFoundException("주문내역을 찾을 수 없습니다."));
+            .orElseThrow(() -> new NotFoundOrderException(OrderErrorCode.NOT_FOUND_ORDER));
+
+        // 매퍼를 사용하여 Order 엔티티를 OrderReadResponseDto로 변환
         return orderEntityMapper.toOrderReadResponseDto(order);
     }
 }
