@@ -56,4 +56,11 @@ public class RecipeProcess extends BaseEntity {
         this.time = time;
         this.imageUrl = imageUrl;
     }
+
+    public void updateRecipe(String sequence, String description, short time, String imageUrl) {
+        this.sequence = sequence;
+        this.description = description;
+        this.time = time;
+        this.imageUrl = imageUrl;
+    }
 }

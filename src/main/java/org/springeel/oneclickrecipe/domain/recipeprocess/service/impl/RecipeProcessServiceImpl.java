@@ -7,6 +7,7 @@ import org.springeel.oneclickrecipe.domain.recipe.exception.NotFoundRecipeExcept
 import org.springeel.oneclickrecipe.domain.recipe.exception.RecipeErrorCode;
 import org.springeel.oneclickrecipe.domain.recipe.repository.RecipeRepository;
 import org.springeel.oneclickrecipe.domain.recipeprocess.dto.service.RecipeProcessCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.recipeprocess.dto.service.RecipeProcessUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipeprocess.entity.RecipeProcess;
 import org.springeel.oneclickrecipe.domain.recipeprocess.exception.NotFoundRecipeProcessException;
 import org.springeel.oneclickrecipe.domain.recipeprocess.exception.RecipeProcessErrorCode;
@@ -15,6 +16,7 @@ import org.springeel.oneclickrecipe.domain.recipeprocess.repository.RecipeProces
 import org.springeel.oneclickrecipe.domain.recipeprocess.service.RecipeProcessService;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -46,5 +48,27 @@ public class RecipeProcessServiceImpl implements RecipeProcessService {
             .orElseThrow(() -> new NotFoundRecipeProcessException(
                 RecipeProcessErrorCode.NOT_FOUND_RECIPE_PROCESS));
         recipeProcessRepository.delete(recipeProcess);
+    }
+
+    @Transactional
+    public void updateRecipeProcess(
+        final RecipeProcessUpdateServiceRequestDto requestDto,
+        Long recipeId,
+        User user,
+        Long processId
+    ) {
+        Recipe recipe = recipeRepository.findByIdAndUser(recipeId, user)
+            .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
+        RecipeProcess recipeProcess = recipeProcessRepository.findByIdAndRecipe(processId, recipe)
+            .orElseThrow(() -> new NotFoundRecipeProcessException(
+                RecipeProcessErrorCode.NOT_FOUND_RECIPE_PROCESS));
+
+        recipeProcess.updateRecipe(
+            requestDto.sequence(),
+            requestDto.description(),
+            requestDto.time(),
+            requestDto.imageUrl()
+        );
+
     }
 }
