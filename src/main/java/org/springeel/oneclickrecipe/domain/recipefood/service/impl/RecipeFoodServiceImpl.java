@@ -28,10 +28,11 @@ public class RecipeFoodServiceImpl implements RecipeFoodService {
     private final RecipeFoodEntityMapper recipeFoodEntityMapper;
     private final RecipeRepository recipeRepository;
 
-    public void createRecipeFood(RecipeFoodCreateServiceRequestDto requestDto, Long recipeId) {
+    public void createRecipeFood(RecipeFoodCreateServiceRequestDto requestDto, Long recipeId,
+        User user) {
         Food food = foodRepository.findByName(requestDto.foodName())
             .orElseThrow(() -> new NotFoundFoodException(FoodErrorCode.NOT_FOUND_FOOD));
-        Recipe recipe = recipeRepository.findById(recipeId)
+        Recipe recipe = recipeRepository.findByIdAndUser(recipeId, user)
             .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
         RecipeFood recipeFood = recipeFoodEntityMapper.toRecipeFood(requestDto, food,
             recipe);
