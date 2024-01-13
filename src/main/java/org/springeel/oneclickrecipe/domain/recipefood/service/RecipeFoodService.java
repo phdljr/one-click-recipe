@@ -5,7 +5,7 @@ import org.springeel.oneclickrecipe.domain.user.entity.User;
 
 public interface RecipeFoodService {
 
-    void createRecipeFood(RecipeFoodCreateServiceRequestDto requestDto, Long recipeId);
+    void createRecipeFood(RecipeFoodCreateServiceRequestDto requestDto, Long recipeId, User user);
 
     void deleteRecipeFood(Long recipeFoodId, Long recipeId, User user);
 
