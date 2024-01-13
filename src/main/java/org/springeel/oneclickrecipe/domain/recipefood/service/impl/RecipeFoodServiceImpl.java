@@ -10,6 +10,7 @@ import org.springeel.oneclickrecipe.domain.recipe.exception.NotFoundRecipeExcept
 import org.springeel.oneclickrecipe.domain.recipe.exception.RecipeErrorCode;
 import org.springeel.oneclickrecipe.domain.recipe.repository.RecipeRepository;
 import org.springeel.oneclickrecipe.domain.recipefood.dto.service.RecipeFoodCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.recipefood.dto.service.RecipeFoodUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipefood.entity.RecipeFood;
 import org.springeel.oneclickrecipe.domain.recipefood.exception.NotFoundRecipeFoodException;
 import org.springeel.oneclickrecipe.domain.recipefood.exception.RecipeFoodErrorCode;
@@ -18,6 +19,7 @@ import org.springeel.oneclickrecipe.domain.recipefood.repository.RecipeFoodRepos
 import org.springeel.oneclickrecipe.domain.recipefood.service.RecipeFoodService;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -46,5 +48,23 @@ public class RecipeFoodServiceImpl implements RecipeFoodService {
             .orElseThrow(
                 () -> new NotFoundRecipeFoodException(RecipeFoodErrorCode.NOT_FOUND_RECIPEFOOD));
         recipeFoodRepository.delete(recipeFood);
+    }
+
+    @Transactional
+    public void updateRecipeFood(Long recipeId, Long recipeFoodId, User user,
+        RecipeFoodUpdateServiceRequestDto requestDto) {
+        Recipe recipe = recipeRepository.findByIdAndUser(recipeId, user)
+            .orElseThrow(() -> new NotFoundRecipeFoodException(RecipeErrorCode.NOT_FOUND_RECIPE));
+        Food food = foodRepository.findByName(requestDto.foodName())
+            .orElseThrow(() -> new NotFoundFoodException(FoodErrorCode.NOT_FOUND_FOOD));
+        RecipeFood recipeFood = recipeFoodRepository.findByIdAndRecipe(recipeFoodId, recipe)
+            .orElseThrow(
+                () -> new NotFoundRecipeFoodException(RecipeFoodErrorCode.NOT_FOUND_RECIPEFOOD));
+        recipeFood.updateRecipeFood(
+            requestDto.foodName(),
+            requestDto.amount(),
+            recipe,
+            food
+        );
     }
 }
