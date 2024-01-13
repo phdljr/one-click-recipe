@@ -1,6 +1,5 @@
 package org.springeel.oneclickrecipe.domain.order.dto.service;
 
-import java.util.List;
 import org.springeel.oneclickrecipe.domain.order.entity.OrderStatus;
 
 public record OrderReadResponseDto(
