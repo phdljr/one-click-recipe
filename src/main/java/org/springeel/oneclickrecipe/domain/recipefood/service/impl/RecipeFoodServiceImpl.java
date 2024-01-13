@@ -11,9 +11,12 @@ import org.springeel.oneclickrecipe.domain.recipe.exception.RecipeErrorCode;
 import org.springeel.oneclickrecipe.domain.recipe.repository.RecipeRepository;
 import org.springeel.oneclickrecipe.domain.recipefood.dto.service.RecipeFoodCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipefood.entity.RecipeFood;
+import org.springeel.oneclickrecipe.domain.recipefood.exception.NotFoundRecipeFoodException;
+import org.springeel.oneclickrecipe.domain.recipefood.exception.RecipeFoodErrorCode;
 import org.springeel.oneclickrecipe.domain.recipefood.mapper.service.RecipeFoodEntityMapper;
 import org.springeel.oneclickrecipe.domain.recipefood.repository.RecipeFoodRepository;
 import org.springeel.oneclickrecipe.domain.recipefood.service.RecipeFoodService;
+import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -33,5 +36,14 @@ public class RecipeFoodServiceImpl implements RecipeFoodService {
         RecipeFood recipeFood = recipeFoodEntityMapper.toRecipeFood(requestDto, food,
             recipe);
         recipeFoodRepository.save(recipeFood);
+    }
+
+    public void deleteRecipeFood(Long recipeId, Long recipeFoodId, User user) {
+        Recipe recipe = recipeRepository.findByIdAndUser(recipeId, user)
+            .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
+        RecipeFood recipeFood = recipeFoodRepository.findByIdAndRecipe(recipeFoodId, recipe)
+            .orElseThrow(
+                () -> new NotFoundRecipeFoodException(RecipeFoodErrorCode.NOT_FOUND_RECIPEFOOD));
+        recipeFoodRepository.delete(recipeFood);
     }
 }
