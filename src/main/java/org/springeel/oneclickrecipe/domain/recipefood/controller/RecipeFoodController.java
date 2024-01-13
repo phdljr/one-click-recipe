@@ -27,10 +27,12 @@ public class RecipeFoodController {
     @PostMapping("{recipeId}/recipeFoods")
     public ResponseEntity<?> create(
         @RequestBody RecipeFoodCreateControllerRequestDto requestDto,
-        @PathVariable Long recipeId) {
+        @PathVariable Long recipeId,
+        @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
         RecipeFoodCreateServiceRequestDto serviceRequestDto =
             recipeFoodDtoMapper.toRecipeFoodCreateServiceRequestDto(requestDto);
-        recipeFoodService.createRecipeFood(serviceRequestDto, recipeId);
+        recipeFoodService.createRecipeFood(serviceRequestDto, recipeId, userDetails.user());
         return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
     }
 
