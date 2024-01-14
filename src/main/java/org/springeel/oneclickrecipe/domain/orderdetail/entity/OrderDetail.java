@@ -49,4 +49,8 @@ public class OrderDetail {
         this.amount = amount;
         this.price = price;
     }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
 }
