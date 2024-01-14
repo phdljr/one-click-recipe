@@ -25,12 +25,13 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 
     @Override
     @Transactional
-    public OrderDetailCreateResponseDto createOrderDetail(
+    public OrderDetailCreateResponseDto createOrderDetail(Long userId, Long orderId,
         OrderDetailCreateControllerRequestDto orderDetailCreateControllerRequestDto) {
 
         // 특정 Order 조회
-        Order order = orderRepository.findById(orderDetailCreateControllerRequestDto.orderId())
-            .orElseThrow(() -> new EntityNotFoundException("Order not found"));
+        Order order = orderRepository.findByIdAndUserId(orderId, userId)
+            .orElseThrow(() -> new EntityNotFoundException(
+                "Order not found or does not belong to the user"));
 
         // Dto를 Entity로 변환
         OrderDetail orderDetail = orderDetailDtoMapper.toEntity(
