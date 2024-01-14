@@ -8,6 +8,5 @@ import org.springeel.oneclickrecipe.domain.orderdetail.entity.OrderDetail;
 @Mapper(componentModel = ComponentModel.SPRING)
 public interface OrderDetailDtoMapper {
 
-
     OrderDetail toEntity(OrderDetailCreateControllerRequestDto dto);
 }
