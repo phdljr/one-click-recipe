@@ -21,11 +21,12 @@ public class OrderDetailController {
 
     @PostMapping("/{userId}/{orderId}/order-details")
     public ResponseEntity<OrderDetailCreateResponseDto> createOrderDetail(
-        @PathVariable Long userId,
-        @PathVariable Long orderId,
+        @PathVariable("userId") Long userId,
+        @PathVariable("orderId") Long orderId,
         @RequestBody OrderDetailCreateControllerRequestDto orderDetailCreateControllerRequestDto
     ) {
         OrderDetailCreateResponseDto orderDetailCreateResponseDto = orderDetailService.createOrderDetail(
+            userId, orderId,
             orderDetailCreateControllerRequestDto);
         return new ResponseEntity<>(orderDetailCreateResponseDto, HttpStatus.CREATED);
     }
