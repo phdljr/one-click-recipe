@@ -3,9 +3,9 @@ package org.springeel.oneclickrecipe.domain.orderdetail.exception;
 import org.springeel.oneclickrecipe.global.exception.CustomException;
 import org.springeel.oneclickrecipe.global.exception.ErrorCode;
 
-public class AlreadyExistsOrderException extends CustomException {
+public class NotFoundOrderDetailException extends CustomException {
 
-    public AlreadyExistsOrderException(final ErrorCode errorCode) {
+    public NotFoundOrderDetailException(final ErrorCode errorCode) {
         super(errorCode);
     }
 }
