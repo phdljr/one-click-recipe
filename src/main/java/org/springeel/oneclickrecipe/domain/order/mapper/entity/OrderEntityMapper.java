@@ -23,6 +23,8 @@ public interface OrderEntityMapper {
     @Mapping(source = "status", target = "orderStatus")
     OrderCreateResponseDto toResponseDto(Order order);
 
+    @Mapping(source = "id", target = "orderId")
+    @Mapping(source = "status", target = "orderStatus")
     @Mapping(target = "orderDetails", source = "orderDetails")
     OrderReadResponseDto toOrderReadResponseDto(Order order);
 
