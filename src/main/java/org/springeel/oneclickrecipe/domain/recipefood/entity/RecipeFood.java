@@ -52,4 +52,11 @@ public class RecipeFood extends BaseEntity {
         this.recipe = recipe;
         this.food = food;
     }
+
+    public void updateRecipeFood(String foodName, Short amount, Recipe recipe, Food food) {
+        this.foodName = foodName;
+        this.amount = amount;
+        this.recipe = recipe;
+        this.food = food;
+    }
 }
