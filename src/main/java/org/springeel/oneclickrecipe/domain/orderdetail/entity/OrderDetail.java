@@ -1,6 +1,7 @@
 package org.springeel.oneclickrecipe.domain.orderdetail.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -35,8 +36,9 @@ public class OrderDetail {
     @Column(nullable = false)
     private Integer price;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "order_id")
+    @JsonIgnore
     private Order order;
 
     @Builder
