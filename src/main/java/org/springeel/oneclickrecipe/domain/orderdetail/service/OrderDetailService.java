@@ -5,6 +5,6 @@ import org.springeel.oneclickrecipe.domain.orderdetail.dto.service.OrderDetailCr
 
 public interface OrderDetailService {
 
-    OrderDetailCreateResponseDto createOrderDetail(
+    OrderDetailCreateResponseDto createOrderDetail(Long userId, Long orderId,
         OrderDetailCreateControllerRequestDto requestDto);
 }
