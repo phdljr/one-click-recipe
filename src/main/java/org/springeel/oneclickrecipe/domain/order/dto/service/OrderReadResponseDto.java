@@ -1,6 +1,8 @@
 package org.springeel.oneclickrecipe.domain.order.dto.service;
 
+import java.util.List;
 import org.springeel.oneclickrecipe.domain.order.entity.OrderStatus;
+import org.springeel.oneclickrecipe.domain.orderdetail.entity.OrderDetail;
 
 public record OrderReadResponseDto(
     Long orderId,
@@ -10,7 +12,7 @@ public record OrderReadResponseDto(
     String addressDetail,
     Integer totalPrice,
     OrderStatus orderStatus,
-    List<OrderDetailDto> orderDetails // 주문 상세 정보를 담을 리스트
+    List<OrderDetail> orderDetails // 주문 상세 정보를 담을 리스트
 ) {
 
 }
