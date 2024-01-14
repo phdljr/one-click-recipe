@@ -1,12 +1,13 @@
 package org.springeel.oneclickrecipe.domain.orderdetail.service.impl;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.order.entity.Order;
 import org.springeel.oneclickrecipe.domain.order.repository.OrderRepository;
 import org.springeel.oneclickrecipe.domain.orderdetail.dto.controller.OrderDetailCreateControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.orderdetail.dto.service.OrderDetailCreateResponseDto;
 import org.springeel.oneclickrecipe.domain.orderdetail.entity.OrderDetail;
+import org.springeel.oneclickrecipe.domain.orderdetail.exception.NotFoundOrderDetailException;
+import org.springeel.oneclickrecipe.domain.orderdetail.exception.OrderDetailErrorCode;
 import org.springeel.oneclickrecipe.domain.orderdetail.mapper.dto.OrderDetailDtoMapper;
 import org.springeel.oneclickrecipe.domain.orderdetail.mapper.entity.OrderDetailEntityMapper;
 import org.springeel.oneclickrecipe.domain.orderdetail.repository.OrderDetailRepository;
@@ -30,8 +31,8 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 
         // 특정 Order 조회
         Order order = orderRepository.findByIdAndUserId(orderId, userId)
-            .orElseThrow(() -> new EntityNotFoundException(
-                "Order not found or does not belong to the user"));
+            .orElseThrow(() -> new NotFoundOrderDetailException(
+                OrderDetailErrorCode.NOT_FOUND_ORDER_DETAIL));
 
         // Dto를 Entity로 변환
         OrderDetail orderDetail = orderDetailDtoMapper.toEntity(
@@ -41,7 +42,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         orderDetail.setOrder(order);
 
         // OrderDetail 저장
-        orderDetail  = orderDetailRepository.save(orderDetail);
+        orderDetail = orderDetailRepository.save(orderDetail);
 
         // Entity를 Dto로 변환하여 반환
         return orderDetailEntityMapper.toDto(orderDetail);
