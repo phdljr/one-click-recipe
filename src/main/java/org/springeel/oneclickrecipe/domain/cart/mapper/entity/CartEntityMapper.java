@@ -1,17 +1,16 @@
 package org.springeel.oneclickrecipe.domain.cart.mapper.entity;
 
 import org.mapstruct.Mapper;
-import org.springeel.oneclickrecipe.domain.cart.dto.controller.CartCreateControllerResponseDto;
-import org.springeel.oneclickrecipe.domain.cart.dto.service.CartCreateServiceResponseDto;
+import org.mapstruct.Mapping;
+import org.springeel.oneclickrecipe.domain.cart.dto.service.CartCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.cart.entity.Cart;
+import org.springeel.oneclickrecipe.domain.recipefood.entity.RecipeFood;
+import org.springeel.oneclickrecipe.domain.user.entity.User;
 
 @Mapper(componentModel = "spring")
 public interface CartEntityMapper {
 
-    // Entity에서 Controller용 DTO로 변환
-    CartCreateControllerResponseDto entityToControllerDto(Cart entity);
-
-    // Entity에서 Service용 DTO로 변환
-    CartCreateServiceResponseDto entityToServiceDto(Cart entity);
-
+    @Mapping(source = "userId", target = "user")
+    @Mapping(source = "recipeFoodId", target = "recipeFood")
+    Cart toEntity(CartCreateServiceRequestDto dto, User user, RecipeFood recipeFood);
 }
