@@ -38,7 +38,7 @@ public class RecipeController {
         return ResponseEntity.status(HttpStatus.CREATED).body("레시피 생성 완성");
     }
 
-    @DeleteMapping("/{userId}/{recipeId}")
+    @DeleteMapping("/recipes/{recipeId}")
     public ResponseEntity<?> delete(
         @PathVariable Long recipeId,
         @AuthenticationPrincipal UserDetailsImpl userDetails
