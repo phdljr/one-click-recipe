@@ -21,13 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v1")
 public class RecipeController {
 
     private final RecipeService recipeService;
     private final RecipeDtoMapper recipeDtoMapper;
 
-    @PostMapping("/{userId}/recipes")
+    @PostMapping("/recipes")
     public ResponseEntity<?> create(
         @RequestBody RecipeCreateControllerRequestDto controllerRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetails
@@ -38,7 +38,7 @@ public class RecipeController {
         return ResponseEntity.status(HttpStatus.CREATED).body("레시피 생성 완성");
     }
 
-    @DeleteMapping("/{userId}/{recipeId}")
+    @DeleteMapping("/recipes/{recipeId}")
     public ResponseEntity<?> delete(
         @PathVariable Long recipeId,
         @AuthenticationPrincipal UserDetailsImpl userDetails
