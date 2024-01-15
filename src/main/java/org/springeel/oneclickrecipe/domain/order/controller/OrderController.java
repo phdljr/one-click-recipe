@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.order.dto.controller.OrderCreateControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.order.dto.service.OrderCreateResponseDto;
 import org.springeel.oneclickrecipe.domain.order.dto.service.OrderCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.order.dto.service.OrderReadAllResponseDto;
 import org.springeel.oneclickrecipe.domain.order.dto.service.OrderReadResponseDto;
 import org.springeel.oneclickrecipe.domain.order.mapper.dto.OrderDtoMapper;
 import org.springeel.oneclickrecipe.domain.order.service.OrderService;
@@ -19,14 +20,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/users/{userId}/orders")
 @RestController
 public class OrderController {
 
     private final OrderDtoMapper orderDtoMapper;
     private final OrderService orderService;
 
-    @PostMapping("/orders")
+    // 주문 생성
+    @PostMapping
     public ResponseEntity<OrderCreateResponseDto> createOrder(
         @RequestBody OrderCreateControllerRequestDto createControllerRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetailsImpl
@@ -39,19 +41,19 @@ public class OrderController {
     }
 
     // 주문 내역 목록 조회
-    @GetMapping("/orders")
-    public ResponseEntity<List<OrderReadResponseDto>> getUserOrders(
+    @GetMapping
+    public ResponseEntity<List<OrderReadAllResponseDto>> getAllUserOrders(
         @AuthenticationPrincipal UserDetailsImpl userDetailsImpl
     ) {
-        List<OrderReadResponseDto> orderList = orderService.getUserOrders(userDetailsImpl.user()
-            .getId());
-        return ResponseEntity.ok(orderList);
+        List<OrderReadAllResponseDto> orderReadAllResponseDtoList = orderService.getAllUserOrders(
+            userDetailsImpl.user().getId());
+        return ResponseEntity.ok(orderReadAllResponseDtoList);
     }
 
     // 주문 내역 단건 조회
-    @GetMapping("/orders/{orderId}")
+    @GetMapping("/{orderId}")
     public ResponseEntity<OrderReadResponseDto> getOrderById(
-        @PathVariable Long orderId,
+        @PathVariable(name = "orderId") Long orderId,
         @AuthenticationPrincipal UserDetailsImpl userDetailsImpl
     ) {
         OrderReadResponseDto readResponseDto = orderService.getOrderById(orderId,
