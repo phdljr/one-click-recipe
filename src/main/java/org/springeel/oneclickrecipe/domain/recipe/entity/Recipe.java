@@ -42,6 +42,9 @@ public class Recipe extends BaseEntity {
     @Column
     private String videoPath;
 
+    @Column
+    private String fileUrl;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -55,13 +58,15 @@ public class Recipe extends BaseEntity {
         final String intro,
         final Byte serving,
         final String videoPath,
-        final User user
+        final User user,
+        final String fileUrl
     ) {
         this.title = title;
         this.intro = intro;
         this.serving = serving;
         this.videoPath = videoPath;
         this.user = user;
+        this.fileUrl = fileUrl;
     }
 
     public void updateRecipe(String title, String intro, Byte serving, String videoPath) {
