@@ -9,6 +9,6 @@ import org.springeel.oneclickrecipe.domain.user.entity.User;
 @Mapper(componentModel = ComponentModel.SPRING)
 public interface RecipeEntityMapper {
 
-    Recipe toRecipe(RecipeCreateServiceRequestDto requestDto, User user, String fileUrl);
+    Recipe toRecipe(RecipeCreateServiceRequestDto requestDto, User user, String folderName);
 
 }

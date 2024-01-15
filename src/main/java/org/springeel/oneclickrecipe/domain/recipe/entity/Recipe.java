@@ -15,7 +15,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.review.entity.Review;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springeel.oneclickrecipe.global.entity.BaseEntity;
@@ -43,7 +42,7 @@ public class Recipe extends BaseEntity {
     private String videoPath;
 
     @Column
-    private String fileUrl;
+    private String folderName;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -59,14 +58,14 @@ public class Recipe extends BaseEntity {
         final Byte serving,
         final String videoPath,
         final User user,
-        final String fileUrl
+        final String folderName
     ) {
         this.title = title;
         this.intro = intro;
         this.serving = serving;
         this.videoPath = videoPath;
         this.user = user;
-        this.fileUrl = fileUrl;
+        this.folderName = folderName;
     }
 
     public void updateRecipe(String title, String intro, Byte serving, String videoPath) {

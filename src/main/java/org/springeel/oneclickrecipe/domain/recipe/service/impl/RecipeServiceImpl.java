@@ -24,10 +24,10 @@ public class RecipeServiceImpl implements RecipeService {
     private final S3Provider s3Provider;
 
     public void createRecipe(final RecipeCreateServiceRequestDto requestDto, User user) {
-        String fileUrl = requestDto.title() + UUID.randomUUID();
-        Recipe recipe = recipeEntityMapper.toRecipe(requestDto, user, fileUrl);
+        String folderName = requestDto.title() + UUID.randomUUID();
+        Recipe recipe = recipeEntityMapper.toRecipe(requestDto, user, folderName);
         recipeRepository.save(recipe);
-        s3Provider.createFolder(fileUrl);
+        s3Provider.createFolder(folderName);
     }
 
     public void deleteRecipe(Long recipeId, User user) {
