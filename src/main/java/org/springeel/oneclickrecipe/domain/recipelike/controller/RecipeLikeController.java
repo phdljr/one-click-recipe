@@ -35,7 +35,7 @@ public class RecipeLikeController {
         @PathVariable(name = "recipeId") Long recipeId,
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        recipeLikeService.deleteRecipeLike(userDetails.user(), recipeId);
+        recipeLikeService.delete(userDetails.user(), recipeId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
