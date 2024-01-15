@@ -5,7 +5,6 @@ import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;
 import org.springeel.oneclickrecipe.domain.recipe.exception.NotFoundRecipeException;
 import org.springeel.oneclickrecipe.domain.recipe.exception.RecipeErrorCode;
 import org.springeel.oneclickrecipe.domain.recipe.repository.RecipeRepository;
-import org.springeel.oneclickrecipe.domain.recipelike.dto.service.RecipeLikeCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipelike.entity.RecipeLike;
 import org.springeel.oneclickrecipe.domain.recipelike.mapper.entity.RecipeLikeEntityMapper;
 import org.springeel.oneclickrecipe.domain.recipelike.repository.RecipeLikeRepository;
@@ -22,10 +21,10 @@ public class RecipeLikeServiceImpl implements RecipeLikeService {
     private final RecipeLikeEntityMapper recipeLikeEntityMapper;
 
     @Override
-    public void create(User user, RecipeLikeCreateServiceRequestDto serviceRequestDto, Long recipeId) {
+    public void create(User user, Long recipeId) {
         Recipe recipe = recipeRepository.findById(recipeId)
             .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
-        RecipeLike recipeLike = recipeLikeEntityMapper.toRecipeLike(serviceRequestDto, user, recipe);
+        RecipeLike recipeLike = recipeLikeEntityMapper.toRecipeLike(user, recipe);
         recipeLikeRepository.save(recipeLike);
     }
 }
