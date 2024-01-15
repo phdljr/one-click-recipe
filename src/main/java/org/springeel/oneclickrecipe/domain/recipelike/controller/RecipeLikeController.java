@@ -1,21 +1,33 @@
 package org.springeel.oneclickrecipe.domain.recipelike.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springeel.oneclickrecipe.domain.recipelike.dto.controller.RecipeLikeCreateControllerRequestDto;
+import org.springeel.oneclickrecipe.domain.recipelike.dto.service.RecipeLikeCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.recipelike.mapper.dto.RecipeLikeDtoMapper;
 import org.springeel.oneclickrecipe.domain.recipelike.service.RecipeLikeService;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springeel.oneclickrecipe.global.security.UserDetailsImpl;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/recipes")
 public class RecipeLikeController {
 
+    private final RecipeLikeDtoMapper recipeLikeDtoMapper;
     private final RecipeLikeService recipeLikeService;
 
-    @PatchMapping("/{recipeId}/likes") //좋아요 생성,삭제
-    public void manageRecipeLike() {
-        
+
+    @PostMapping("/{recipeId}/likes") //좋아요 생성
+    public void create(
+        @PathVariable(name = "recipeId") Long recipeId,
+        @RequestBody RecipeLikeCreateControllerRequestDto createControllerRequestDto,
+        @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        RecipeLikeCreateServiceRequestDto serviceRequestDto =
+            recipeLikeDtoMapper.toRecipeLikeCreateServiceRequestDto(createControllerRequestDto);
+        recipeLikeService.create(userDetails.user(), serviceRequestDto, recipeId);
     }
+
 
 }
