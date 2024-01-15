@@ -1,5 +1,6 @@
 package org.springeel.oneclickrecipe.domain.recipe.service.impl;
 
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeUpdateServiceRequestDto;
@@ -23,9 +24,10 @@ public class RecipeServiceImpl implements RecipeService {
     private final S3Provider s3Provider;
 
     public void createRecipe(final RecipeCreateServiceRequestDto requestDto, User user) {
-        Recipe recipe = recipeEntityMapper.toRecipe(requestDto, user);
+        String fileUrl = requestDto.title() + UUID.randomUUID();
+        Recipe recipe = recipeEntityMapper.toRecipe(requestDto, user, fileUrl);
         recipeRepository.save(recipe);
-        s3Provider.createFolder(recipe.getTitle());
+        s3Provider.createFolder(fileUrl);
     }
 
     public void deleteRecipe(Long recipeId, User user) {
