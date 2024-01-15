@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 public interface RecipeProcessService {
 
     void createRecipeProcess(RecipeProcessCreateServiceRequestDto requestDto, User user,
-        Long recipe_Id, MultipartFile multipartFile) throws IOException;
+        Long recipeId, MultipartFile multipartFile) throws IOException;
 
     void deleteRecipeProcess(Long recipeId, User user, Long processId);
 
