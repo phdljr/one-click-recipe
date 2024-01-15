@@ -21,13 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/users")
 public class RecipeController {
 
     private final RecipeService recipeService;
     private final RecipeDtoMapper recipeDtoMapper;
 
-    @PostMapping("/recipes")
+    @PostMapping("/{userId}/recipes")
     public ResponseEntity<?> create(
         @RequestBody RecipeCreateControllerRequestDto controllerRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetails
