@@ -26,5 +26,6 @@ public class RecipeLikeServiceImpl implements RecipeLikeService {
         Recipe recipe = recipeRepository.findById(recipeId)
             .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
         RecipeLike recipeLike = recipeLikeEntityMapper.toRecipeLike(serviceRequestDto, user, recipe);
+        recipeLikeRepository.save(recipeLike);
     }
 }
