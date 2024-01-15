@@ -2,6 +2,8 @@ package org.springeel.oneclickrecipe.domain.recipeprocess.service.impl;
 
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;
 import org.springeel.oneclickrecipe.domain.recipe.exception.NotFoundRecipeException;
@@ -29,6 +31,8 @@ public class RecipeProcessServiceImpl implements RecipeProcessService {
     private final RecipeProcessEntityMapper recipeProcessEntityMapper;
     private final RecipeRepository recipeRepository;
     private final S3Provider s3Provider;
+    private final String SEPARATOR = "/";
+    private final String url = "https://onceclick.s3.ap-northeast-2.amazonaws.com/";
 
     public void createRecipeProcess(
         final RecipeProcessCreateServiceRequestDto requestDto,
@@ -38,10 +42,15 @@ public class RecipeProcessServiceImpl implements RecipeProcessService {
     ) throws IOException {
         Recipe recipe = recipeRepository.findByIdAndUser(recipeId, user)
             .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
-        String imagefile = s3Provider.saveFile(multipartFile, recipe.getTitle());
+        String folderName = recipe.getTitle();
+        folderName = URLEncoder.encode(folderName, StandardCharsets.UTF_8);
+        String fileName = s3Provider.originalFileName(multipartFile);
+        String fileUrl = url + folderName + SEPARATOR + fileName;
         RecipeProcess recipeProcess = recipeProcessEntityMapper.toRecipeProcess(requestDto,
-            imagefile, recipe);
+            fileUrl, recipe);
         recipeProcessRepository.save(recipeProcess);
+        fileUrl = recipe.getTitle() + SEPARATOR + fileName;
+        s3Provider.saveFile(multipartFile, fileUrl);
     }
 
     public void deleteRecipeProcess(
