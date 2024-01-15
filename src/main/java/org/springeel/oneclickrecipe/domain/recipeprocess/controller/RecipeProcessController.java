@@ -40,7 +40,7 @@ public class RecipeProcessController {
         @RequestPart RecipeProcessCreateControllerRequestDto controllerRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @PathVariable Long recipeId,
-        MultipartFile multipartFile
+        @RequestPart MultipartFile multipartFile
     ) throws IOException {
         RecipeProcessCreateServiceRequestDto serviceRequestDto =
             processDtoMapper.toRecipeProcessCreateServiceRequestDto(controllerRequestDto);
@@ -48,20 +48,6 @@ public class RecipeProcessController {
             multipartFile);
         return ResponseEntity.status(HttpStatus.CREATED).body(HttpStatus.CREATED);
     }
-/*    @PostMapping("/{recipeId}/processes") // 마지막에 다 수정 예정
-    public ResponseEntity<Void> saveFile(
-        @RequestPart RecipeProcessCreateControllerRequestDto controllerRequestDto,
-        @AuthenticationPrincipal UserDetailsImpl userDetails,
-        @PathVariable Long recipeId,
-        MultipartFile multipartFile)
-        throws IOException {
-        Recipe recipe = recipeRepository.findByIdAndUser(recipeId, userDetails.user()).orElseThrow(
-            () -> new RuntimeException()
-        );
-        String file = recipe.getTitle();
-        s3Provider.saveFile(multipartFile, file);
-        return ResponseEntity.status(HttpStatus.OK).build();
-    }*/
 
     @DeleteMapping("/{recipeId}/{processId}")
     public ResponseEntity<?> delete(
