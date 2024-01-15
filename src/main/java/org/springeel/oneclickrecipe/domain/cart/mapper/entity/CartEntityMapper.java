@@ -10,7 +10,7 @@ import org.springeel.oneclickrecipe.domain.user.entity.User;
 @Mapper(componentModel = "spring")
 public interface CartEntityMapper {
 
-    @Mapping(source = "userId", target = "user")
-    @Mapping(source = "recipeFoodId", target = "recipeFood")
+//    @Mapping(source = "userId", target = "user")
+//    @Mapping(source = "recipeFoodId", target = "recipeFood")
     Cart toEntity(CartCreateServiceRequestDto dto, User user, RecipeFood recipeFood);
 }
