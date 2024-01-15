@@ -19,7 +19,7 @@ public class OrderDetailController {
 
     private final OrderDetailService orderDetailService;
 
-    @PostMapping("/{userId}/{orderId}/order-details")
+    @PostMapping("/{userId}/orders/{orderId}/order-details")
     public ResponseEntity<OrderDetailCreateResponseDto> createOrderDetail(
         @PathVariable("userId") Long userId,
         @PathVariable("orderId") Long orderId,
