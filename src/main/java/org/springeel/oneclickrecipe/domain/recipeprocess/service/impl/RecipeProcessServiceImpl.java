@@ -42,14 +42,14 @@ public class RecipeProcessServiceImpl implements RecipeProcessService {
     ) throws IOException {
         Recipe recipe = recipeRepository.findByIdAndUser(recipeId, user)
             .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
-        String folderName = recipe.getTitle();
+        String folderName = recipe.getFileUrl();
         folderName = URLEncoder.encode(folderName, StandardCharsets.UTF_8);
         String fileName = s3Provider.originalFileName(multipartFile);
         String fileUrl = url + folderName + SEPARATOR + fileName;
         RecipeProcess recipeProcess = recipeProcessEntityMapper.toRecipeProcess(requestDto,
             fileUrl, recipe);
         recipeProcessRepository.save(recipeProcess);
-        fileUrl = recipe.getTitle() + SEPARATOR + fileName;
+        fileUrl = recipe.getFileUrl() + SEPARATOR + fileName;
         s3Provider.saveFile(multipartFile, fileUrl);
     }
 
