@@ -17,7 +17,6 @@ public class RecipeLikeController {
     private final RecipeLikeDtoMapper recipeLikeDtoMapper;
     private final RecipeLikeService recipeLikeService;
 
-
     @PostMapping("/{recipeId}/likes") //좋아요 생성
     public void create(
         @PathVariable(name = "recipeId") Long recipeId,
@@ -28,6 +27,5 @@ public class RecipeLikeController {
             recipeLikeDtoMapper.toRecipeLikeCreateServiceRequestDto(createControllerRequestDto);
         recipeLikeService.create(userDetails.user(), serviceRequestDto, recipeId);
     }
-
 
 }
