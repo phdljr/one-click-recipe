@@ -19,6 +19,7 @@ import org.springeel.oneclickrecipe.domain.recipeprocess.repository.RecipeProces
 import org.springeel.oneclickrecipe.domain.recipeprocess.service.RecipeProcessService;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springeel.oneclickrecipe.global.util.S3Provider;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,6 +34,9 @@ public class RecipeProcessServiceImpl implements RecipeProcessService {
     private final S3Provider s3Provider;
     private final String SEPARATOR = "/";
     private final String url = "https://onceclick.s3.ap-northeast-2.amazonaws.com/";
+    @Value("${cloud.aws.s3.bucket.name}")
+    public String bucket;
+
 
     public void createRecipeProcess(
         final RecipeProcessCreateServiceRequestDto requestDto,
@@ -63,7 +67,10 @@ public class RecipeProcessServiceImpl implements RecipeProcessService {
         RecipeProcess recipeProcess = recipeProcessRepository.findByIdAndRecipe(processId, recipe)
             .orElseThrow(() -> new NotFoundRecipeProcessException(
                 RecipeProcessErrorCode.NOT_FOUND_RECIPE_PROCESS));
+        String imageName = recipeProcess.getImageUrl().replace(url, "");
+        imageName = imageName.substring(imageName.lastIndexOf("/"));
         recipeProcessRepository.delete(recipeProcess);
+        s3Provider.deleteImage(recipe.getFolderName() + imageName);
     }
 
     @Transactional
