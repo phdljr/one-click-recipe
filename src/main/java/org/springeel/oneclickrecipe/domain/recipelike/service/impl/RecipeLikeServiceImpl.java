@@ -34,4 +34,9 @@ public class RecipeLikeServiceImpl implements RecipeLikeService {
         RecipeLike recipeLike = recipeLikeEntityMapper.toRecipeLike(user, recipe);
         recipeLikeRepository.save(recipeLike);
     }
+
+    @Override
+    public void delete(User user, Long recipeId) {
+
+    }
 }
