@@ -5,4 +5,6 @@ import org.springeel.oneclickrecipe.domain.user.entity.User;
 public interface CartService {
 
     void clearCart(User user);
+
+    void addCartItem(Long userId, Long recipeFoodId);
 }
