@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface RecipeLikeRepository extends JpaRepository<RecipeLike, RecipeLikeId> {
     boolean existsByUserIdAndRecipeId(Long userId, Long recipeId);
 
-    Optional<RecipeLike> findByIdAndUser(User user, Long recipeId);
+    Optional<RecipeLike> findByIdAndUser(Long recipeId, User user);
 }
