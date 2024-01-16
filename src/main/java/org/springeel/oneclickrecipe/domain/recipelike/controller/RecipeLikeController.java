@@ -16,11 +16,13 @@ public class RecipeLikeController {
     private final RecipeLikeService recipeLikeService;
 
     @PostMapping("/{recipeId}/likes") //좋아요 생성
-    public void create(
+    public ResponseEntity<Void> create(
         @PathVariable(name = "recipeId") Long recipeId,
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         recipeLikeService.create(userDetails.user(), recipeId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+
     }
 
     @DeleteMapping("/{recipeId}/likes") //좋아요 삭제
