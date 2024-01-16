@@ -1,7 +1,9 @@
 package org.springeel.oneclickrecipe.domain.cart.dto.controller;
 
+import java.util.List;
+
 public record CartAddControllerRequestDto(
-    Long recipeFoodId
+    List<Long> recipeFoodId
 ) {
 
 }
