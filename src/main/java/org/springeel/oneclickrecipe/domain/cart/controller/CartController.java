@@ -1,8 +1,6 @@
 package org.springeel.oneclickrecipe.domain.cart.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springeel.oneclickrecipe.domain.cart.exception.CartErrorCode;
-import org.springeel.oneclickrecipe.domain.cart.exception.ForbiddenAccessCartException;
 import org.springeel.oneclickrecipe.domain.cart.service.CartService;
 import org.springeel.oneclickrecipe.global.security.UserDetailsImpl;
 import org.springframework.http.ResponseEntity;
@@ -23,11 +21,7 @@ public class CartController {
     public ResponseEntity<Void> clearCart(
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        // 요청한 사용자와 로그인한 사용자가 동일한지 확인
-        if (!userDetails.user().getId().equals(userId)) {
-            throw new ForbiddenAccessCartException(CartErrorCode.FORBIDDEN_ACCESS_CART);
-        }
-        cartService.clearCart(userId);
+        cartService.clearCart(userDetails.user().getId());
         return ResponseEntity.ok().build();
     }
 }
