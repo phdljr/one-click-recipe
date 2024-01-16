@@ -5,4 +5,5 @@ import org.springeel.oneclickrecipe.domain.recipelike.entity.RecipeLikeId;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RecipeLikeRepository extends JpaRepository<RecipeLike, RecipeLikeId> {
+    boolean existsByUserIdAndRecipeId(Long userId, Long recipeId);
 }

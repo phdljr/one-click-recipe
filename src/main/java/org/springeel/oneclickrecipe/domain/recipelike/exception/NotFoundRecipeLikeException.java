@@ -1,4 +1,4 @@
-package org.springeel.oneclickrecipe.domain.recipelike.service.exception;
+package org.springeel.oneclickrecipe.domain.recipelike.exception;
 
 import org.springeel.oneclickrecipe.global.exception.CustomException;
 import org.springeel.oneclickrecipe.global.exception.ErrorCode;

@@ -1,4 +1,4 @@
-package org.springeel.oneclickrecipe.domain.recipelike.service.exception;
+package org.springeel.oneclickrecipe.domain.recipelike.exception;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
