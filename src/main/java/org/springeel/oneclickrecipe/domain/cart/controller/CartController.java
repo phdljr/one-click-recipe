@@ -21,7 +21,7 @@ public class CartController {
     public ResponseEntity<Void> clearCart(
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        cartService.clearCart(userDetails.user().getId());
+        cartService.clearCart(userDetails.user());
         return ResponseEntity.ok().build();
     }
 }
