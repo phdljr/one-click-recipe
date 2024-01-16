@@ -36,11 +36,7 @@ public class CartController {
     ) {
         // 현재 로그인한 사용자의 ID를 가져옴
         Long userId = userDetails.user().getId();
-
-        // for문을 통해 여러 아이템의 ID를 반복 처리
-        for (Long recipeFoodId : requestDto.recipeFoodIds()) {
-            cartService.addCartItem(userId, recipeFoodId);
-        }
+        cartService.addCartItems(userId, requestDto.recipeFoodIds());
         return ResponseEntity.ok().build();
 
     }

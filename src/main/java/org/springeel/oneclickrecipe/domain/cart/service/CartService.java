@@ -1,10 +1,11 @@
 package org.springeel.oneclickrecipe.domain.cart.service;
 
+import java.util.List;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 
 public interface CartService {
 
     void clearCart(User user);
 
-    void addCartItem(Long userId, Long recipeFoodId);
+    void addCartItems(Long userId, List<Long> recipeFoodIds);
 }

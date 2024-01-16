@@ -1,5 +1,6 @@
 package org.springeel.oneclickrecipe.domain.cart.service.impl;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.cart.entity.Cart;
 import org.springeel.oneclickrecipe.domain.cart.exception.AlreadyExistsCartException;
@@ -28,7 +29,13 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void addCartItem(Long userId, Long recipeFoodId) {
+    public void addCartItems(Long userId, List<Long> recipeFoodIds) {
+        for (Long recipeFoodId : recipeFoodIds) {
+            addCartItem(userId, recipeFoodId);
+        }
+    }
+
+    private void addCartItem(Long userId, Long recipeFoodId) {
         // 사용자와 레시피 식재료 조회
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new NotFoundCartException(CartErrorCode.NOT_FOUND_CART));
@@ -45,7 +52,7 @@ public class CartServiceImpl implements CartService {
         if (exists) {
             throw new AlreadyExistsCartException(CartErrorCode.ALREADY_EXIST_CART);
         }
-
+        // 장바구니 아이템 추가
         Cart cartItem = new Cart(user, recipeFood);
         cartRepository.save(cartItem);
     }
