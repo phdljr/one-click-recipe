@@ -2,6 +2,7 @@ package org.springeel.oneclickrecipe.global.config;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.global.filter.JwtAuthorizationFilter;
 import org.springeel.oneclickrecipe.global.security.UserDetailsServiceImpl;
@@ -11,7 +12,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -54,6 +54,7 @@ public class WebSecurityConfig {
             ));
             config.setAllowCredentials(true);
             config.setMaxAge(CORS_MAX_AGE_SEC);
+            config.setExposedHeaders(List.of("*"));
             return config;
         };
     }
