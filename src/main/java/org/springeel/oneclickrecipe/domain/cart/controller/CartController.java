@@ -2,12 +2,8 @@ package org.springeel.oneclickrecipe.domain.cart.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.cart.dto.controller.CartAddControllerRequestDto;
-import org.springeel.oneclickrecipe.domain.cart.dto.service.CartAddServiceRequestDto;
-import org.springeel.oneclickrecipe.domain.cart.entity.Cart;
 import org.springeel.oneclickrecipe.domain.cart.exception.CartErrorCode;
 import org.springeel.oneclickrecipe.domain.cart.exception.ForbiddenAccessCartException;
-import org.springeel.oneclickrecipe.domain.cart.mapper.dto.CartDtoMapper;
-import org.springeel.oneclickrecipe.domain.cart.mapper.entity.CartEntityMapper;
 import org.springeel.oneclickrecipe.domain.cart.service.CartService;
 import org.springeel.oneclickrecipe.global.security.UserDetailsImpl;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class CartController {
 
     private final CartService cartService;
-    private final CartDtoMapper cartDtoMapper;
-    private final CartEntityMapper cartEntityMapper;
 
     // 장바구니 초기화
     @DeleteMapping
@@ -44,17 +38,17 @@ public class CartController {
 
     // 장바구니 아이템 추가
     @PostMapping
-    public ResponseEntity<Void> addCartItem(
+    public ResponseEntity<Void> addCartItems(
         @RequestBody CartAddControllerRequestDto requestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        // Dto를 엔티티
-        CartAddServiceRequestDto serviceRequestDto = cartDtoMapper.toServiceDto(requestDto);
-        Cart cart = cartEntityMapper.toEntity(serviceRequestDto);
-
+        // 현재 로그인한 사용자의 ID를 가져옴
         Long userId = userDetails.user().getId();
-        cartService.addCartItem(userId, cart.getRecipeFood().getId());
 
+        // for문을 통해 여러 아이템의 ID를 반복 처리
+        for (Long recipeFoodId : requestDto.recipeFoodIds()) {
+            cartService.addCartItem(userId, recipeFoodId);
+        }
         return ResponseEntity.ok().build();
 
     }
