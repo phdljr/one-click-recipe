@@ -3,7 +3,6 @@ package org.springeel.oneclickrecipe.domain.cart.service.impl;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.cart.entity.Cart;
-import org.springeel.oneclickrecipe.domain.cart.exception.AlreadyExistsCartException;
 import org.springeel.oneclickrecipe.domain.cart.exception.CartErrorCode;
 import org.springeel.oneclickrecipe.domain.cart.exception.NotFoundCartException;
 import org.springeel.oneclickrecipe.domain.cart.repository.CartRepository;
