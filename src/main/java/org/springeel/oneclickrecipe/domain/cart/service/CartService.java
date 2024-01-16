@@ -7,5 +7,5 @@ public interface CartService {
 
     void clearCart(User user);
 
-    void addCartItems(Long userId, List<Long> recipeFoodIds);
+    void addCartItems(User user, List<Long> recipeFoodIds);
 }

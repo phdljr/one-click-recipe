@@ -3,6 +3,7 @@ package org.springeel.oneclickrecipe.domain.cart.controller;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.cart.dto.controller.CartAddControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.cart.service.CartService;
+import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springeel.oneclickrecipe.global.security.UserDetailsImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -35,8 +36,8 @@ public class CartController {
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         // 현재 로그인한 사용자의 ID를 가져옴
-        Long userId = userDetails.user().getId();
-        cartService.addCartItems(userId, requestDto.recipeFoodIds());
+        User user = userDetails.user();
+        cartService.addCartItems(user, requestDto.recipeFoodIds());
         return ResponseEntity.ok().build();
 
     }
