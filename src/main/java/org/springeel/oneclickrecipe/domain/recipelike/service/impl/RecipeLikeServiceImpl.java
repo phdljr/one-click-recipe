@@ -38,8 +38,8 @@ public class RecipeLikeServiceImpl implements RecipeLikeService {
     @Override
     public void delete(User user, Long recipeId) {
 
-        RecipeLike recipeLike = recipeLikeRepository.findByIdAndUser(recipeId, user)
+        RecipeLike recipeLike = recipeLikeRepository.findByUserIdAndRecipeId(user.getId(), recipeId)
             .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
-        recipeLikeRepository.save(recipeLike);
+        recipeLikeRepository.delete(recipeLike);
     }
 }
