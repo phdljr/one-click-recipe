@@ -1,10 +1,11 @@
 package org.springeel.oneclickrecipe.domain.recipelike.entity;
 
-import java.io.Serializable;
-import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
+import java.util.Objects;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

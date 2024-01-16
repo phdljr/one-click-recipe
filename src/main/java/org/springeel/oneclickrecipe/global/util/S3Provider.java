@@ -26,20 +26,27 @@ public class S3Provider {
         return metadata;
     }
 
-    public String saveFile(MultipartFile multipartFile, String folderName) throws IOException {
+    public String saveFile(MultipartFile multipartFile, String fileName) throws IOException {
         if (multipartFile.isEmpty()) {
             return null;
         }
-        String originalFilename = multipartFile.getOriginalFilename();
-        originalFilename = folderName + SEPARATOR + UUID.randomUUID() + originalFilename.substring(
-            originalFilename.lastIndexOf("."));
-        createFolder(folderName);
         ObjectMetadata metadata = setObjectMetadata(multipartFile);
-        amazonS3.putObject(bucket, originalFilename, multipartFile.getInputStream(), metadata);
-        return amazonS3.getUrl(bucket, originalFilename).toString();
+        amazonS3.putObject(bucket, fileName, multipartFile.getInputStream(), metadata);
+        return amazonS3.getUrl(bucket, fileName).toString();
     }
 
-    private void createFolder(String folderName) {
+    public String originalFileName(MultipartFile multipartFile) {
+        String fileName = multipartFile.getOriginalFilename();
+        String fileType = fileName.substring(fileName.lastIndexOf("."));
+        if (fileType.equals(".png") || fileType.equals(".jpeg")) {
+            fileName = UUID.randomUUID() + fileType;
+            return fileName;
+        } else {
+            throw new IllegalArgumentException("잘못된 파일 형식입니다");
+        }
+    }
+
+    public void createFolder(String folderName) {
         if (!amazonS3.doesObjectExist(bucket, folderName)) {
             amazonS3.putObject(
                 bucket,
