@@ -1,10 +1,9 @@
 package org.springeel.oneclickrecipe.domain.cart.service.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.cart.entity.Cart;
-import org.springeel.oneclickrecipe.domain.cart.exception.CartErrorCode;
-import org.springeel.oneclickrecipe.domain.cart.exception.NotFoundCartException;
 import org.springeel.oneclickrecipe.domain.cart.repository.CartRepository;
 import org.springeel.oneclickrecipe.domain.cart.service.CartService;
 import org.springeel.oneclickrecipe.domain.recipefood.entity.RecipeFood;
@@ -27,17 +26,15 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void addCartItems(User user, List<Long> recipeFoodIds) {
-        for (Long recipeFoodId : recipeFoodIds) {
-            addCartItem(user, recipeFoodId);
-        }
+        // 한 번의 쿼리로 모든 RdcipeFood 엔티티를 가져옴
+        List<RecipeFood> recipeFoods = recipeFoodRepository.findAllByIdIn(recipeFoodIds);
+
+        // 각 RecipeFood에 대해 Cart 엔티티를 생성하고 저장
+        List<Cart> cartItems = recipeFoods.stream()
+            .map(recipeFood -> new Cart(user, recipeFood))
+            .collect(Collectors.toList());
+
+        cartRepository.saveAll(cartItems);
     }
 
-    private void addCartItem(User user, Long recipeFoodId) {
-        RecipeFood recipeFood = recipeFoodRepository.findById(recipeFoodId)
-            .orElseThrow(() -> new NotFoundCartException(CartErrorCode.NOT_FOUND_CART));
-
-        // 장바구니 아이템 추가
-        Cart cartItem = new Cart(user, recipeFood);
-        cartRepository.save(cartItem);
-    }
 }
