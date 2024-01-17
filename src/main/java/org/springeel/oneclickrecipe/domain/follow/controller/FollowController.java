@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1") //사용자 구독 생성
+@RequestMapping("/api/v1")
 
 public class FollowController {
 
     private final FollowService followService;
 
-    @PostMapping("/subscribes/{subUserId}")
+    @PostMapping("/subscribes/{subUserId}") //사용자 구독 생성
     public ResponseEntity<Void> create(
         @PathVariable(name = "subUserId") Long subUserId,
         @AuthenticationPrincipal UserDetailsImpl userDetails
