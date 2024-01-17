@@ -6,7 +6,6 @@ import org.springeel.oneclickrecipe.global.security.UserDetailsImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,10 +20,9 @@ public class FollowController {
 
     @PostMapping("/subscribes/{subUserId}")
     public ResponseEntity<Void> create(
-        @PathVariable(name = "userId") Long userId,
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        followService.create(userDetails.user(), userId);
+        followService.create(userDetails.user());
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
