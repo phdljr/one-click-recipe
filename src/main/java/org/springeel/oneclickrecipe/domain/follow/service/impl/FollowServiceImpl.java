@@ -2,6 +2,8 @@ package org.springeel.oneclickrecipe.domain.follow.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.follow.entity.Follow;
+import org.springeel.oneclickrecipe.domain.follow.exception.FollowErrorCode;
+import org.springeel.oneclickrecipe.domain.follow.exception.NotFoundFollowException;
 import org.springeel.oneclickrecipe.domain.follow.repository.FollowRepository;
 import org.springeel.oneclickrecipe.domain.follow.service.FollowService;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
