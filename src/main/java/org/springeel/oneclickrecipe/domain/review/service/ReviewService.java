@@ -11,5 +11,5 @@ public interface ReviewService {
 
     void deleteReview(User user, Long reviewId);
 
-    void getReview(User user, Long recipeId);
+    void getReviews(User user, Long recipeId);
 }
