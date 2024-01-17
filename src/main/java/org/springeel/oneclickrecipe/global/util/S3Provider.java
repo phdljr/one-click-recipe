@@ -55,4 +55,11 @@ public class S3Provider {
                 new ObjectMetadata());
         }
     }
+    
+    public void deleteImage(String imageName) {
+        if (imageName == null) {
+            return;
+        }
+        amazonS3.deleteObject(bucket, imageName);
+    }
 }
