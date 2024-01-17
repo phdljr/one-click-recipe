@@ -18,6 +18,8 @@ public class S3Provider {
     private final String SEPARATOR = "/";
     @Value("${cloud.aws.s3.bucket.name}")
     public String bucket;
+    private final String url = "https://onceclick.s3.ap-northeast-2.amazonaws.com/";
+
 
     private static ObjectMetadata setObjectMetadata(MultipartFile multipartFile) {
         ObjectMetadata metadata = new ObjectMetadata();
@@ -63,10 +65,27 @@ public class S3Provider {
         amazonS3.deleteObject(bucket, imageName);
     }
 
-    public String updateImage(String imageName, MultipartFile multipartFile) throws IOException {
-        S3Validator.validate(amazonS3, bucket, imageName);
-        ObjectMetadata metadata = setObjectMetadata(multipartFile);
-        amazonS3.putObject(bucket, imageName, multipartFile.getInputStream(), metadata);
-        return amazonS3.getUrl(bucket, imageName).toString();
+    public String updateImage(String imageName, String folderName, MultipartFile multipartFile)
+        throws IOException {
+        if (imageName == null) {
+            String NewImage = originalFileName(multipartFile);
+            imageName = url + folderName + SEPARATOR + NewImage;
+            String saveImageUrl = folderName + SEPARATOR + NewImage;
+            ObjectMetadata metadata = setObjectMetadata(multipartFile);
+            amazonS3.putObject(bucket, saveImageUrl, multipartFile.getInputStream(), metadata);
+        }
+        imageName = imageName.replace(url, "");
+        imageName = imageName.substring(imageName.lastIndexOf("/"));
+        deleteImage(folderName + imageName);
+        if (multipartFile.isEmpty()) {
+            imageName = null;
+        } else {
+            String NewImage = originalFileName(multipartFile);
+            imageName = url + folderName + SEPARATOR + NewImage;
+            String saveImageUrl = folderName + SEPARATOR + NewImage;
+            ObjectMetadata metadata = setObjectMetadata(multipartFile);
+            amazonS3.putObject(bucket, saveImageUrl, multipartFile.getInputStream(), metadata);
+        }
+        return imageName;
     }
 }
