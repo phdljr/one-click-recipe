@@ -51,4 +51,9 @@ public class ReviewServiceImpl implements ReviewService {
             .orElseThrow(() -> new NotFoundReviewException(ReviewErrorCode.NOT_FOUND_REVIEW));
         reviewRepository.delete(review);
     }
+
+    @Override
+    public void getReview(User user, Long reviewId) {
+        
+    }
 }
