@@ -1,8 +1,9 @@
 package org.springeel.oneclickrecipe.domain.cart.service.impl;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springeel.oneclickrecipe.domain.cart.dto.service.CartCheckResponseDto;
+import org.springeel.oneclickrecipe.domain.cart.dto.service.CartItemCheckDto;
 import org.springeel.oneclickrecipe.domain.cart.entity.Cart;
 import org.springeel.oneclickrecipe.domain.cart.repository.CartRepository;
 import org.springeel.oneclickrecipe.domain.cart.service.CartService;
@@ -31,10 +32,34 @@ public class CartServiceImpl implements CartService {
 
         // 각 RecipeFood에 대해 Cart 엔티티를 생성하고 저장
         List<Cart> cartItems = recipeFoods.stream()
-            .map(recipeFood -> new Cart(user, recipeFood))
-            .collect(Collectors.toList());
+            .map(recipeFood -> Cart.builder()
+                .user(user)
+                .recipeFood(recipeFood)
+                .build())
+            .toList();
 
         cartRepository.saveAll(cartItems);
+    }
+
+    @Override
+    public CartCheckResponseDto getCart(User user) {
+        List<Cart> carts = cartRepository.findByUser(user);
+        double totalPrice = carts.stream()
+            .mapToDouble(cart -> cart.getRecipeFood().getFood().getPrice())
+            .sum();
+
+        List<CartItemCheckDto> items = carts.stream()
+            .map(cart -> CartItemCheckDto.builder()
+                .foodId(cart.getRecipeFood().getId())
+                .name(cart.getRecipeFood().getFoodName())
+                .quantity(cart.getRecipeFood().getAmount())
+                .price(cart.getRecipeFood().getAmount())
+                .build())
+            .toList();
+        return CartCheckResponseDto.builder()
+            .totalPrice(totalPrice)
+            .items(items)
+            .build();
     }
 
 }
