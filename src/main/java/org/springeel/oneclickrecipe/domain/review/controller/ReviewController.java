@@ -53,6 +53,14 @@ public class ReviewController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    @GetMapping("{recipeId}/reviews") //후기 조회
+    public ResponseEntity<Void> get(
+        @PathVariable(name = "reviewId") Long reviewId,
+        @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        reviewService.getReview(userDetails.user(), reviewId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }
 
 
