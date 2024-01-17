@@ -13,7 +13,7 @@ public class FollowServiceImpl implements FollowService {
     private final FollowRepository followRepository;
 
     @Override
-    public void create(User user, Long userId) {
+    public void create(User user) {
 
     }
 }
