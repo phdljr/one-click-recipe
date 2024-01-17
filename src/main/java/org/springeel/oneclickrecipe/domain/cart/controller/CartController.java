@@ -2,12 +2,14 @@ package org.springeel.oneclickrecipe.domain.cart.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.cart.dto.controller.CartAddControllerRequestDto;
+import org.springeel.oneclickrecipe.domain.cart.dto.service.CartCheckResponseDto;
 import org.springeel.oneclickrecipe.domain.cart.service.CartService;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springeel.oneclickrecipe.global.security.UserDetailsImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,5 +42,15 @@ public class CartController {
         cartService.addCartItems(user, requestDto.recipeFoodIds());
         return ResponseEntity.ok().build();
 
+    }
+
+    // 장바구니 조회
+    @GetMapping
+    public ResponseEntity<CartCheckResponseDto> getCart(
+        @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        User user = userDetails.user();
+        CartCheckResponseDto cartCheckResponseDto = cartService.getCart(user);
+        return ResponseEntity.ok(cartCheckResponseDto);
     }
 }
