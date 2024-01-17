@@ -19,12 +19,12 @@ public class FollowController {
 
     private final FollowService followService;
 
-    @PostMapping("/subscribes/{subUserId}") //사용자 구독 생성
+    @PostMapping("/follows/{userId}") //사용자 구독 생성
     public ResponseEntity<Void> create(
-        @PathVariable(name = "subUserId") Long followerId,
+        @PathVariable(name = "userId") Long userId,
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        followService.create(userDetails.user(), followerId);
+        followService.create(userDetails.user(), userId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
