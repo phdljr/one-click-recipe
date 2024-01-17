@@ -32,7 +32,10 @@ public class CartServiceImpl implements CartService {
 
         // 각 RecipeFood에 대해 Cart 엔티티를 생성하고 저장
         List<Cart> cartItems = recipeFoods.stream()
-            .map(recipeFood -> new Cart(user, recipeFood))
+            .map(recipeFood -> Cart.builder()
+                .user(user)
+                .recipeFood(recipeFood)
+                .build())
             .toList();
 
         cartRepository.saveAll(cartItems);
@@ -46,13 +49,17 @@ public class CartServiceImpl implements CartService {
             .sum();
 
         List<CartItemCheckDto> items = carts.stream()
-            .map(cart -> new CartItemCheckDto(
-                cart.getRecipeFood().getId(),
-                cart.getRecipeFood().getFoodName(),
-                cart.getRecipeFood().getAmount(),
-                cart.getRecipeFood().getFood().getPrice()))
+            .map(cart -> CartItemCheckDto.builder()
+                .foodId(cart.getRecipeFood().getId())
+                .name(cart.getRecipeFood().getFoodName())
+                .quantity(cart.getRecipeFood().getAmount())
+                .price(cart.getRecipeFood().getAmount())
+                .build())
             .toList();
-        return new CartCheckResponseDto(totalPrice, items);
+        return CartCheckResponseDto.builder()
+            .totalPrice(totalPrice)
+            .items(items)
+            .build();
     }
 
 }
