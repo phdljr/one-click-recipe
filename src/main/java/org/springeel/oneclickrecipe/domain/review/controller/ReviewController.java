@@ -58,7 +58,7 @@ public class ReviewController {
         @PathVariable(name = "recipeId") Long recipeId,
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        reviewService.getReview(userDetails.user(), recipeId);
+        reviewService.getReviews(userDetails.user(), recipeId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
