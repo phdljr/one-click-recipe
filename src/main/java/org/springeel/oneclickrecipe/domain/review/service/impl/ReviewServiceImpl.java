@@ -53,7 +53,11 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public void getReview(User user, Long reviewId) {
-        
+    public void getReview(User user, Long recipeId) {
+
+        Review review = reviewRepository.findByIdAndUser(recipeId, user)
+            .orElseThrow(() -> new NotFoundReviewException(ReviewErrorCode.NOT_FOUND_REVIEW));
+        reviewRepository.save(review);
+
     }
 }
