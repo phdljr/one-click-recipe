@@ -10,4 +10,6 @@ public interface ReviewService {
     void updateReview(Long reviewId, User user, ReviewUpdateServiceRequestDto serviceRequestDto);
 
     void deleteReview(User user, Long reviewId);
+
+    void getReview(User user, Long reviewId);
 }
