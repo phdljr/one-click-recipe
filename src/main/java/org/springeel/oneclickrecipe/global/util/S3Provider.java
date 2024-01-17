@@ -26,13 +26,13 @@ public class S3Provider {
         return metadata;
     }
 
-    public String saveFile(MultipartFile multipartFile, String fileName) throws IOException {
+    public String saveFile(MultipartFile multipartFile, String imageName) throws IOException {
         if (multipartFile.isEmpty()) {
             return null;
         }
         ObjectMetadata metadata = setObjectMetadata(multipartFile);
-        amazonS3.putObject(bucket, fileName, multipartFile.getInputStream(), metadata);
-        return amazonS3.getUrl(bucket, fileName).toString();
+        amazonS3.putObject(bucket, imageName, multipartFile.getInputStream(), metadata);
+        return amazonS3.getUrl(bucket, imageName).toString();
     }
 
     public String originalFileName(MultipartFile multipartFile) {
@@ -55,11 +55,18 @@ public class S3Provider {
                 new ObjectMetadata());
         }
     }
-    
+
     public void deleteImage(String imageName) {
         if (imageName == null) {
             return;
         }
         amazonS3.deleteObject(bucket, imageName);
+    }
+
+    public String updateImage(String imageName, MultipartFile multipartFile) throws IOException {
+        S3Validator.validate(amazonS3, bucket, imageName);
+        ObjectMetadata metadata = setObjectMetadata(multipartFile);
+        amazonS3.putObject(bucket, imageName, multipartFile.getInputStream(), metadata);
+        return amazonS3.getUrl(bucket, imageName).toString();
     }
 }
