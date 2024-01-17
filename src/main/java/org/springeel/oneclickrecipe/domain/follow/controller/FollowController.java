@@ -24,7 +24,7 @@ public class FollowController {
         @PathVariable(name = "subUserId") Long subUserId,
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        followService.create(userDetails.user());
+        followService.create(userDetails.user(), subUserId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
