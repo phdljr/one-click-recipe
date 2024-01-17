@@ -3,6 +3,8 @@ package org.springeel.oneclickrecipe.domain.cart.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springeel.oneclickrecipe.domain.cart.dto.service.CartCheckResponseDto;
+import org.springeel.oneclickrecipe.domain.cart.dto.service.CartItemCheckDto;
 import org.springeel.oneclickrecipe.domain.cart.entity.Cart;
 import org.springeel.oneclickrecipe.domain.cart.repository.CartRepository;
 import org.springeel.oneclickrecipe.domain.cart.service.CartService;
@@ -35,6 +37,23 @@ public class CartServiceImpl implements CartService {
             .collect(Collectors.toList());
 
         cartRepository.saveAll(cartItems);
+    }
+
+    @Override
+    public CartCheckResponseDto getCart(User user) {
+        List<Cart> carts = cartRepository.findByUser(user);
+        double totalPrice = carts.stream()
+            .mapToDouble(cart -> cart.getRecipeFood().getFood().getPrice())
+            .sum();
+
+        List<CartItemCheckDto> items = carts.stream()
+            .map(cart -> new CartItemCheckDto(
+                cart.getRecipeFood().getId(),
+                cart.getRecipeFood().getFoodName(),
+                cart.getRecipeFood().getAmount(),
+                cart.getRecipeFood().getFood().getPrice()))
+            .collect(Collectors.toList());
+        return new CartCheckResponseDto(totalPrice, items);
     }
 
 }
