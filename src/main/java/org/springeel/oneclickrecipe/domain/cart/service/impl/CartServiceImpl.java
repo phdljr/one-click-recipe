@@ -1,7 +1,6 @@
 package org.springeel.oneclickrecipe.domain.cart.service.impl;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.cart.dto.service.CartCheckResponseDto;
 import org.springeel.oneclickrecipe.domain.cart.dto.service.CartItemCheckDto;
@@ -34,7 +33,7 @@ public class CartServiceImpl implements CartService {
         // 각 RecipeFood에 대해 Cart 엔티티를 생성하고 저장
         List<Cart> cartItems = recipeFoods.stream()
             .map(recipeFood -> new Cart(user, recipeFood))
-            .collect(Collectors.toList());
+            .toList();
 
         cartRepository.saveAll(cartItems);
     }
@@ -52,7 +51,7 @@ public class CartServiceImpl implements CartService {
                 cart.getRecipeFood().getFoodName(),
                 cart.getRecipeFood().getAmount(),
                 cart.getRecipeFood().getFood().getPrice()))
-            .collect(Collectors.toList());
+            .toList();
         return new CartCheckResponseDto(totalPrice, items);
     }
 
