@@ -7,6 +7,7 @@ import org.springeel.oneclickrecipe.domain.recipe.exception.NotFoundRecipeExcept
 import org.springeel.oneclickrecipe.domain.recipe.exception.RecipeErrorCode;
 import org.springeel.oneclickrecipe.domain.recipe.repository.RecipeRepository;
 import org.springeel.oneclickrecipe.domain.review.dto.service.ReviewCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.review.dto.service.ReviewReadResponseDto;
 import org.springeel.oneclickrecipe.domain.review.dto.service.ReviewUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.review.entity.Review;
 import org.springeel.oneclickrecipe.domain.review.exception.NotFoundReviewException;
@@ -16,6 +17,8 @@ import org.springeel.oneclickrecipe.domain.review.repository.ReviewRepository;
 import org.springeel.oneclickrecipe.domain.review.service.ReviewService;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -53,11 +56,17 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public void getReviews(User user, Long recipeId) {
+    public List<ReviewReadResponseDto> getReviews(User user, Long recipeId) {
+        // 특정 레시피에 대한 리뷰 목록 조회
+        List<Review> reviews = reviewRepository.findByRecipeId(recipeId);
 
-        Review review = reviewRepository.findByIdAndUser(recipeId, user)
-            .orElseThrow(() -> new NotFoundReviewException(ReviewErrorCode.NOT_FOUND_REVIEW));
-        reviewRepository.save(review);
+        //  댓글 목록을 Dto로 변환해서 반환
+        return reviews.stream()
+            .map(review -> ReviewReadResponseDto.builder()
+                .content(review.getContent())
+                .star(review.getStar())
+                .build())
+            .toList();
 
     }
 }
