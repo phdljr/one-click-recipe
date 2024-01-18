@@ -5,6 +5,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeAllReadResponseDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeReadResponseDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;
 import org.springeel.oneclickrecipe.domain.recipe.exception.NotFoundRecipeException;
@@ -12,6 +13,10 @@ import org.springeel.oneclickrecipe.domain.recipe.exception.RecipeErrorCode;
 import org.springeel.oneclickrecipe.domain.recipe.mapper.entity.RecipeEntityMapper;
 import org.springeel.oneclickrecipe.domain.recipe.repository.RecipeRepository;
 import org.springeel.oneclickrecipe.domain.recipe.service.RecipeService;
+import org.springeel.oneclickrecipe.domain.recipefood.dto.service.RecipeFoodReadResponseDto;
+import org.springeel.oneclickrecipe.domain.recipefood.service.RecipeFoodService;
+import org.springeel.oneclickrecipe.domain.recipeprocess.dto.service.RecipeProcessReadResponseDto;
+import org.springeel.oneclickrecipe.domain.recipeprocess.service.RecipeProcessService;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springeel.oneclickrecipe.global.util.S3Provider;
 import org.springframework.stereotype.Service;
@@ -24,6 +29,8 @@ public class RecipeServiceImpl implements RecipeService {
     private final RecipeRepository recipeRepository;
     private final RecipeEntityMapper recipeEntityMapper;
     private final S3Provider s3Provider;
+    private final RecipeProcessService processService;
+    private final RecipeFoodService foodService;
 
     public void createRecipe(final RecipeCreateServiceRequestDto requestDto, User user) {
         String folderName = requestDto.title() + UUID.randomUUID();
@@ -54,5 +61,17 @@ public class RecipeServiceImpl implements RecipeService {
     public List<RecipeAllReadResponseDto> readAllRecipe() {
         List<Recipe> recipes = recipeRepository.findAll();
         return recipeEntityMapper.toRecipeAllRead(recipes);
+    }
+
+    public RecipeReadResponseDto readRecipe(Long recipeId) {
+        Recipe recipe = recipeRepository.findById(recipeId)
+            .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
+        List<RecipeFoodReadResponseDto> recipe_foods =
+            foodService.readRecipeFood(recipeId);
+        List<RecipeProcessReadResponseDto> recipe_processes =
+            processService.readRecipeProcess(recipeId);
+        RecipeReadResponseDto readResponseDto =
+            recipeEntityMapper.toRecipeRead(recipe, recipe_foods, recipe_processes);
+        return readResponseDto;
     }
 }
