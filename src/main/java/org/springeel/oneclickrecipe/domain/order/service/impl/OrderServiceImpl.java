@@ -41,12 +41,14 @@ public class OrderServiceImpl implements OrderService {
         // totalPrice 계산
         int totalPrice = cartItems.stream()
             .mapToInt(
-                cartItem -> (int) (cartItem.getRecipeFood().getFood().getPrice() * cartItem.getRecipeFood()
+                cartItem -> (int) (cartItem.getRecipeFood().getFood().getPrice()
+                    * cartItem.getRecipeFood()
                     .getAmount()))
             .sum();
 
         // Order 객체 생성
-        Order order = orderEntityMapper.toEntity(serviceRequestDto, user, totalPrice); // Mapper를 이용한 객체 생성
+        Order order = orderEntityMapper.toEntity(serviceRequestDto, user,
+            totalPrice); // Mapper를 이용한 객체 생성
 
         // OrderDetail 객체들 생성 및 Order에 연결
         List<OrderDetail> orderDetails = cartItems.stream()
