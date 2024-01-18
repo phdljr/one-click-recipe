@@ -7,8 +7,7 @@ public record OrderCreateControllerRequestDto(
     String senderPhoneNumber,
     String address,
     String addressDetail,
-    String requirement,
-    Integer totalPrice
+    String requirement
 ) {
 
 }

@@ -42,10 +42,12 @@ public class OrderDetail {
     public OrderDetail(
         final String foodName,
         final Short amount,
-        final Integer price
+        final Integer price,
+        final Order order
     ) {
         this.foodName = foodName;
         this.amount = amount;
         this.price = price;
+        this.order = order;
     }
 }
