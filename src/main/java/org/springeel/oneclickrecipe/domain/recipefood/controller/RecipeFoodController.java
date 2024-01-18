@@ -30,7 +30,7 @@ public class RecipeFoodController {
     private final RecipeFoodService recipeFoodService;
     private final RecipeFoodDtoMapper recipeFoodDtoMapper;
 
-    @PostMapping("/{recipeId}/recipefoods")
+    @PostMapping("/{recipeId}/recipe-foods")
     public ResponseEntity<?> create(
         @RequestBody RecipeFoodCreateControllerRequestDto requestDto,
         @PathVariable Long recipeId,
@@ -42,7 +42,7 @@ public class RecipeFoodController {
         return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
     }
 
-    @DeleteMapping("{recipeId}/recipeFoods/{recipeFoodId}")
+    @DeleteMapping("{recipeId}/recipe-foods/{recipeFoodId}")
     public ResponseEntity<?> delete(
         @PathVariable Long recipeId,
         @PathVariable Long recipeFoodId,
@@ -52,7 +52,7 @@ public class RecipeFoodController {
         return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
     }
 
-    @PutMapping("/{recipeId}/recipefoods/{recipeFoodId}")
+    @PutMapping("/{recipeId}/recipe-foods/{recipeFoodId}")
     public ResponseEntity<?> update(
         @PathVariable Long recipeId,
         @PathVariable Long recipeFoodId,
@@ -66,7 +66,7 @@ public class RecipeFoodController {
         return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
     }
 
-    @GetMapping("/{recipeId}/recipefoods")
+    @GetMapping("/{recipeId}/recipe-foods")
     public ResponseEntity<?> readRecipeFood(
         @PathVariable Long recipeId
     ) {
