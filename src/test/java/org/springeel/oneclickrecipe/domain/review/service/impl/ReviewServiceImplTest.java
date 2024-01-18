@@ -1,13 +1,22 @@
 package org.springeel.oneclickrecipe.domain.review.service.impl;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;
 import org.springeel.oneclickrecipe.domain.recipe.repository.RecipeRepository;
+import org.springeel.oneclickrecipe.domain.review.dto.service.ReviewReadResponseDto;
 import org.springeel.oneclickrecipe.domain.review.entity.Review;
 import org.springeel.oneclickrecipe.domain.review.repository.ReviewRepository;
 import org.springeel.oneclickrecipe.domain.review.service.ReviewService;
+import org.springeel.oneclickrecipe.domain.user.entity.User;
+import org.springeel.oneclickrecipe.domain.user.entity.UserRole;
+import org.springeel.oneclickrecipe.domain.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class ReviewServiceImplTest {
@@ -18,18 +27,27 @@ class ReviewServiceImplTest {
     ReviewRepository reviewRepository;
     @Autowired
     RecipeRepository recipeRepository;
-
-
+    @Autowired
+    UserRepository userRepository;
 //    @Test
 //    void getReviews() {
 //    }
 
-    @BeforeEach
+    @Test
+    @DisplayName("리뷰를 조회해보자")
     public void getReviews() {
 
         //given
+        User user = userRepository.save(User.builder()
+            .email("test@test.test")
+            .password("asdasdasdasdsadasweujiofyionusfhuaiosdfa")
+            .nickname("testnickname")
+            .role(UserRole.USER)
+            .build());
+
         Recipe recipe = recipeRepository.save(Recipe.builder()
             .title("스파게티")
+            .user(user)
             .intro("호로록 짭짭")
             .serving((byte) 4)
             .videoPath("/videos/스파게티.mp4")
@@ -53,5 +71,16 @@ class ReviewServiceImplTest {
             .star((byte) 3)
             .recipe(recipe)
             .build());
+
+        //when
+        List<ReviewReadResponseDto> result = reviewService.getReviews(recipe.getId());
+
+        //then
+        assertThat(result).hasSize(3);
+        assertThat(result).extracting("content").contains(
+            "좋아좋아 아주좋아",
+            "조미료 좀 그만 넣어라",
+            "그냥 평범한 맛이네요"
+        );
     }
 }
