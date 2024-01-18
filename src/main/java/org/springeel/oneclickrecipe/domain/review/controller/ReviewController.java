@@ -1,5 +1,6 @@
 package org.springeel.oneclickrecipe.domain.review.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.review.dto.controller.ReviewCreateControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.review.dto.controller.ReviewUpdateControllerRequestDto;
@@ -27,7 +28,7 @@ public class ReviewController {
     @PostMapping("/recipes/{recipeId}/reviews") //후기작성
     public void create(
         @PathVariable(name = "recipeId") Long recipeId,
-        @RequestBody ReviewCreateControllerRequestDto createControllerRequestDto,
+        @Valid @RequestBody ReviewCreateControllerRequestDto createControllerRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         ReviewCreateServiceRequestDto serviceRequestDto =
@@ -38,7 +39,7 @@ public class ReviewController {
     @PutMapping("/reviews/{reviewId}") //후기수정
     public ResponseEntity<?> update(
         @PathVariable(name = "reviewId") Long reviewId,
-        @RequestBody ReviewUpdateControllerRequestDto ReviewUpdateServiceRequestDto,
+        @Valid @RequestBody ReviewUpdateControllerRequestDto ReviewUpdateServiceRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         ReviewUpdateServiceRequestDto serviceRequestDto =

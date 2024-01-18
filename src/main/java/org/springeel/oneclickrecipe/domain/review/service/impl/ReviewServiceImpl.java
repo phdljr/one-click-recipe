@@ -57,6 +57,8 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public List<ReviewReadResponseDto> getReviews(Long recipeId) {
+        Recipe recipe = recipeRepository.findById(recipeId)
+            .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
         // 특정 레시피에 대한 리뷰 목록 조회
         List<Review> reviews = reviewRepository.findByRecipeId(recipeId);
 
