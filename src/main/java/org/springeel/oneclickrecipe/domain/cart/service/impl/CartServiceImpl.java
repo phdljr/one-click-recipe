@@ -51,7 +51,7 @@ public class CartServiceImpl implements CartService {
         List<CartItemCheckDto> items = carts.stream()
             .map(cart -> CartItemCheckDto.builder()
                 .foodId(cart.getRecipeFood().getId())
-                .name(cart.getRecipeFood().getFoodName())
+                .name(null)
                 .quantity(cart.getRecipeFood().getAmount())
                 .price(cart.getRecipeFood().getAmount())
                 .build())
