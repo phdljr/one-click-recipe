@@ -5,7 +5,7 @@ import org.springeel.oneclickrecipe.domain.food.entity.UnitType;
 public record RecipeFoodReadResponseDto(
     String name,
     String amount,
-    Float price,
+    Integer price,
     UnitType unit
 ) {
 

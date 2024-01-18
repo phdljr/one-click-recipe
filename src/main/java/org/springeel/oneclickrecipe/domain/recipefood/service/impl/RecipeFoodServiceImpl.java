@@ -78,7 +78,7 @@ public class RecipeFoodServiceImpl implements RecipeFoodService {
         for (int i = 0; i < recipeFoods.size(); i++) {
             Food food = foodRepository.findById(recipeFoods.get(i).getFood().getId())
                 .orElseThrow(() -> new NotFoundFoodException(FoodErrorCode.NOT_FOUND_FOOD));
-            Float total = 0.0F;
+            Integer total = 0;
             total = recipeFoods.get(i).getAmount() * food.getPrice();
             RecipeFoodReadResponseDto responseDto = recipeFoodEntityMapper.toReadRecipeFood(
                 food.getName(),

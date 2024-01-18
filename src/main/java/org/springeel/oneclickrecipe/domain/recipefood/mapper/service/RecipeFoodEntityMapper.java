@@ -17,7 +17,7 @@ public interface RecipeFoodEntityMapper {
     RecipeFood toRecipeFood(RecipeFoodCreateServiceRequestDto requestDto, Food food,
         Recipe recipe);
 
-    RecipeFoodReadResponseDto toReadRecipeFood(String name, Short amount, Float price,
+    RecipeFoodReadResponseDto toReadRecipeFood(String name, Short amount, Integer price,
         UnitType unit
     );
 
