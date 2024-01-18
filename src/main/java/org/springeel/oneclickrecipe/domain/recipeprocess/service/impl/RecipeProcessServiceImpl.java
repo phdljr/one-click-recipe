@@ -14,6 +14,7 @@ import org.springeel.oneclickrecipe.domain.recipeprocess.dto.service.RecipeProce
 import org.springeel.oneclickrecipe.domain.recipeprocess.entity.RecipeProcess;
 import org.springeel.oneclickrecipe.domain.recipeprocess.exception.NotFoundRecipeProcessException;
 import org.springeel.oneclickrecipe.domain.recipeprocess.exception.RecipeProcessErrorCode;
+import org.springeel.oneclickrecipe.domain.recipeprocess.exception.ValidateRecipeProcessException;
 import org.springeel.oneclickrecipe.domain.recipeprocess.mapper.entity.RecipeProcessEntityMapper;
 import org.springeel.oneclickrecipe.domain.recipeprocess.repository.RecipeProcessRepository;
 import org.springeel.oneclickrecipe.domain.recipeprocess.service.RecipeProcessService;
@@ -44,6 +45,11 @@ public class RecipeProcessServiceImpl implements RecipeProcessService {
         Long recipeId,
         MultipartFile multipartFile
     ) throws IOException {
+        Boolean validator = recipeProcessRepository.existsBySequence(requestDto.sequence());
+        if (validator) {
+            throw new IOException(
+                new ValidateRecipeProcessException(RecipeProcessErrorCode.USE_VALIDATE_DATA));
+        }
         Recipe recipe = recipeRepository.findByIdAndUser(recipeId, user)
             .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
         String folderName = recipe.getFolderName();
@@ -87,6 +93,11 @@ public class RecipeProcessServiceImpl implements RecipeProcessService {
         Long processId,
         MultipartFile multipartFile
     ) throws IOException {
+        Boolean validator = recipeProcessRepository.existsBySequence(requestDto.sequence());
+        if (validator) {
+            throw new IOException(
+                new ValidateRecipeProcessException(RecipeProcessErrorCode.USE_VALIDATE_DATA));
+        }
         Recipe recipe = recipeRepository.findByIdAndUser(recipeId, user)
             .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
         RecipeProcess recipeProcess = recipeProcessRepository.findByIdAndRecipe(processId, recipe)
