@@ -3,6 +3,7 @@ package org.springeel.oneclickrecipe.domain.review.service.impl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;
+import org.springeel.oneclickrecipe.domain.recipe.exception.NotFoundRecipeException;
 import org.springeel.oneclickrecipe.domain.recipe.repository.RecipeRepository;
 import org.springeel.oneclickrecipe.domain.review.dto.service.ReviewReadResponseDto;
 import org.springeel.oneclickrecipe.domain.review.entity.Review;
@@ -13,10 +14,12 @@ import org.springeel.oneclickrecipe.domain.user.entity.UserRole;
 import org.springeel.oneclickrecipe.domain.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 class ReviewServiceImplTest {
@@ -29,10 +32,11 @@ class ReviewServiceImplTest {
     RecipeRepository recipeRepository;
     @Autowired
     UserRepository userRepository;
-//    @Test
+
+    //    @Test
 //    void getReviews() {
 //    }
-
+    @Transactional
     @Test
     @DisplayName("리뷰를 조회해보자")
     public void getReviews() {
@@ -84,10 +88,12 @@ class ReviewServiceImplTest {
         );
     }
 
+    @Transactional
     @Test
     @DisplayName("존재하지 않는 레시피 조회 시 예외발생")
     public void notFoundReviewTest() {
-
-
+        
+        assertThatThrownBy(() -> reviewService.getReviews(100L))
+            .isInstanceOf(NotFoundRecipeException.class);
     }
 }
