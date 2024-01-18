@@ -45,29 +45,18 @@ public class OrderServiceImpl implements OrderService {
                     .getAmount()))
             .sum();
 
-        // 새로운 OrderCreateServiceRequestDto 객체 생성
-        OrderCreateServiceRequestDto orderCreateServiceRequestDto = OrderCreateServiceRequestDto.builder()
-            .receiverName(serviceRequestDto.receiverName())
-            .receiverPhoneNumber(serviceRequestDto.receiverPhoneNumber())
-            .senderName(serviceRequestDto.senderName())
-            .senderPhoneNumber(serviceRequestDto.senderPhoneNumber())
-            .address(serviceRequestDto.address())
-            .addressDetail(serviceRequestDto.addressDetail())
-            .requirement(serviceRequestDto.requirement())
-            .totalPrice(totalPrice)
-            .build();
-
         // Order 객체 생성
-        Order order = orderEntityMapper.toEntity(orderCreateServiceRequestDto, user); // Mapper를 이용한 객체 생성
+        Order order = orderEntityMapper.toEntity(serviceRequestDto, user, totalPrice); // Mapper를 이용한 객체 생성
 
         // OrderDetail 객체들 생성 및 Order에 연결
         List<OrderDetail> orderDetails = cartItems.stream()
             .map(cartItem -> orderDetailMapper.toOrderDetail(cartItem, order))
             .toList();
 
+        order.getOrderDetails().addAll(orderDetails);
+
         // Order와 OrderDetail 정보 저장
         Order savedOrder = orderRepository.save(order);
-        orderDetailRepository.saveAll(orderDetails);
 
         // 결과 반환
         return orderEntityMapper.toResponseDto(savedOrder);

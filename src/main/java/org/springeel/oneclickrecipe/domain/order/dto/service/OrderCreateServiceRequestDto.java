@@ -10,8 +10,7 @@ public record OrderCreateServiceRequestDto(
     String senderPhoneNumber,
     String address,
     String addressDetail,
-    String requirement,
-    Integer totalPrice
+    String requirement
 ) {
 
 }

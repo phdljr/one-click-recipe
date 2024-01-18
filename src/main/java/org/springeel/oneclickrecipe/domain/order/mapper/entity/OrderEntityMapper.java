@@ -14,8 +14,7 @@ import org.springeel.oneclickrecipe.domain.user.entity.User;
 public interface OrderEntityMapper {
 
     @Mapping(target = "status", expression = "java(OrderStatus.WAITING)")
-    @Mapping(target = "totalPrice", source = "dto.totalPrice")
-    Order toEntity(OrderCreateServiceRequestDto dto, User user);
+    Order toEntity(OrderCreateServiceRequestDto dto, User user, Integer totalPrice);
 
     /**
      * @Mapping를 사용한 이유는 한 객체의 필드를 다른 객체의 필드로 매핑하기 위함
