@@ -1,5 +1,6 @@
 package org.springeel.oneclickrecipe.domain.recipefood.controller;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.recipefood.dto.controller.RecipeFoodCreateControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.recipefood.dto.controller.RecipeFoodUpdateControllerRequestDto;
@@ -65,13 +66,12 @@ public class RecipeFoodController {
         return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
     }
 
-    @GetMapping("/{recipeId}/recipefoods/{recipeFoodId}")
+    @GetMapping("/{recipeId}/recipefoods")
     public ResponseEntity<?> readRecipeFood(
-        @PathVariable Long recipeId,
-        @PathVariable Long recipeFoodId
+        @PathVariable Long recipeId
     ) {
-        RecipeFoodReadResponseDto recipeFoodReadResponseDto =
-            recipeFoodService.readRecipeFood(recipeId, recipeFoodId);
+        List<RecipeFoodReadResponseDto> recipeFoodReadResponseDto =
+            recipeFoodService.readRecipeFood(recipeId);
         return ResponseEntity.status(HttpStatus.OK).body(recipeFoodReadResponseDto);
     }
 
