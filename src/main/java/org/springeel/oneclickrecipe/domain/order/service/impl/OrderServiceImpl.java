@@ -44,7 +44,7 @@ public class OrderServiceImpl implements OrderService {
         }
         return orders.stream()
             .map(orderEntityMapper::toOrderReadAllResponseDto) // Order를 OrderReadAllResponseDto로 변환
-            .collect(Collectors.toList());
+            .toList();
     }
 
     // 주문 내역 단건 조회
