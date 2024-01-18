@@ -27,9 +27,6 @@ public class RecipeFood extends BaseEntity {
     private Long id;
 
     @Column
-    private String foodName;
-
-    @Column
     private Short amount;
 
     @ManyToOne
@@ -42,19 +39,16 @@ public class RecipeFood extends BaseEntity {
 
     @Builder
     public RecipeFood(
-        final String foodName,
         final Short amount,
         final Recipe recipe,
         final Food food
     ) {
-        this.foodName = foodName;
         this.amount = amount;
         this.recipe = recipe;
         this.food = food;
     }
 
-    public void updateRecipeFood(String foodName, Short amount, Recipe recipe, Food food) {
-        this.foodName = foodName;
+    public void updateRecipeFood(Short amount, Recipe recipe, Food food) {
         this.amount = amount;
         this.recipe = recipe;
         this.food = food;
