@@ -14,6 +14,7 @@ import org.springeel.oneclickrecipe.domain.user.entity.User;
 public interface OrderEntityMapper {
 
     @Mapping(target = "status", expression = "java(OrderStatus.WAITING)")
+    @Mapping(target = "totalPrice", source = "dto.totalPrice")
     Order toEntity(OrderCreateServiceRequestDto dto, User user);
 
     /**
@@ -24,6 +25,10 @@ public interface OrderEntityMapper {
     @Mapping(source = "status", target = "orderStatus")
     OrderCreateResponseDto toResponseDto(Order order);
     @Mapping(target = "orderDetails", source = "orderDetails")
+    @Mapping(source = "id", target = "orderId")
+    @Mapping(source = "status", target = "orderStatus")
     OrderReadResponseDto toOrderReadResponseDto(Order order);
+    @Mapping(source = "id", target = "orderId")
+    @Mapping(source = "status", target = "orderStatus")
     OrderReadAllResponseDto toOrderReadAllResponseDto(Order order);
 }
