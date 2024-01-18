@@ -1,6 +1,7 @@
 package org.springeel.oneclickrecipe.domain.user.controller;
 
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.user.dto.controller.UserLoginControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.user.dto.controller.UserSignUpControllerRequestDto;
@@ -27,7 +28,7 @@ public class UserController {
 
     @PostMapping("/users/signup")
     public ResponseEntity<Void> singUp(
-        @RequestBody UserSignUpControllerRequestDto controllerRequestDto
+        @Valid @RequestBody UserSignUpControllerRequestDto controllerRequestDto
     ) {
         UserSignUpServiceRequestDto serviceRequestDto = userDtoMapper.toUserSignUpServiceRequestDto(
             controllerRequestDto);
@@ -37,7 +38,7 @@ public class UserController {
 
     @PostMapping("/users/login")
     public ResponseEntity<Void> login(
-        @RequestBody UserLoginControllerRequestDto controllerRequestDto,
+        @Valid @RequestBody UserLoginControllerRequestDto controllerRequestDto,
         HttpServletResponse httpServletResponse
     ) {
         UserLoginServiceRequestDto serviceRequestDto = userDtoMapper.toUserLoginServiceRequestDto(
