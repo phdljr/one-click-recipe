@@ -39,7 +39,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public KakaoPayReadyResponseDto readyKakaoPay(final Long orderId, final User user) {
-        Order order = orderRepository.findById(orderId)
+        Order order = orderRepository.findByIdAndUserId(orderId, user.getId())
             .orElseThrow(() -> new NotFoundOrderException(OrderErrorCode.NOT_FOUND_ORDER));
 
         HttpHeaders headers = getHttpHeaders();
