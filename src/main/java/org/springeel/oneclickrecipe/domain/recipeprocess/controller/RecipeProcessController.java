@@ -49,7 +49,7 @@ public class RecipeProcessController {
         return ResponseEntity.status(HttpStatus.CREATED).body(HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{recipeId}/{processId}")
+    @DeleteMapping("/{recipeId}/processes/{processId}")
     public ResponseEntity<?> delete(
         @PathVariable Long recipeId,
         @PathVariable Long processId,
@@ -59,7 +59,7 @@ public class RecipeProcessController {
         return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
     }
 
-    @PutMapping("/{recipeId}/{processId}")
+    @PutMapping("/{recipeId}/processes/{processId}")
     public ResponseEntity<?> update(
         @RequestPart RecipeProcessUpdateControllerRequestDto controllerRequestDto,
         @PathVariable Long recipeId,
