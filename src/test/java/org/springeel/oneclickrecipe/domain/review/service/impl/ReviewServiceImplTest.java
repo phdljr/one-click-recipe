@@ -1,6 +1,6 @@
 package org.springeel.oneclickrecipe.domain.review.service.impl;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;
 import org.springeel.oneclickrecipe.domain.recipe.repository.RecipeRepository;
 import org.springeel.oneclickrecipe.domain.review.repository.ReviewRepository;
@@ -23,8 +23,8 @@ class ReviewServiceImplTest {
 //    void getReviews() {
 //    }
 
-    @Test
-    void getReviews() {
+    @BeforeEach
+    public void getReviews() {
 
         //given
         Recipe recipe = recipeRepository.save(Recipe.builder()
