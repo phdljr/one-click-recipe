@@ -4,12 +4,14 @@ package org.springeel.oneclickrecipe.domain.recipeprocess.service.impl;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;
 import org.springeel.oneclickrecipe.domain.recipe.exception.NotFoundRecipeException;
 import org.springeel.oneclickrecipe.domain.recipe.exception.RecipeErrorCode;
 import org.springeel.oneclickrecipe.domain.recipe.repository.RecipeRepository;
 import org.springeel.oneclickrecipe.domain.recipeprocess.dto.service.RecipeProcessCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.recipeprocess.dto.service.RecipeProcessReadServiceResponseDto;
 import org.springeel.oneclickrecipe.domain.recipeprocess.dto.service.RecipeProcessUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipeprocess.entity.RecipeProcess;
 import org.springeel.oneclickrecipe.domain.recipeprocess.exception.NotFoundRecipeProcessException;
@@ -111,5 +113,16 @@ public class RecipeProcessServiceImpl implements RecipeProcessService {
             requestDto.time(),
             imageName
         );
+    }
+
+    public List<RecipeProcessReadServiceResponseDto> readAllRecipeProcess(
+        Long recipeId) {
+        Recipe recipe = recipeRepository.findById(recipeId)
+            .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
+        List<RecipeProcess> recipeProcesses = recipeProcessRepository.findAllByRecipeOrderBySequenceAsc(
+            recipe);
+        List<RecipeProcessReadServiceResponseDto> readRecipeProcess =
+            recipeProcessEntityMapper.toReadRecipeProcess(recipeProcesses);
+        return readRecipeProcess;
     }
 }
