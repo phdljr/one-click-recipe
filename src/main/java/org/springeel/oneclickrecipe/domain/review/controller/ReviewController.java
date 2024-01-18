@@ -65,10 +65,3 @@ public class ReviewController {
         return new ResponseEntity<>(reviews, HttpStatus.OK);
     }
 }
-
-
-
-
-
-
-
