@@ -1,5 +1,8 @@
 package org.springeel.oneclickrecipe.domain.order.dto.service;
 
+import lombok.Builder;
+
+@Builder
 public record OrderCreateServiceRequestDto(
     String receiverName,
     String receiverPhoneNumber,
@@ -7,8 +10,7 @@ public record OrderCreateServiceRequestDto(
     String senderPhoneNumber,
     String address,
     String addressDetail,
-    String requirement,
-    Integer totalPrice
+    String requirement
 ) {
 
 }

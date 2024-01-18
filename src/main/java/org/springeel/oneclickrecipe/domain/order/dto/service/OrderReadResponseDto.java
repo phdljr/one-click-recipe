@@ -5,7 +5,7 @@ import org.springeel.oneclickrecipe.domain.order.entity.OrderStatus;
 import org.springeel.oneclickrecipe.domain.orderdetail.dto.OrderDetailDto;
 
 public record OrderReadResponseDto(
-    Long orderId,
+    Long id,
     String receiverName,
     String receiverPhoneNumber,
     String address,

@@ -48,8 +48,6 @@ public class Recipe extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "recipe")
-    private List<Review> reviews = new ArrayList<>();
 
     @Builder
     public Recipe(

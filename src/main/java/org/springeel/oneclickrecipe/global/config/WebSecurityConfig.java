@@ -10,6 +10,7 @@ import org.springeel.oneclickrecipe.global.util.JwtUtil;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -77,6 +78,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/api/v1/tests", "/api/v1/tests/**").permitAll()
                 .requestMatchers("/api/v1/users/login").permitAll()
                 .requestMatchers("/api/v1/users/signup").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/v1/recipes").permitAll()
                 .anyRequest().authenticated()
         );
 

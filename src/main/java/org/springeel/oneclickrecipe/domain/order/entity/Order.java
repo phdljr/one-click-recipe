@@ -1,5 +1,6 @@
 package org.springeel.oneclickrecipe.domain.order.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -61,7 +62,7 @@ public class Order extends BaseEntity {
     private OrderStatus status;
 
     // OrderDetail 엔티티와 양방향 매핑
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<OrderDetail> orderDetails = new ArrayList<>();
 
     @ManyToOne

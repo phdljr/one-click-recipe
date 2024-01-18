@@ -1,7 +1,9 @@
 package org.springeel.oneclickrecipe.domain.recipe.service.impl;
 
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeAllReadResponseDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;
@@ -47,5 +49,10 @@ public class RecipeServiceImpl implements RecipeService {
             requestDto.serving(),
             requestDto.videoPath()
         );
+    }
+
+    public List<RecipeAllReadResponseDto> readAllRecipe() {
+        List<Recipe> recipes = recipeRepository.findAll();
+        return recipeEntityMapper.toRecipeAllRead(recipes);
     }
 }
