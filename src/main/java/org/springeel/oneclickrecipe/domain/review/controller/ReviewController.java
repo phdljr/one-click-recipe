@@ -59,10 +59,9 @@ public class ReviewController {
     // 특정 레시피의 리뷰 목록 조회
     @GetMapping("/recipes/{recipeId}/reviews")
     public ResponseEntity<List<ReviewReadResponseDto>> getReviews(
-        @PathVariable(name = "recipeId") Long recipeId,
-        @AuthenticationPrincipal UserDetailsImpl userDetails
+        @PathVariable(name = "recipeId") Long recipeId
     ) {
-        List<ReviewReadResponseDto> reviews = reviewService.getReviews(userDetails.user(), recipeId);
+        List<ReviewReadResponseDto> reviews = reviewService.getReviews(recipeId);
         return new ResponseEntity<>(reviews, HttpStatus.OK);
     }
 }
