@@ -56,7 +56,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public List<ReviewReadResponseDto> getReviews(User user, Long recipeId) {
+    public List<ReviewReadResponseDto> getReviews(Long recipeId) {
         // 특정 레시피에 대한 리뷰 목록 조회
         List<Review> reviews = reviewRepository.findByRecipeId(recipeId);
 
