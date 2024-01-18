@@ -47,7 +47,6 @@ public class RecipeProcessServiceImpl implements RecipeProcessService {
         Recipe recipe = recipeRepository.findByIdAndUser(recipeId, user)
             .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
         String folderName = recipe.getFolderName();
-        folderName = URLEncoder.encode(folderName, StandardCharsets.UTF_8);
         String fileName = s3Provider.originalFileName(multipartFile);
         String fileUrl = url + folderName + SEPARATOR + fileName;
         RecipeProcess recipeProcess = recipeProcessEntityMapper.toRecipeProcess(requestDto,
@@ -78,20 +77,21 @@ public class RecipeProcessServiceImpl implements RecipeProcessService {
         final RecipeProcessUpdateServiceRequestDto requestDto,
         Long recipeId,
         User user,
-        Long processId
-    ) {
+        Long processId,
+        MultipartFile multipartFile
+    ) throws IOException {
         Recipe recipe = recipeRepository.findByIdAndUser(recipeId, user)
             .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
         RecipeProcess recipeProcess = recipeProcessRepository.findByIdAndRecipe(processId, recipe)
             .orElseThrow(() -> new NotFoundRecipeProcessException(
                 RecipeProcessErrorCode.NOT_FOUND_RECIPE_PROCESS));
-
+        String imageName = s3Provider.updateImage(recipeProcess.getImageUrl(),
+            recipe.getFolderName(), multipartFile);
         recipeProcess.updateRecipe(
             requestDto.sequence(),
             requestDto.description(),
             requestDto.time(),
-            requestDto.imageUrl()
+            imageName
         );
-
     }
 }

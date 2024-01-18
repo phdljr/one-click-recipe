@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.review.dto.controller.ReviewCreateControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.review.dto.controller.ReviewUpdateControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.review.dto.service.ReviewCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.review.dto.service.ReviewReadResponseDto;
 import org.springeel.oneclickrecipe.domain.review.dto.service.ReviewUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.review.mapper.dto.ReviewDtoMapper;
 import org.springeel.oneclickrecipe.domain.review.service.ReviewService;
@@ -12,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -53,9 +56,12 @@ public class ReviewController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    // 특정 레시피의 리뷰 목록 조회
+    @GetMapping("/recipes/{recipeId}/reviews")
+    public ResponseEntity<List<ReviewReadResponseDto>> getReviews(
+        @PathVariable(name = "recipeId") Long recipeId
+    ) {
+        List<ReviewReadResponseDto> reviews = reviewService.getReviews(recipeId);
+        return new ResponseEntity<>(reviews, HttpStatus.OK);
+    }
 }
-
-
-
-
-

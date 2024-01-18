@@ -18,6 +18,8 @@ public class S3Provider {
     private final String SEPARATOR = "/";
     @Value("${cloud.aws.s3.bucket.name}")
     public String bucket;
+    private final String url = "https://onceclick.s3.ap-northeast-2.amazonaws.com/";
+
 
     private static ObjectMetadata setObjectMetadata(MultipartFile multipartFile) {
         ObjectMetadata metadata = new ObjectMetadata();
@@ -26,13 +28,13 @@ public class S3Provider {
         return metadata;
     }
 
-    public String saveFile(MultipartFile multipartFile, String fileName) throws IOException {
+    public String saveFile(MultipartFile multipartFile, String imageName) throws IOException {
         if (multipartFile.isEmpty()) {
             return null;
         }
         ObjectMetadata metadata = setObjectMetadata(multipartFile);
-        amazonS3.putObject(bucket, fileName, multipartFile.getInputStream(), metadata);
-        return amazonS3.getUrl(bucket, fileName).toString();
+        amazonS3.putObject(bucket, imageName, multipartFile.getInputStream(), metadata);
+        return amazonS3.getUrl(bucket, imageName).toString();
     }
 
     public String originalFileName(MultipartFile multipartFile) {
@@ -55,11 +57,37 @@ public class S3Provider {
                 new ObjectMetadata());
         }
     }
-    
+
     public void deleteImage(String imageName) {
         if (imageName == null) {
             return;
         }
         amazonS3.deleteObject(bucket, imageName);
+    }
+
+    public String updateImage(String imageName, String folderName, MultipartFile multipartFile)
+        throws IOException {
+        // S3에 대한 정보저장이나 변경이 없을 경우
+        if (imageName == null && multipartFile.isEmpty()) {
+            return null;
+        } else {
+            // S3에 대한 정보가 DB에 저장되었지만 해당 내용을 삭제하고 싶을 때
+            if (multipartFile.isEmpty()) {
+                imageName = imageName.replace(url, "");
+                imageName = imageName.substring(imageName.lastIndexOf("/"));
+                deleteImage(folderName + imageName);
+                return null;
+            }
+            // 이미지 내용을 변경하고 싶거나 또는 유지하고 싶을 때
+            String NewImage = originalFileName(multipartFile);
+            imageName = url + folderName + SEPARATOR + NewImage;
+            String saveImageUrl = folderName + SEPARATOR + NewImage;
+            ObjectMetadata metadata = setObjectMetadata(multipartFile);
+            amazonS3.putObject(bucket, saveImageUrl, multipartFile.getInputStream(), metadata);
+            imageName = imageName.replace(url, "");
+            imageName = imageName.substring(imageName.lastIndexOf("/"));
+            deleteImage(folderName + imageName);
+        }
+        return imageName;
     }
 }
