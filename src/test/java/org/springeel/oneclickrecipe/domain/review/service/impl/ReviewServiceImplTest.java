@@ -83,4 +83,11 @@ class ReviewServiceImplTest {
             "그냥 평범한 맛이네요"
         );
     }
+
+    @Test
+    @DisplayName("존재하지 않는 레시피 조회 시 예외발생")
+    public void notFoundReviewTest() {
+
+
+    }
 }
