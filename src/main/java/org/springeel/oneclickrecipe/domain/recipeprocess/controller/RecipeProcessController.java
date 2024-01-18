@@ -35,10 +35,8 @@ public class RecipeProcessController {
 
     private final RecipeProcessService processService;
     private final RecipeProcessDtoMapper processDtoMapper;
-    private final S3Provider s3Provider;
-    private final RecipeRepository recipeRepository;
 
-    @PostMapping("/{recipeId}/processes")
+    @PostMapping("/{recipeId}/recipe-processes")
     public ResponseEntity<?> create(
         @RequestPart RecipeProcessCreateControllerRequestDto controllerRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetails,
@@ -52,7 +50,7 @@ public class RecipeProcessController {
         return ResponseEntity.status(HttpStatus.CREATED).body(HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{recipeId}/processes/{processId}")
+    @DeleteMapping("/{recipeId}/recipe-processes/{processId}")
     public ResponseEntity<?> delete(
         @PathVariable Long recipeId,
         @PathVariable Long processId,
@@ -62,7 +60,7 @@ public class RecipeProcessController {
         return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
     }
 
-    @PutMapping("/{recipeId}/processes/{processId}")
+    @PutMapping("/{recipeId}/recipe-processes/{processId}")
     public ResponseEntity<?> update(
         @RequestPart RecipeProcessUpdateControllerRequestDto controllerRequestDto,
         @PathVariable Long recipeId,
@@ -77,7 +75,7 @@ public class RecipeProcessController {
         return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
     }
 
-    @GetMapping("/{recipeId}/processes")
+    @GetMapping("/{recipeId}/recipe-processes")
     public ResponseEntity<List<RecipeProcessReadServiceResponseDto>> readAll(
         @PathVariable Long recipeId
     ) {
