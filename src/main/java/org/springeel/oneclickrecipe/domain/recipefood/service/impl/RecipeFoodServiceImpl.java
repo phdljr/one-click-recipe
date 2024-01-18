@@ -4,11 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.food.entity.Food;
 import org.springeel.oneclickrecipe.domain.food.exception.FoodErrorCode;
 import org.springeel.oneclickrecipe.domain.food.exception.NotFoundFoodException;
+import org.springeel.oneclickrecipe.domain.food.mapper.FoodEntityMapper;
 import org.springeel.oneclickrecipe.domain.food.repository.FoodRepository;
 import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;
 import org.springeel.oneclickrecipe.domain.recipe.exception.NotFoundRecipeException;
 import org.springeel.oneclickrecipe.domain.recipe.exception.RecipeErrorCode;
 import org.springeel.oneclickrecipe.domain.recipe.repository.RecipeRepository;
+import org.springeel.oneclickrecipe.domain.recipefood.dto.service.RecipeFoodReadResponseDto;
 import org.springeel.oneclickrecipe.domain.recipefood.dto.service.RecipeFoodCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipefood.dto.service.RecipeFoodUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipefood.entity.RecipeFood;
@@ -29,6 +31,7 @@ public class RecipeFoodServiceImpl implements RecipeFoodService {
     private final FoodRepository foodRepository;
     private final RecipeFoodEntityMapper recipeFoodEntityMapper;
     private final RecipeRepository recipeRepository;
+    private final FoodEntityMapper foodEntityMapper;
 
     public void createRecipeFood(RecipeFoodCreateServiceRequestDto requestDto, Long recipeId,
         User user) {
@@ -61,10 +64,25 @@ public class RecipeFoodServiceImpl implements RecipeFoodService {
             .orElseThrow(
                 () -> new NotFoundRecipeFoodException(RecipeFoodErrorCode.NOT_FOUND_RECIPEFOOD));
         recipeFood.updateRecipeFood(
-            requestDto.foodName(),
             requestDto.amount(),
             recipe,
             food
         );
+    }
+
+    public RecipeFoodReadResponseDto readRecipeFood(
+        Long recipeId,
+        Long recipeFoodId
+    ) {
+        Recipe recipe = recipeRepository.findById(recipeId)
+            .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
+        RecipeFood recipeFood = recipeFoodRepository.findByIdAndRecipe(recipeFoodId, recipe)
+            .orElseThrow(
+                () -> new NotFoundRecipeFoodException(RecipeFoodErrorCode.NOT_FOUND_RECIPEFOOD));
+        Food food = foodRepository.findById(recipeFood.getId())
+            .orElseThrow(() -> new NotFoundFoodException(FoodErrorCode.NOT_FOUND_FOOD));
+        Float total = recipeFood.getAmount() * food.getPrice();
+        return recipeFoodEntityMapper.toReadRecipeFood(food.getName(), recipeFood.getAmount(),
+            total, food.getUnit());
     }
 }
