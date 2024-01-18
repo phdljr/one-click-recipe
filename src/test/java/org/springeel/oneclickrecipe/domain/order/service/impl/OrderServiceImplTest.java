@@ -1,8 +1,5 @@
 package org.springeel.oneclickrecipe.domain.order.service.impl;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,6 +16,9 @@ import org.springeel.oneclickrecipe.domain.user.entity.UserRole;
 import org.springeel.oneclickrecipe.domain.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 class OrderServiceImplTest {
@@ -58,13 +58,13 @@ class OrderServiceImplTest {
         // given
         User user = userRepository.findById(1L).get();
         OrderCreateServiceRequestDto requestDto =
-            new OrderCreateServiceRequestDto("1", "2", "3", "4", "5", "6", "7", 10000);
+            new OrderCreateServiceRequestDto("1", "2", "3", "4", "5", "6", "7");
 
         // when
         OrderCreateResponseDto responseDto = orderService.createOrder(requestDto, user);
 
         // then
-        assertThat(responseDto.orderId()).isEqualTo(2L);
+        assertThat(responseDto.id()).isEqualTo(2L);
         assertThat(responseDto.orderStatus()).isEqualTo(OrderStatus.WAITING);
     }
 
