@@ -1,5 +1,6 @@
 package org.springeel.oneclickrecipe.domain.recipeprocess.repository;
 
+import java.util.List;
 import java.util.Optional;
 import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;
 import org.springeel.oneclickrecipe.domain.recipeprocess.entity.RecipeProcess;
@@ -10,4 +11,6 @@ public interface RecipeProcessRepository extends JpaRepository<RecipeProcess, Lo
     Optional<RecipeProcess> findByIdAndRecipe(Long recipeId, Recipe recipe);
 
     boolean existsBySequence(Byte sequence);
+
+    List<RecipeProcess> findAllByRecipeOrderBySequenceAsc(Recipe recipe);
 }
