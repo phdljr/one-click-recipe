@@ -57,7 +57,7 @@ public class ReviewController {
     }
 
     // 특정 레시피의 리뷰 목록 조회
-    @GetMapping("/recipes/{recipeId}/reviews") //모든 후기조회
+    @GetMapping("/recipes/{recipeId}/reviews")
     public ResponseEntity<List<ReviewReadResponseDto>> getReviews(
         @PathVariable(name = "recipeId") Long recipeId,
         @AuthenticationPrincipal UserDetailsImpl userDetails
