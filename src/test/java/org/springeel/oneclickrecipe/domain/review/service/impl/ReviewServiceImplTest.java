@@ -1,6 +1,7 @@
 package org.springeel.oneclickrecipe.domain.review.service.impl;
 
 import org.junit.jupiter.api.Test;
+import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;
 import org.springeel.oneclickrecipe.domain.recipe.repository.RecipeRepository;
 import org.springeel.oneclickrecipe.domain.review.repository.ReviewRepository;
 import org.springeel.oneclickrecipe.domain.review.service.ReviewService;
@@ -18,7 +19,22 @@ class ReviewServiceImplTest {
     RecipeRepository recipeRepository;
 
 
+//    @Test
+//    void getReviews() {
+//    }
+
     @Test
     void getReviews() {
+
+        //given
+        Recipe recipe = recipeRepository.save(Recipe.builder()
+            .title("스파게티")
+            .intro("호로록 짭짭")
+            .serving((byte) 4)
+            .videoPath("/videos/스파게티.mp4")
+            .folderName("스파게티")
+            .build());
+
+
     }
 }
