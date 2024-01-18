@@ -9,4 +9,5 @@ public interface RecipeProcessRepository extends JpaRepository<RecipeProcess, Lo
 
     Optional<RecipeProcess> findByIdAndRecipe(Long recipeId, Recipe recipe);
 
+    boolean existsBySequence(Byte sequence);
 }
