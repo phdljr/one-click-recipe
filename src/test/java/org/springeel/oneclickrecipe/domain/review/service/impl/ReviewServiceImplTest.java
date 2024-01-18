@@ -33,12 +33,9 @@ class ReviewServiceImplTest {
     @Autowired
     UserRepository userRepository;
 
-    //    @Test
-//    void getReviews() {
-//    }
-    @Transactional
     @Test
     @DisplayName("리뷰를 조회해보자")
+    @Transactional
     public void getReviews() {
 
         //given
@@ -88,11 +85,12 @@ class ReviewServiceImplTest {
         );
     }
 
-    @Transactional
     @Test
+
     @DisplayName("존재하지 않는 레시피 조회 시 예외발생")
+    @Transactional
     public void notFoundReviewTest() {
-        
+
         assertThatThrownBy(() -> reviewService.getReviews(100L))
             .isInstanceOf(NotFoundRecipeException.class);
     }
