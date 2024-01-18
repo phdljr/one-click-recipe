@@ -1,12 +1,14 @@
 package org.springeel.oneclickrecipe.domain.recipeprocess.controller;
 
 import java.io.IOException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;
 import org.springeel.oneclickrecipe.domain.recipe.repository.RecipeRepository;
 import org.springeel.oneclickrecipe.domain.recipeprocess.dto.controller.RecipeProcessCreateControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.recipeprocess.dto.controller.RecipeProcessUpdateControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.recipeprocess.dto.service.RecipeProcessCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.recipeprocess.dto.service.RecipeProcessReadServiceResponseDto;
 import org.springeel.oneclickrecipe.domain.recipeprocess.dto.service.RecipeProcessUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipeprocess.mapper.dto.RecipeProcessDtoMapper;
 import org.springeel.oneclickrecipe.domain.recipeprocess.service.RecipeProcessService;
@@ -16,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -73,4 +76,15 @@ public class RecipeProcessController {
             processId, multipartFile);
         return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
     }
+
+    @GetMapping("/{recipeId}/processes")
+    public ResponseEntity<List<RecipeProcessReadServiceResponseDto>> readAll(
+        @PathVariable Long recipeId
+    ) {
+        List<RecipeProcessReadServiceResponseDto> processes =
+            processService.readAllRecipeProcess(recipeId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(processes);
+    }
+
 }
