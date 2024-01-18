@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.food.entity.Food;
 import org.springeel.oneclickrecipe.domain.food.exception.FoodErrorCode;
 import org.springeel.oneclickrecipe.domain.food.exception.NotFoundFoodException;
-import org.springeel.oneclickrecipe.domain.food.mapper.FoodEntityMapper;
 import org.springeel.oneclickrecipe.domain.food.repository.FoodRepository;
 import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;
 import org.springeel.oneclickrecipe.domain.recipe.exception.NotFoundRecipeException;
