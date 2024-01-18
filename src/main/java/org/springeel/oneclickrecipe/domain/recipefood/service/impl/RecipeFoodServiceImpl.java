@@ -1,5 +1,7 @@
 package org.springeel.oneclickrecipe.domain.recipefood.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.food.entity.Food;
 import org.springeel.oneclickrecipe.domain.food.exception.FoodErrorCode;
@@ -9,6 +11,7 @@ import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;
 import org.springeel.oneclickrecipe.domain.recipe.exception.NotFoundRecipeException;
 import org.springeel.oneclickrecipe.domain.recipe.exception.RecipeErrorCode;
 import org.springeel.oneclickrecipe.domain.recipe.repository.RecipeRepository;
+import org.springeel.oneclickrecipe.domain.recipefood.dto.service.RecipeFoodReadResponseDto;
 import org.springeel.oneclickrecipe.domain.recipefood.dto.service.RecipeFoodCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipefood.dto.service.RecipeFoodUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipefood.entity.RecipeFood;
@@ -61,10 +64,30 @@ public class RecipeFoodServiceImpl implements RecipeFoodService {
             .orElseThrow(
                 () -> new NotFoundRecipeFoodException(RecipeFoodErrorCode.NOT_FOUND_RECIPEFOOD));
         recipeFood.updateRecipeFood(
-            requestDto.foodName(),
             requestDto.amount(),
             recipe,
             food
         );
+    }
+
+    public List<RecipeFoodReadResponseDto> readRecipeFood(
+        Long recipeId
+    ) {
+        List<RecipeFoodReadResponseDto> dtos = new ArrayList<RecipeFoodReadResponseDto>();
+        List<RecipeFood> recipeFoods = recipeFoodRepository.findAllByRecipeId(recipeId);
+        for (int i = 0; i < recipeFoods.size(); i++) {
+            Food food = foodRepository.findById(recipeFoods.get(i).getFood().getId())
+                .orElseThrow(() -> new NotFoundFoodException(FoodErrorCode.NOT_FOUND_FOOD));
+            Integer total = 0;
+            total = recipeFoods.get(i).getAmount() * food.getPrice();
+            RecipeFoodReadResponseDto responseDto = recipeFoodEntityMapper.toReadRecipeFood(
+                food.getName(),
+                recipeFoods.get(i).getAmount(),
+                total,
+                food.getUnit()
+            );
+            dtos.add(i, responseDto);
+        }
+        return dtos;
     }
 }

@@ -1,5 +1,7 @@
 package org.springeel.oneclickrecipe.domain.recipefood.service;
 
+import java.util.List;
+import org.springeel.oneclickrecipe.domain.recipefood.dto.service.RecipeFoodReadResponseDto;
 import org.springeel.oneclickrecipe.domain.recipefood.dto.service.RecipeFoodCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipefood.dto.service.RecipeFoodUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
@@ -12,5 +14,7 @@ public interface RecipeFoodService {
 
     void updateRecipeFood(Long recipeId, Long recipeFoodId, User user,
         RecipeFoodUpdateServiceRequestDto requestDto);
+
+    List<RecipeFoodReadResponseDto> readRecipeFood(Long recipeId);
 
 }

@@ -47,8 +47,15 @@ public class RecipeProcessServiceImpl implements RecipeProcessService {
         Recipe recipe = recipeRepository.findByIdAndUser(recipeId, user)
             .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
         String folderName = recipe.getFolderName();
-        String fileName = s3Provider.originalFileName(multipartFile);
-        String fileUrl = url + folderName + SEPARATOR + fileName;
+        String fileName;
+        String fileUrl;
+        if (multipartFile.isEmpty()) {
+            fileName = null;
+            fileUrl = null;
+        } else {
+            fileName = s3Provider.originalFileName(multipartFile);
+            fileUrl = url + folderName + SEPARATOR + fileName;
+        }
         RecipeProcess recipeProcess = recipeProcessEntityMapper.toRecipeProcess(requestDto,
             fileUrl, recipe);
         recipeProcessRepository.save(recipeProcess);

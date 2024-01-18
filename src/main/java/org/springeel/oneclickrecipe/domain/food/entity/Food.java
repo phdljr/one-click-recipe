@@ -27,7 +27,7 @@ public class Food {
     private String name;
 
     @Column(nullable = false)
-    private Float price;
+    private Integer price;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -36,7 +36,7 @@ public class Food {
     @Builder
     public Food(
         final String name,
-        final Float price,
+        final Integer price,
         final UnitType unit
     ) {
         this.name = name;
