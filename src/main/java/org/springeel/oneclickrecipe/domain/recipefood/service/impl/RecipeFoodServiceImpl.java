@@ -1,5 +1,7 @@
 package org.springeel.oneclickrecipe.domain.recipefood.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.food.entity.Food;
 import org.springeel.oneclickrecipe.domain.food.exception.FoodErrorCode;
@@ -31,7 +33,6 @@ public class RecipeFoodServiceImpl implements RecipeFoodService {
     private final FoodRepository foodRepository;
     private final RecipeFoodEntityMapper recipeFoodEntityMapper;
     private final RecipeRepository recipeRepository;
-    private final FoodEntityMapper foodEntityMapper;
 
     public void createRecipeFood(RecipeFoodCreateServiceRequestDto requestDto, Long recipeId,
         User user) {
@@ -70,19 +71,24 @@ public class RecipeFoodServiceImpl implements RecipeFoodService {
         );
     }
 
-    public RecipeFoodReadResponseDto readRecipeFood(
-        Long recipeId,
-        Long recipeFoodId
+    public List<RecipeFoodReadResponseDto> readRecipeFood(
+        Long recipeId
     ) {
-        Recipe recipe = recipeRepository.findById(recipeId)
-            .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
-        RecipeFood recipeFood = recipeFoodRepository.findByIdAndRecipe(recipeFoodId, recipe)
-            .orElseThrow(
-                () -> new NotFoundRecipeFoodException(RecipeFoodErrorCode.NOT_FOUND_RECIPEFOOD));
-        Food food = foodRepository.findById(recipeFood.getId())
-            .orElseThrow(() -> new NotFoundFoodException(FoodErrorCode.NOT_FOUND_FOOD));
-        Float total = recipeFood.getAmount() * food.getPrice();
-        return recipeFoodEntityMapper.toReadRecipeFood(food.getName(), recipeFood.getAmount(),
-            total, food.getUnit());
+        List<RecipeFoodReadResponseDto> dtos = new ArrayList<RecipeFoodReadResponseDto>();
+        List<RecipeFood> recipeFoods = recipeFoodRepository.findAllByRecipeId(recipeId);
+        for (int i = 0; i < recipeFoods.size(); i++) {
+            Food food = foodRepository.findById(recipeFoods.get(i).getFood().getId())
+                .orElseThrow(() -> new NotFoundFoodException(FoodErrorCode.NOT_FOUND_FOOD));
+            Float total = 0.0F;
+            total = recipeFoods.get(i).getAmount() * food.getPrice();
+            RecipeFoodReadResponseDto responseDto = recipeFoodEntityMapper.toReadRecipeFood(
+                food.getName(),
+                recipeFoods.get(i).getAmount(),
+                total,
+                food.getUnit()
+            );
+            dtos.add(i, responseDto);
+        }
+        return dtos;
     }
 }
