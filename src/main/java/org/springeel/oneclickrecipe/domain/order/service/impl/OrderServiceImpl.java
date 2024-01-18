@@ -1,8 +1,9 @@
 package org.springeel.oneclickrecipe.domain.order.service.impl;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springeel.oneclickrecipe.domain.cart.entity.Cart;
+import org.springeel.oneclickrecipe.domain.cart.repository.CartRepository;
 import org.springeel.oneclickrecipe.domain.order.dto.service.OrderCreateResponseDto;
 import org.springeel.oneclickrecipe.domain.order.dto.service.OrderCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.order.dto.service.OrderReadAllResponseDto;
@@ -13,6 +14,9 @@ import org.springeel.oneclickrecipe.domain.order.exception.OrderErrorCode;
 import org.springeel.oneclickrecipe.domain.order.mapper.entity.OrderEntityMapper;
 import org.springeel.oneclickrecipe.domain.order.repository.OrderRepository;
 import org.springeel.oneclickrecipe.domain.order.service.OrderService;
+import org.springeel.oneclickrecipe.domain.orderdetail.entity.OrderDetail;
+import org.springeel.oneclickrecipe.domain.orderdetail.mapper.OrderDetailMapper;
+import org.springeel.oneclickrecipe.domain.orderdetail.repository.OrderDetailRepository;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springframework.stereotype.Service;
 
@@ -20,18 +24,34 @@ import org.springframework.stereotype.Service;
 @Service
 public class OrderServiceImpl implements OrderService {
 
+    private final CartRepository cartRepository;
     private final OrderRepository orderRepository;
+    private final OrderDetailRepository orderDetailRepository;
     private final OrderEntityMapper orderEntityMapper; // Mapper 추가
+    private final OrderDetailMapper orderDetailMapper;
 
     // 주문 생성
     @Override
     public OrderCreateResponseDto createOrder(OrderCreateServiceRequestDto serviceRequestDto,
         User user) {
 
-        Order order = orderEntityMapper.toEntity(serviceRequestDto, user); // Mapper를 이용한 객체 생성
-        order = orderRepository.save(order);
+        // 장바구니 아이템 조회
+        List<Cart> cartItems = cartRepository.findByUser(user);
 
-        return orderEntityMapper.toResponseDto(order);
+        // Order 객체 생성
+        Order order = orderEntityMapper.toEntity(serviceRequestDto, user); // Mapper를 이용한 객체 생성
+
+        // OrderDetail 객체들 생성 및 Order에 연결
+        List<OrderDetail> orderDetails = cartItems.stream()
+            .map(cartItem -> orderDetailMapper.toOrderDetail(cartItem, order))
+            .toList();
+
+        // Order와 OrderDetail 정보 저장
+        Order savedOrder = orderRepository.save(order);
+        orderDetailRepository.saveAll(orderDetails);
+
+        // 결과 반환
+        return orderEntityMapper.toResponseDto(savedOrder);
     }
 
     // 주문 내역 목록 조회
