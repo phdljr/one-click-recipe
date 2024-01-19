@@ -50,7 +50,7 @@ public class RecipeServiceImpl implements RecipeService {
             requestDto.intro(),
             requestDto.serving(),
             requestDto.videoUrl(),
-            requestDto.imageUrl()
+            null //TODO 이미지 URL 넣기
         );
     }
 
