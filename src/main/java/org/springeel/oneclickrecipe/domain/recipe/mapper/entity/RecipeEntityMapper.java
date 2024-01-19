@@ -13,7 +13,8 @@ import org.springeel.oneclickrecipe.domain.user.entity.User;
 @Mapper(componentModel = SPRING)
 public interface RecipeEntityMapper {
 
-    Recipe toRecipe(RecipeCreateServiceRequestDto requestDto, User user, String folderName);
+    Recipe toRecipe(RecipeCreateServiceRequestDto requestDto, User user, String folderName,
+        String imageUrl);
 
     List<RecipeAllReadResponseDto> toRecipeAllReadResponseDto(List<Recipe> recipe);
 
