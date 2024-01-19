@@ -1,4 +1,4 @@
-package org.springeel.oneclickrecipe.domain.order.dto.service;
+package org.springeel.oneclickrecipe.domain.order.dto.service.request;
 
 import lombok.Builder;
 

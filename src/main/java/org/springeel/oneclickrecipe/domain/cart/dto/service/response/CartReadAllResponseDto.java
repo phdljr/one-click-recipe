@@ -1,4 +1,4 @@
-package org.springeel.oneclickrecipe.domain.cart.dto.service;
+package org.springeel.oneclickrecipe.domain.cart.dto.service.response;
 
 import java.util.List;
 import lombok.Builder;

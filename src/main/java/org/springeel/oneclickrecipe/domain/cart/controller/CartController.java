@@ -3,8 +3,8 @@ package org.springeel.oneclickrecipe.domain.cart.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.cart.dto.controller.CartAddControllerRequestDto;
-import org.springeel.oneclickrecipe.domain.cart.dto.service.CartAddServiceRequestDto;
-import org.springeel.oneclickrecipe.domain.cart.dto.service.CartReadAllResponseDto;
+import org.springeel.oneclickrecipe.domain.cart.dto.service.request.CartAddServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.cart.dto.service.response.CartReadAllResponseDto;
 import org.springeel.oneclickrecipe.domain.cart.mapper.dto.CartDtoMapper;
 import org.springeel.oneclickrecipe.domain.cart.service.CartService;
 import org.springeel.oneclickrecipe.global.security.UserDetailsImpl;
@@ -37,11 +37,12 @@ public class CartController {
     // 장바구니 아이템 추가
     @PostMapping
     public ResponseEntity<Void> addCartFoods(
-        @Valid @RequestBody CartAddControllerRequestDto requestDto,
+        @Valid @RequestBody CartAddControllerRequestDto controllerRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         // 현재 로그인한 사용자의 ID를 가져옴
-        CartAddServiceRequestDto serviceRequestDto = cartDtoMapper.toServiceRequestDto(requestDto);
+        CartAddServiceRequestDto serviceRequestDto = cartDtoMapper.toServiceRequestDto(
+            controllerRequestDto);
         cartService.addCartFoods(userDetails.user(), serviceRequestDto);
         return ResponseEntity.ok().build();
     }

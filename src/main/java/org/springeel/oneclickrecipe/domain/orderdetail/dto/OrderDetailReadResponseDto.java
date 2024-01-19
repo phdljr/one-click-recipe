@@ -1,6 +1,6 @@
 package org.springeel.oneclickrecipe.domain.orderdetail.dto;
 
-public record OrderDetailDto(
+public record OrderDetailReadResponseDto(
     Long id,
     String foodName,
     Short amount,

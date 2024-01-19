@@ -1,14 +1,15 @@
 package org.springeel.oneclickrecipe.domain.order.mapper.dto;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingConstants.ComponentModel;
-import org.springeel.oneclickrecipe.domain.order.dto.controller.OrderCreateControllerRequestDto;
-import org.springeel.oneclickrecipe.domain.order.dto.service.OrderCreateServiceRequestDto;
+import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 
-@Mapper(componentModel = ComponentModel.SPRING)
+import org.mapstruct.Mapper;
+import org.springeel.oneclickrecipe.domain.order.dto.controller.OrderCreateControllerRequestDto;
+import org.springeel.oneclickrecipe.domain.order.dto.service.request.OrderCreateServiceRequestDto;
+
+@Mapper(componentModel = SPRING)
 public interface OrderDtoMapper {
 
     OrderCreateServiceRequestDto toOrderServiceRequestDto(
-        OrderCreateControllerRequestDto createControllerRequestDto
+        OrderCreateControllerRequestDto controllerRequestDto
     );
 }

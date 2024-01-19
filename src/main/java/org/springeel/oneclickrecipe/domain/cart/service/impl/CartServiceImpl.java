@@ -2,9 +2,9 @@ package org.springeel.oneclickrecipe.domain.cart.service.impl;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springeel.oneclickrecipe.domain.cart.dto.service.CartAddServiceRequestDto;
-import org.springeel.oneclickrecipe.domain.cart.dto.service.CartReadAllResponseDto;
-import org.springeel.oneclickrecipe.domain.cart.dto.service.CartReadResponseDto;
+import org.springeel.oneclickrecipe.domain.cart.dto.service.request.CartAddServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.cart.dto.service.response.CartReadAllResponseDto;
+import org.springeel.oneclickrecipe.domain.cart.dto.service.response.CartReadResponseDto;
 import org.springeel.oneclickrecipe.domain.cart.entity.Cart;
 import org.springeel.oneclickrecipe.domain.cart.repository.CartRepository;
 import org.springeel.oneclickrecipe.domain.cart.service.CartService;

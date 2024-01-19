@@ -3,10 +3,10 @@ package org.springeel.oneclickrecipe.domain.order.controller;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.order.dto.controller.OrderCreateControllerRequestDto;
-import org.springeel.oneclickrecipe.domain.order.dto.service.OrderCreateResponseDto;
-import org.springeel.oneclickrecipe.domain.order.dto.service.OrderCreateServiceRequestDto;
-import org.springeel.oneclickrecipe.domain.order.dto.service.OrderReadAllResponseDto;
-import org.springeel.oneclickrecipe.domain.order.dto.service.OrderReadResponseDto;
+import org.springeel.oneclickrecipe.domain.order.dto.service.response.OrderCreateResponseDto;
+import org.springeel.oneclickrecipe.domain.order.dto.service.request.OrderCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.order.dto.service.response.OrderReadAllResponseDto;
+import org.springeel.oneclickrecipe.domain.order.dto.service.response.OrderReadResponseDto;
 import org.springeel.oneclickrecipe.domain.order.mapper.dto.OrderDtoMapper;
 import org.springeel.oneclickrecipe.domain.order.service.OrderService;
 import org.springeel.oneclickrecipe.global.security.UserDetailsImpl;
@@ -30,23 +30,23 @@ public class OrderController {
     // 주문 생성
     @PostMapping
     public ResponseEntity<OrderCreateResponseDto> createOrder(
-        @RequestBody OrderCreateControllerRequestDto createControllerRequestDto,
-        @AuthenticationPrincipal UserDetailsImpl userDetailsImpl
+        @RequestBody OrderCreateControllerRequestDto controllerRequestDto,
+        @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         OrderCreateServiceRequestDto serviceRequestDto = orderDtoMapper.toOrderServiceRequestDto(
-            createControllerRequestDto);
+            controllerRequestDto);
         OrderCreateResponseDto responseDto = orderService.createOrder(serviceRequestDto,
-            userDetailsImpl.user());
+            userDetails.user());
         return ResponseEntity.ok(responseDto);
     }
 
     // 주문 내역 목록 조회
     @GetMapping
     public ResponseEntity<List<OrderReadAllResponseDto>> getAllUserOrders(
-        @AuthenticationPrincipal UserDetailsImpl userDetailsImpl
+        @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         List<OrderReadAllResponseDto> orderReadAllResponseDtoList = orderService.getAllUserOrders(
-            userDetailsImpl.user().getId());
+            userDetails.user());
         return ResponseEntity.ok(orderReadAllResponseDtoList);
     }
 
@@ -54,10 +54,10 @@ public class OrderController {
     @GetMapping("/{orderId}")
     public ResponseEntity<OrderReadResponseDto> getOrderById(
         @PathVariable(name = "orderId") Long orderId,
-        @AuthenticationPrincipal UserDetailsImpl userDetailsImpl
+        @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         OrderReadResponseDto readResponseDto = orderService.getOrderById(orderId,
-            userDetailsImpl.user().getId());
+            userDetails.user());
         return ResponseEntity.ok(readResponseDto);
     }
 }

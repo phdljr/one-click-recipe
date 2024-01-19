@@ -5,7 +5,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -61,13 +60,13 @@ public class Order extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    // OrderDetail 엔티티와 양방향 매핑
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private final List<OrderDetail> orderDetails = new ArrayList<>();
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    // OrderDetail 엔티티와 양방향 매핑
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private final List<OrderDetail> orderDetails = new ArrayList<>();
 
     @Builder
     public Order(

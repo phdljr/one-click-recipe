@@ -1,4 +1,4 @@
-package org.springeel.oneclickrecipe.domain.cart.dto.service;
+package org.springeel.oneclickrecipe.domain.cart.dto.service.request;
 
 import java.util.List;
 

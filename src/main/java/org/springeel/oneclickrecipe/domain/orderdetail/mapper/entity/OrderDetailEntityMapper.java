@@ -1,4 +1,4 @@
-package org.springeel.oneclickrecipe.domain.orderdetail.mapper;
+package org.springeel.oneclickrecipe.domain.orderdetail.mapper.entity;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -7,7 +7,7 @@ import org.springeel.oneclickrecipe.domain.order.entity.Order;
 import org.springeel.oneclickrecipe.domain.orderdetail.entity.OrderDetail;
 
 @Mapper(componentModel = "spring")
-public interface OrderDetailMapper {
+public interface OrderDetailEntityMapper {
 
     @Mapping(source = "cart.recipeFood.food.name", target = "foodName")
     @Mapping(source = "cart.recipeFood.amount", target = "amount")
