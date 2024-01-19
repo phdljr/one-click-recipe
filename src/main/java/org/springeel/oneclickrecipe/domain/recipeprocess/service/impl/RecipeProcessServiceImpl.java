@@ -45,62 +45,68 @@ public class RecipeProcessServiceImpl implements RecipeProcessService {
         Long recipeId,
         MultipartFile multipartFile
     ) throws IOException {
-        boolean validator = recipeProcessRepository.existsBySequence(requestDto.sequence());
-        if (validator) {
-            throw new ValidateRecipeProcessException(RecipeProcessErrorCode.USE_VALIDATE_DATA);
-        }
         Recipe recipe = recipeRepository.findByIdAndUser(recipeId, user)
             .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
         String folderName = recipe.getFolderName();
         String fileName;
         String fileUrl;
+        RecipeProcess check = recipeProcessRepository.findRecipeProcessByRecipeAndSequence(recipe,
+            requestDto.sequence());
+        if (check != null) {
+            throw new ValidateRecipeProcessException(RecipeProcessErrorCode.USE_VALIDATE_DATA);
+        }
         if (multipartFile.isEmpty()) {
-            fileName = null;
             fileUrl = null;
+            RecipeProcess recipeProcess = recipeProcessEntityMapper.toRecipeProcess(
+                requestDto, fileUrl, recipe);
+            recipeProcessRepository.save(recipeProcess);
         } else {
             fileName = s3Provider.originalFileName(multipartFile);
             fileUrl = url + folderName + SEPARATOR + fileName;
+            RecipeProcess recipeProcess = recipeProcessEntityMapper.toRecipeProcess(requestDto,
+                fileUrl, recipe);
+            recipeProcessRepository.save(recipeProcess);
+            fileUrl = recipe.getFolderName() + SEPARATOR + fileName;
+            s3Provider.saveFile(multipartFile, fileUrl);
         }
-        RecipeProcess recipeProcess = recipeProcessEntityMapper.toRecipeProcess(requestDto,
-            fileUrl, recipe);
-        recipeProcessRepository.save(recipeProcess);
-        fileUrl = recipe.getFolderName() + SEPARATOR + fileName;
-        s3Provider.saveFile(multipartFile, fileUrl);
+
     }
 
     @Override
     public void deleteRecipeProcess(
-        Long recipeId,
         User user,
         Long processId
     ) {
-        Recipe recipe = recipeRepository.findByIdAndUser(recipeId, user)
-            .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
-        RecipeProcess recipeProcess = recipeProcessRepository.findByIdAndRecipe(processId, recipe)
+        // 삭제 로직 수정
+        RecipeProcess recipeProcess = recipeProcessRepository.findByIdAndRecipe_User(processId,
+                user)
             .orElseThrow(() -> new NotFoundRecipeProcessException(
                 RecipeProcessErrorCode.NOT_FOUND_RECIPE_PROCESS));
-        String imageName = recipeProcess.getImageUrl().replace(url, "");
-        imageName = imageName.substring(imageName.lastIndexOf("/"));
-        recipeProcessRepository.delete(recipeProcess);
-        s3Provider.deleteImage(recipe.getFolderName() + imageName);
+        if (recipeProcess.getImageUrl() == null) {
+            recipeProcessRepository.delete(recipeProcess);
+        } else {
+            String imageName = recipeProcess.getImageUrl().replace(url, "");
+            imageName = imageName.substring(imageName.lastIndexOf("/"));
+            recipeProcessRepository.delete(recipeProcess);
+            s3Provider.deleteImage(recipeProcess.getRecipe().getFolderName() + imageName);
+        }
     }
 
     @Override
     @Transactional
     public void updateRecipeProcess(
         final RecipeProcessUpdateServiceRequestDto requestDto,
-        Long recipeId,
         User user,
         Long processId,
         MultipartFile multipartFile
     ) throws IOException {
-        Recipe recipe = recipeRepository.findByIdAndUser(recipeId, user)
-            .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
-        RecipeProcess recipeProcess = recipeProcessRepository.findByIdAndRecipe(processId, recipe)
+        RecipeProcess recipeProcess = recipeProcessRepository.findByIdAndRecipe_User(processId,
+                user)
             .orElseThrow(() -> new NotFoundRecipeProcessException(
                 RecipeProcessErrorCode.NOT_FOUND_RECIPE_PROCESS));
         String imageName = s3Provider.updateImage(recipeProcess.getImageUrl(),
-            recipe.getFolderName(), multipartFile);
+            recipeProcess.getRecipe().getFolderName(), multipartFile);
+        imageName = url + recipeProcess.getRecipe().getFolderName() + imageName;
         recipeProcess.updateRecipe(
             requestDto.sequence(),
             requestDto.description(),
