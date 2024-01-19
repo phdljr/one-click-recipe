@@ -14,6 +14,7 @@ import org.springeel.oneclickrecipe.domain.recipeprocess.entity.RecipeProcess;
 public interface RecipeProcessEntityMapper {
 
     @Mapping(source = "recipe", target = "recipe")
+    @Mapping(source = "imageUrl", target = "imageUrl")
     RecipeProcess toRecipeProcess(RecipeProcessCreateServiceRequestDto requestDto, String imageUrl,
         Recipe recipe);
 
