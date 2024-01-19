@@ -1,20 +1,21 @@
 package org.springeel.oneclickrecipe.domain.recipeprocess.mapper.entity;
 
+import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
+
 import java.util.List;
 import org.mapstruct.Mapper;
-import org.mapstruct.MappingConstants.ComponentModel;
 import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;
-import org.springeel.oneclickrecipe.domain.recipeprocess.dto.service.RecipeProcessCreateServiceRequestDto;
-import org.springeel.oneclickrecipe.domain.recipeprocess.dto.service.RecipeProcessReadResponseDto;
+import org.springeel.oneclickrecipe.domain.recipeprocess.dto.service.request.RecipeProcessCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.recipeprocess.dto.service.response.RecipeProcessReadResponseDto;
 import org.springeel.oneclickrecipe.domain.recipeprocess.entity.RecipeProcess;
 
-@Mapper(componentModel = ComponentModel.SPRING)
+@Mapper(componentModel = SPRING)
 public interface RecipeProcessEntityMapper {
 
     RecipeProcess toRecipeProcess(RecipeProcessCreateServiceRequestDto requestDto, String imageUrl,
         Recipe recipe);
 
-    List<RecipeProcessReadResponseDto> toReadRecipeProcess(
+    List<RecipeProcessReadResponseDto> toRecipeProcessReadResponseDto(
         List<RecipeProcess> recipeProcesses);
 
 }
