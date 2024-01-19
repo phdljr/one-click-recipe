@@ -13,5 +13,5 @@ public interface RecipeProcessRepository extends JpaRepository<RecipeProcess, Lo
 
     List<RecipeProcess> findAllByRecipeOrderBySequenceAsc(Recipe recipe);
 
-    RecipeProcess findRecipeProcessByRecipeAndSequence(Recipe recipe, Byte sequence);
+    RecipeProcess findByRecipeAndSequence(Recipe recipe, Byte sequence);
 }

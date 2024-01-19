@@ -50,7 +50,7 @@ public class RecipeProcessServiceImpl implements RecipeProcessService {
         String folderName = recipe.getFolderName();
         String fileName;
         String fileUrl;
-        RecipeProcess check = recipeProcessRepository.findRecipeProcessByRecipeAndSequence(recipe,
+        RecipeProcess check = recipeProcessRepository.findByRecipeAndSequence(recipe,
             requestDto.sequence());
         if (check != null) {
             throw new ValidateRecipeProcessException(RecipeProcessErrorCode.USE_VALIDATE_DATA);
