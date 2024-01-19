@@ -29,7 +29,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public void addCartFoods(User user, CartAddServiceRequestDto recipeFoodIds) {
         // 한 번의 쿼리로 모든 RdcipeFood 엔티티를 가져옴
-        List<RecipeFood> recipeFoods = recipeFoodRepository.findAllByIdIn(
+        List<RecipeFood> recipeFoods = recipeFoodRepository.findAllById(
             recipeFoodIds.recipeFoodIds());
 
         // 각 RecipeFood에 대해 Cart 엔티티를 생성하고 저장

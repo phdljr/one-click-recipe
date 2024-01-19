@@ -4,9 +4,9 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.recipefood.dto.controller.RecipeFoodCreateControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.recipefood.dto.controller.RecipeFoodUpdateControllerRequestDto;
-import org.springeel.oneclickrecipe.domain.recipefood.dto.service.RecipeFoodCreateServiceRequestDto;
-import org.springeel.oneclickrecipe.domain.recipefood.dto.service.RecipeFoodReadResponseDto;
-import org.springeel.oneclickrecipe.domain.recipefood.dto.service.RecipeFoodUpdateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.recipefood.dto.service.request.RecipeFoodCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.recipefood.dto.service.response.RecipeFoodReadResponseDto;
+import org.springeel.oneclickrecipe.domain.recipefood.dto.service.request.RecipeFoodUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipefood.mapper.dto.RecipeFoodDtoMapper;
 import org.springeel.oneclickrecipe.domain.recipefood.service.RecipeFoodService;
 import org.springeel.oneclickrecipe.global.security.UserDetailsImpl;
@@ -23,56 +23,56 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
+@RequestMapping("/api/v1")
 @RestController
-@RequestMapping("/api/v1/recipes")
 public class RecipeFoodController {
 
     private final RecipeFoodService recipeFoodService;
     private final RecipeFoodDtoMapper recipeFoodDtoMapper;
 
-    @PostMapping("/{recipeId}/recipe-foods")
+    @PostMapping("/recipes/{recipeId}/recipe-foods")
     public ResponseEntity<?> create(
-        @RequestBody RecipeFoodCreateControllerRequestDto requestDto,
+        @RequestBody RecipeFoodCreateControllerRequestDto controllerRequestDto,
         @PathVariable Long recipeId,
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         RecipeFoodCreateServiceRequestDto serviceRequestDto =
-            recipeFoodDtoMapper.toRecipeFoodCreateServiceRequestDto(requestDto);
+            recipeFoodDtoMapper.toRecipeFoodCreateServiceRequestDto(controllerRequestDto);
         recipeFoodService.createRecipeFood(serviceRequestDto, recipeId, userDetails.user());
-        return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @DeleteMapping("{recipeId}/recipe-foods/{recipeFoodId}")
+    @DeleteMapping("/recipe-foods/{recipeFoodId}")
     public ResponseEntity<?> delete(
-        @PathVariable Long recipeId,
+//        @PathVariable Long recipeId,
         @PathVariable Long recipeFoodId,
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        recipeFoodService.deleteRecipeFood(recipeId, recipeFoodId, userDetails.user());
-        return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
+        recipeFoodService.deleteRecipeFood(recipeFoodId, userDetails.user());
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PutMapping("/{recipeId}/recipe-foods/{recipeFoodId}")
+    @PutMapping("/recipes/{recipeId}/recipe-foods/{recipeFoodId}")
     public ResponseEntity<?> update(
         @PathVariable Long recipeId,
         @PathVariable Long recipeFoodId,
         @AuthenticationPrincipal UserDetailsImpl userDetails,
-        @RequestBody RecipeFoodUpdateControllerRequestDto requestDto
+        @RequestBody RecipeFoodUpdateControllerRequestDto controllerRequestDto
     ) {
         RecipeFoodUpdateServiceRequestDto serviceRequestDto =
-            recipeFoodDtoMapper.toRecipeFoodUpdateServiceRequestDto(requestDto);
+            recipeFoodDtoMapper.toRecipeFoodUpdateServiceRequestDto(controllerRequestDto);
         recipeFoodService.updateRecipeFood(recipeId, recipeFoodId, userDetails.user(),
             serviceRequestDto);
-        return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @GetMapping("/{recipeId}/recipe-foods")
+    @GetMapping("/recipes/{recipeId}/recipe-foods")
     public ResponseEntity<?> readRecipeFood(
         @PathVariable Long recipeId
     ) {
-        List<RecipeFoodReadResponseDto> recipeFoodReadResponseDto =
+        List<RecipeFoodReadResponseDto> responseDto =
             recipeFoodService.readRecipeFood(recipeId);
-        return ResponseEntity.status(HttpStatus.OK).body(recipeFoodReadResponseDto);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
 
 }

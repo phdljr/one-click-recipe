@@ -1,10 +1,12 @@
-package org.springeel.oneclickrecipe.domain.recipefood.dto.service;
+package org.springeel.oneclickrecipe.domain.recipefood.dto.service.response;
 
+import lombok.Builder;
 import org.springeel.oneclickrecipe.domain.food.entity.UnitType;
 
+@Builder
 public record RecipeFoodReadResponseDto(
     String name,
-    String amount,
+    Short amount,
     Integer price,
     UnitType unit
 ) {
