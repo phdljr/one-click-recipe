@@ -3,10 +3,10 @@ package org.springeel.oneclickrecipe.domain.recipe.service.impl;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeAllReadResponseDto;
-import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeCreateServiceRequestDto;
-import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeReadResponseDto;
-import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeUpdateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.recipe.dto.service.request.RecipeCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.recipe.dto.service.request.RecipeUpdateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.recipe.dto.service.response.RecipeAllReadResponseDto;
+import org.springeel.oneclickrecipe.domain.recipe.dto.service.response.RecipeReadResponseDto;
 import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;
 import org.springeel.oneclickrecipe.domain.recipe.exception.NotFoundRecipeException;
 import org.springeel.oneclickrecipe.domain.recipe.exception.RecipeErrorCode;
@@ -37,6 +37,7 @@ public class RecipeServiceImpl implements RecipeService {
         Recipe recipe = recipeRepository.findByIdAndUser(recipeId, user)
             .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
         recipeRepository.delete(recipe);
+        // TODO 폴더 삭제시키기
     }
 
     @Transactional
@@ -48,20 +49,19 @@ public class RecipeServiceImpl implements RecipeService {
             requestDto.title(),
             requestDto.intro(),
             requestDto.serving(),
-            requestDto.videoPath()
+            requestDto.videoUrl(),
+            requestDto.imageUrl()
         );
     }
 
     public List<RecipeAllReadResponseDto> readAllRecipe() {
         List<Recipe> recipes = recipeRepository.findAll();
-        return recipeEntityMapper.toRecipeAllRead(recipes);
+        return recipeEntityMapper.toRecipeAllReadResponseDto(recipes);
     }
 
     public RecipeReadResponseDto readRecipe(Long recipeId) {
         Recipe recipe = recipeRepository.findById(recipeId)
             .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
-        RecipeReadResponseDto readResponseDto =
-            recipeEntityMapper.toRecipeRead(recipe);
-        return readResponseDto;
+        return recipeEntityMapper.toRecipeReadResponseDto(recipe);
     }
 }

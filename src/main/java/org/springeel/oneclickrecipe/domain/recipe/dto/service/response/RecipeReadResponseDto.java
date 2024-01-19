@@ -1,9 +1,9 @@
-package org.springeel.oneclickrecipe.domain.recipe.dto.service;
+package org.springeel.oneclickrecipe.domain.recipe.dto.service.response;
 
 public record RecipeReadResponseDto(
     String title,
     String intro,
-    String videoPath,
+    String videoUrl,
     String imageUrl
 ) {
 

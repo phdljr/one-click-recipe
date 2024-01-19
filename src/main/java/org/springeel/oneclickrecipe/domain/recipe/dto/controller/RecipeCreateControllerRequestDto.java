@@ -4,7 +4,8 @@ public record RecipeCreateControllerRequestDto(
     String title,
     String intro,
     Byte serving,
-    String videoPath
+    String videoUrl,
+    String imageUrl
 ) {
 
 }
