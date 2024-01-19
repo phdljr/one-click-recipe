@@ -1,13 +1,13 @@
 package org.springeel.oneclickrecipe.domain.cart.mapper.dto;
 
+import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
+
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.springeel.oneclickrecipe.domain.cart.dto.controller.CartAddControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.cart.dto.service.CartAddServiceRequestDto;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = SPRING)
 public interface CartDtoMapper {
 
-    @Mapping(target = "userId", ignore = true)
-    CartAddServiceRequestDto toServiceDto(CartAddControllerRequestDto controllerRequestDto);
+    CartAddServiceRequestDto toServiceRequestDto(CartAddControllerRequestDto controllerRequestDto);
 }

@@ -11,7 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springeel.oneclickrecipe.domain.cart.dto.service.CartCheckResponseDto;
+import org.springeel.oneclickrecipe.domain.cart.dto.service.CartReadAllResponseDto;
 import org.springeel.oneclickrecipe.domain.cart.entity.Cart;
 import org.springeel.oneclickrecipe.domain.cart.repository.CartRepository;
 import org.springeel.oneclickrecipe.domain.food.entity.Food;
@@ -40,13 +40,13 @@ public class CartServiceImplTest {
             new Food("두부", 12000, UnitType.COUNT));
         List<Cart> testCarts = Arrays.asList(new Cart(testUser, recipeFood1),
             new Cart(testUser, recipeFood2));
-        when(cartRepository.findByUser(testUser)).thenReturn(testCarts);
+        when(cartRepository.findAllByUser(testUser)).thenReturn(testCarts);
 
         // when
-        CartCheckResponseDto result = cartService.getCart(testUser);
+        CartReadAllResponseDto result = cartService.getCart(testUser);
 
         // then
         assertNotNull(result);
-        assertEquals(22000.0, result.totalPrice());
+        assertEquals(22000, result.totalPrice());
     }
 }

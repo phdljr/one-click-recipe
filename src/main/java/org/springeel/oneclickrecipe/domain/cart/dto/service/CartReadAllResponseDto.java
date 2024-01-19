@@ -4,9 +4,9 @@ import java.util.List;
 import lombok.Builder;
 
 @Builder
-public record CartCheckResponseDto(
-    double totalPrice,
-    List<CartItemCheckDto> items
+public record CartReadAllResponseDto(
+    Integer totalPrice,
+    List<CartReadResponseDto> foods
 ) {
 
 }

@@ -36,7 +36,7 @@ public class OrderServiceImpl implements OrderService {
         User user) {
 
         // 장바구니 아이템 조회
-        List<Cart> cartItems = cartRepository.findByUser(user);
+        List<Cart> cartItems = cartRepository.findAllByUser(user);
 
         // totalPrice 계산
         int totalPrice = cartItems.stream()
