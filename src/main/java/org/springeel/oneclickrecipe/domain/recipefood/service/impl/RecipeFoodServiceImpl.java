@@ -56,19 +56,15 @@ public class RecipeFoodServiceImpl implements RecipeFoodService {
     // TODO recipeId 제거해보는 리팩토링 해보기
     @Override
     @Transactional
-    public void updateRecipeFood(Long recipeId, Long recipeFoodId, User user,
+    public void updateRecipeFood(Long recipeFoodId, User user,
         RecipeFoodUpdateServiceRequestDto requestDto) {
-        Recipe recipe = recipeRepository.findByIdAndUser(recipeId, user)
-            .orElseThrow(() -> new NotFoundRecipeFoodException(RecipeErrorCode.NOT_FOUND_RECIPE));
-        Food food = foodRepository.findByName(requestDto.foodName())
-            .orElseThrow(() -> new NotFoundFoodException(FoodErrorCode.NOT_FOUND_FOOD));
-        RecipeFood recipeFood = recipeFoodRepository.findByIdAndRecipe(recipeFoodId, recipe)
+        RecipeFood recipeFood = recipeFoodRepository.findByIdAndRecipe_User(recipeFoodId, user)
             .orElseThrow(
                 () -> new NotFoundRecipeFoodException(RecipeFoodErrorCode.NOT_FOUND_RECIPEFOOD));
-
+        Food food = foodRepository.findByName(requestDto.foodName())
+            .orElseThrow(() -> new NotFoundFoodException(FoodErrorCode.NOT_FOUND_FOOD));
         recipeFood.updateRecipeFood(
             requestDto.amount(),
-            recipe,
             food
         );
     }

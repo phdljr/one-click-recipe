@@ -48,9 +48,8 @@ public class RecipeFood extends BaseEntity {
         this.food = food;
     }
 
-    public void updateRecipeFood(Short amount, Recipe recipe, Food food) {
+    public void updateRecipeFood(Short amount, Food food) {
         this.amount = amount;
-        this.recipe = recipe;
         this.food = food;
     }
 }

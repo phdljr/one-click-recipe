@@ -12,7 +12,7 @@ public interface RecipeFoodService {
 
     void deleteRecipeFood(Long recipeFoodId, User user);
 
-    void updateRecipeFood(Long recipeId, Long recipeFoodId, User user,
+    void updateRecipeFood(Long recipeFoodId, User user,
         RecipeFoodUpdateServiceRequestDto requestDto);
 
     List<RecipeFoodReadResponseDto> readRecipeFood(Long recipeId);
