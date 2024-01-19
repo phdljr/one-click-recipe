@@ -1,5 +1,6 @@
 package org.springeel.oneclickrecipe.domain.recipe.controller;
 
+import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.recipe.dto.controller.RecipeCreateControllerRequestDto;
@@ -21,7 +22,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/recipes")
@@ -33,12 +36,13 @@ public class RecipeController {
 
     @PostMapping
     public ResponseEntity<?> create(
-        @RequestBody RecipeCreateControllerRequestDto controllerRequestDto,
-        @AuthenticationPrincipal UserDetailsImpl userDetails
-    ) {
+        @RequestPart RecipeCreateControllerRequestDto controllerRequestDto,
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
+        @RequestPart MultipartFile multipartFile
+    ) throws IOException {
         RecipeCreateServiceRequestDto serviceRequestDto =
             recipeDtoMapper.toRecipeCreateServiceRequestDto(controllerRequestDto);
-        recipeService.createRecipe(serviceRequestDto, userDetails.user());
+        recipeService.createRecipe(serviceRequestDto, userDetails.user(), multipartFile);
         return ResponseEntity.status(HttpStatus.CREATED).body("레시피 생성 완성");
     }
 
