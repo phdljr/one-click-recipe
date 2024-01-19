@@ -105,7 +105,6 @@ public class RecipeProcessServiceImpl implements RecipeProcessService {
                 RecipeProcessErrorCode.NOT_FOUND_RECIPE_PROCESS));
         String imageName = s3Provider.updateImage(recipeProcess.getImageUrl(),
             recipeProcess.getRecipe().getFolderName(), multipartFile);
-        imageName = url + recipeProcess.getRecipe().getFolderName() + imageName;
         recipeProcess.updateRecipe(
             requestDto.sequence(),
             requestDto.description(),
