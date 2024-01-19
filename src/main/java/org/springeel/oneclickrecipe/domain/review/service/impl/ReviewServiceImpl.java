@@ -7,9 +7,9 @@ import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;
 import org.springeel.oneclickrecipe.domain.recipe.exception.NotFoundRecipeException;
 import org.springeel.oneclickrecipe.domain.recipe.exception.RecipeErrorCode;
 import org.springeel.oneclickrecipe.domain.recipe.repository.RecipeRepository;
-import org.springeel.oneclickrecipe.domain.review.dto.service.ReviewCreateServiceRequestDto;
-import org.springeel.oneclickrecipe.domain.review.dto.service.ReviewReadResponseDto;
-import org.springeel.oneclickrecipe.domain.review.dto.service.ReviewUpdateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.review.dto.service.request.ReviewCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.review.dto.service.request.ReviewUpdateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.review.dto.service.response.ReviewReadResponseDto;
 import org.springeel.oneclickrecipe.domain.review.entity.Review;
 import org.springeel.oneclickrecipe.domain.review.exception.NotFoundReviewException;
 import org.springeel.oneclickrecipe.domain.review.exception.ReviewErrorCode;
@@ -50,7 +50,6 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public void deleteReview(User user, Long reviewId) {
-
         Review review = reviewRepository.findByIdAndUser(reviewId, user)
             .orElseThrow(() -> new NotFoundReviewException(ReviewErrorCode.NOT_FOUND_REVIEW));
         reviewRepository.delete(review);
@@ -58,18 +57,12 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public List<ReviewReadResponseDto> getReviews(Long recipeId) {
-        Recipe recipe = recipeRepository.findById(recipeId)
+        recipeRepository.findById(recipeId)
             .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
         // 특정 레시피에 대한 리뷰 목록 조회
-        List<Review> reviews = reviewRepository.findByRecipeId(recipeId);
+        List<Review> reviews = reviewRepository.findAllByRecipeId(recipeId);
 
         //  댓글 목록을 Dto로 변환해서 반환
-        return reviews.stream()
-            .map(review -> ReviewReadResponseDto.builder()
-                .content(review.getContent())
-                .star(review.getStar())
-                .build())
-            .toList();
-
+        return reviewEntityMapper.toReviewReadResponseDtos(reviews);
     }
 }

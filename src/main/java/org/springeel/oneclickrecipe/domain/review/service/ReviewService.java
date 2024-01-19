@@ -1,9 +1,9 @@
 package org.springeel.oneclickrecipe.domain.review.service;
 
 import java.util.List;
-import org.springeel.oneclickrecipe.domain.review.dto.service.ReviewCreateServiceRequestDto;
-import org.springeel.oneclickrecipe.domain.review.dto.service.ReviewReadResponseDto;
-import org.springeel.oneclickrecipe.domain.review.dto.service.ReviewUpdateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.review.dto.service.request.ReviewCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.review.dto.service.response.ReviewReadResponseDto;
+import org.springeel.oneclickrecipe.domain.review.dto.service.request.ReviewUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 
 public interface ReviewService {

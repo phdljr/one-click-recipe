@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;
 import org.springeel.oneclickrecipe.domain.recipe.exception.NotFoundRecipeException;
 import org.springeel.oneclickrecipe.domain.recipe.repository.RecipeRepository;
-import org.springeel.oneclickrecipe.domain.review.dto.service.ReviewReadResponseDto;
+import org.springeel.oneclickrecipe.domain.review.dto.service.response.ReviewReadResponseDto;
 import org.springeel.oneclickrecipe.domain.review.entity.Review;
 import org.springeel.oneclickrecipe.domain.review.repository.ReviewRepository;
 import org.springeel.oneclickrecipe.domain.review.service.ReviewService;

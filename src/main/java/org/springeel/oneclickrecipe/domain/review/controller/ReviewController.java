@@ -5,9 +5,9 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.review.dto.controller.ReviewCreateControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.review.dto.controller.ReviewUpdateControllerRequestDto;
-import org.springeel.oneclickrecipe.domain.review.dto.service.ReviewCreateServiceRequestDto;
-import org.springeel.oneclickrecipe.domain.review.dto.service.ReviewReadResponseDto;
-import org.springeel.oneclickrecipe.domain.review.dto.service.ReviewUpdateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.review.dto.service.request.ReviewCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.review.dto.service.response.ReviewReadResponseDto;
+import org.springeel.oneclickrecipe.domain.review.dto.service.request.ReviewUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.review.mapper.dto.ReviewDtoMapper;
 import org.springeel.oneclickrecipe.domain.review.service.ReviewService;
 import org.springeel.oneclickrecipe.global.security.UserDetailsImpl;
@@ -24,8 +24,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
-@RestController
 @RequestMapping("/api/v1")
+@RestController
 public class ReviewController {
 
     private final ReviewDtoMapper reviewDtoMapper;
@@ -34,22 +34,22 @@ public class ReviewController {
     @PostMapping("/recipes/{recipeId}/reviews") //후기작성
     public void create(
         @PathVariable(name = "recipeId") Long recipeId,
-        @Valid @RequestBody ReviewCreateControllerRequestDto createControllerRequestDto,
+        @Valid @RequestBody ReviewCreateControllerRequestDto controllerRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         ReviewCreateServiceRequestDto serviceRequestDto =
-            reviewDtoMapper.toReviewCreateServiceRequestDto(createControllerRequestDto);
+            reviewDtoMapper.toReviewCreateServiceRequestDto(controllerRequestDto);
         reviewService.createReview(userDetails.user(), serviceRequestDto, recipeId);
     }
 
     @PutMapping("/reviews/{reviewId}") //후기수정
     public ResponseEntity<?> update(
         @PathVariable(name = "reviewId") Long reviewId,
-        @Valid @RequestBody ReviewUpdateControllerRequestDto ReviewUpdateServiceRequestDto,
+        @Valid @RequestBody ReviewUpdateControllerRequestDto controllerRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         ReviewUpdateServiceRequestDto serviceRequestDto =
-            reviewDtoMapper.toReviewUpdateServiceRequestDto(ReviewUpdateServiceRequestDto);
+            reviewDtoMapper.toReviewUpdateServiceRequestDto(controllerRequestDto);
         reviewService.updateReview(reviewId, userDetails.user(), serviceRequestDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
