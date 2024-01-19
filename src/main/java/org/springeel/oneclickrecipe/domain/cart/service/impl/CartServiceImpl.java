@@ -12,6 +12,7 @@ import org.springeel.oneclickrecipe.domain.recipefood.entity.RecipeFood;
 import org.springeel.oneclickrecipe.domain.recipefood.repository.RecipeFoodRepository;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -21,6 +22,7 @@ public class CartServiceImpl implements CartService {
     private final RecipeFoodRepository recipeFoodRepository;
 
     @Override
+    @Transactional
     public void clearCart(User user) {
         // 사용자의 장바구니 데이터를 삭제
         cartRepository.deleteByUser(user);
