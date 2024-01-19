@@ -47,8 +47,7 @@ public class RecipeProcessServiceImpl implements RecipeProcessService {
     ) throws IOException {
         Boolean validator = recipeProcessRepository.existsBySequence(requestDto.sequence());
         if (validator) {
-            throw new IOException(
-                new ValidateRecipeProcessException(RecipeProcessErrorCode.USE_VALIDATE_DATA));
+            throw new ValidateRecipeProcessException(RecipeProcessErrorCode.USE_VALIDATE_DATA);
         }
         Recipe recipe = recipeRepository.findByIdAndUser(recipeId, user)
             .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
