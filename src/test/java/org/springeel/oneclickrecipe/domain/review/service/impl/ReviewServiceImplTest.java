@@ -50,7 +50,7 @@ class ReviewServiceImplTest {
             .user(user)
             .intro("호로록 짭짭")
             .serving((byte) 4)
-            .videoPath("/videos/스파게티.mp4")
+            .videoUrl("/videos/스파게티.mp4")
             .folderName("스파게티")
             .build());
 
