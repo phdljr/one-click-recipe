@@ -76,17 +76,18 @@ public class S3Provider {
                 imageName = imageName.replace(url, "");
                 imageName = imageName.substring(imageName.lastIndexOf("/"));
                 deleteImage(folderName + imageName);
-                return null;
+                imageName = null;
+                return imageName;
             }
-            // 이미지 내용을 변경하고 싶거나 또는 유지하고 싶을 때
+            imageName = imageName.replace(url, "");
+            imageName = imageName.substring(imageName.lastIndexOf("/"));
+            deleteImage(folderName + imageName);// 이미지 내용을 변경하고 싶거나 또는 유지하고 싶을 때
             String NewImage = originalFileName(multipartFile);
             imageName = url + folderName + SEPARATOR + NewImage;
             String saveImageUrl = folderName + SEPARATOR + NewImage;
             ObjectMetadata metadata = setObjectMetadata(multipartFile);
             amazonS3.putObject(bucket, saveImageUrl, multipartFile.getInputStream(), metadata);
-            imageName = imageName.replace(url, "");
-            imageName = imageName.substring(imageName.lastIndexOf("/"));
-            deleteImage(folderName + imageName);
+
         }
         return imageName;
     }
