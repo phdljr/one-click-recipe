@@ -77,7 +77,6 @@ public class RecipeProcessServiceImpl implements RecipeProcessService {
         User user,
         Long processId
     ) {
-        // 삭제 로직 수정
         RecipeProcess recipeProcess = recipeProcessRepository.findByIdAndRecipe_User(processId,
                 user)
             .orElseThrow(() -> new NotFoundRecipeProcessException(
@@ -100,6 +99,7 @@ public class RecipeProcessServiceImpl implements RecipeProcessService {
         Long processId,
         MultipartFile multipartFile
     ) throws IOException {
+        // 업데이트 기능 로직
         RecipeProcess recipeProcess = recipeProcessRepository.findByIdAndRecipe_User(processId,
                 user)
             .orElseThrow(() -> new NotFoundRecipeProcessException(
