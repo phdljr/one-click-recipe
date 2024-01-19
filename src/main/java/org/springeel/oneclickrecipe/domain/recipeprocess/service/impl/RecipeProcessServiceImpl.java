@@ -99,7 +99,6 @@ public class RecipeProcessServiceImpl implements RecipeProcessService {
         Long processId,
         MultipartFile multipartFile
     ) throws IOException {
-        // 업데이트 기능 로직
         RecipeProcess recipeProcess = recipeProcessRepository.findByIdAndRecipe_User(processId,
                 user)
             .orElseThrow(() -> new NotFoundRecipeProcessException(
