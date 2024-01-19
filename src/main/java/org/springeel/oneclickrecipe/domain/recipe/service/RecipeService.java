@@ -16,7 +16,9 @@ public interface RecipeService {
 
     void deleteRecipe(Long recipeId, User user);
 
-    void updateRecipe(RecipeUpdateServiceRequestDto requestDto, User user, Long recipeId);
+    void updateRecipe(RecipeUpdateServiceRequestDto requestDto, User user, Long recipeId,
+        MultipartFile multipartFile)
+        throws IOException;
 
     List<RecipeAllReadResponseDto> readAllRecipe();
 
