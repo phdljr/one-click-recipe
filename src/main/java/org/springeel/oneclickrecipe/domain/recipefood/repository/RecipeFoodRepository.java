@@ -1,6 +1,5 @@
 package org.springeel.oneclickrecipe.domain.recipefood.repository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;

@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -35,9 +34,12 @@ public class CartServiceImplTest {
     public void getCart_ShouldReturnCartDetails() {
         // given
         User testUser = new User("배규태", "12345678", "봄장어", UserRole.USER);
-        RecipeFood recipeFood1 = new RecipeFood("김치", (short) 500, Recipe.builder().build(), new Food( "김치", 10000F, UnitType.G));
-        RecipeFood recipeFood2 = new RecipeFood("두부", (short) 3, Recipe.builder().build(), new Food( "두부", 12000F, UnitType.COUNT));
-        List<Cart> testCarts = Arrays.asList(new Cart(testUser, recipeFood1), new Cart(testUser, recipeFood2));
+        RecipeFood recipeFood1 = new RecipeFood("김치", (short) 500, Recipe.builder().build(),
+            new Food("김치", 10000F, UnitType.G));
+        RecipeFood recipeFood2 = new RecipeFood("두부", (short) 3, Recipe.builder().build(),
+            new Food("두부", 12000F, UnitType.COUNT));
+        List<Cart> testCarts = Arrays.asList(new Cart(testUser, recipeFood1),
+            new Cart(testUser, recipeFood2));
         when(cartRepository.findByUser(testUser)).thenReturn(testCarts);
 
         // when

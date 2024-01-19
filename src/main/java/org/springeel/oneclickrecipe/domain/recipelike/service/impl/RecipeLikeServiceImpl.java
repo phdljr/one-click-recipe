@@ -28,7 +28,8 @@ public class RecipeLikeServiceImpl implements RecipeLikeService {
             .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
 
         if (recipeLikeRepository.existsByUserIdAndRecipeId(user.getId(), recipe.getId())) {
-            throw new AlreadyExistsRecipeLikeException(RecipeLikeErrorCode.ALREADY_EXIST_RECIPELIKE);
+            throw new AlreadyExistsRecipeLikeException(
+                RecipeLikeErrorCode.ALREADY_EXIST_RECIPELIKE);
         }
 
         RecipeLike recipeLike = recipeLikeEntityMapper.toRecipeLike(user, recipe);

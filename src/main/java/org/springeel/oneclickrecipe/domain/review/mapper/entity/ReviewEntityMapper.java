@@ -1,5 +1,6 @@
 package org.springeel.oneclickrecipe.domain.review.mapper.entity;
 
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
@@ -9,10 +10,9 @@ import org.springeel.oneclickrecipe.domain.review.dto.service.ReviewReadResponse
 import org.springeel.oneclickrecipe.domain.review.entity.Review;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 
-import java.util.List;
-
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface ReviewEntityMapper {
+
     List<ReviewReadResponseDto> toReviewResponseDtos(List<Review> review);
 
     ReviewReadResponseDto toReviewReadResponseDto(Review review);

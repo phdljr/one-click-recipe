@@ -63,7 +63,7 @@ public class Order extends BaseEntity {
 
     // OrderDetail 엔티티와 양방향 매핑
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<OrderDetail> orderDetails = new ArrayList<>();
+    private final List<OrderDetail> orderDetails = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "user_id")

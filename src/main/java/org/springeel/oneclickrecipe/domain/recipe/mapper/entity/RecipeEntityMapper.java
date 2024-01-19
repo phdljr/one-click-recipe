@@ -7,8 +7,6 @@ import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeAllReadRespo
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeReadResponseDto;
 import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;
-import org.springeel.oneclickrecipe.domain.recipefood.dto.service.RecipeFoodReadResponseDto;
-import org.springeel.oneclickrecipe.domain.recipeprocess.dto.service.RecipeProcessReadResponseDto;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 
 @Mapper(componentModel = ComponentModel.SPRING)

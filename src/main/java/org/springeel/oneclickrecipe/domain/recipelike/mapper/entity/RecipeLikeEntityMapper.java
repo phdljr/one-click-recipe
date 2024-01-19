@@ -11,6 +11,7 @@ import org.springeel.oneclickrecipe.domain.user.entity.User;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 
 public interface RecipeLikeEntityMapper {
+
     @Mapping(source = "user", target = "user")
     @Mapping(source = "recipe", target = "recipe")
     RecipeLike toRecipeLike(User user, Recipe recipe);

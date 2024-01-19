@@ -9,6 +9,7 @@ import org.springeel.oneclickrecipe.domain.review.dto.service.ReviewUpdateServic
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface ReviewDtoMapper {
+
     ReviewCreateServiceRequestDto toReviewCreateServiceRequestDto(
         ReviewCreateControllerRequestDto controllerRequestDto);
 

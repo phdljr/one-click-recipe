@@ -8,6 +8,6 @@ import org.springeel.oneclickrecipe.domain.cart.dto.service.CartAddServiceReques
 @Mapper(componentModel = "spring")
 public interface CartDtoMapper {
 
-    @Mapping(target = "userId", ignore = true)// userId는 인증 정보에서 가져옴
+    @Mapping(target = "userId", ignore = true)
     CartAddServiceRequestDto toServiceDto(CartAddControllerRequestDto controllerRequestDto);
 }

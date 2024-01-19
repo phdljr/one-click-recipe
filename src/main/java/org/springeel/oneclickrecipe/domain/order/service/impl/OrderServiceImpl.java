@@ -41,9 +41,9 @@ public class OrderServiceImpl implements OrderService {
         // totalPrice 계산
         int totalPrice = cartItems.stream()
             .mapToInt(
-                cartItem -> (int) (cartItem.getRecipeFood().getFood().getPrice()
+                cartItem -> cartItem.getRecipeFood().getFood().getPrice()
                     * cartItem.getRecipeFood()
-                    .getAmount()))
+                    .getAmount())
             .sum();
 
         // Order 객체 생성
