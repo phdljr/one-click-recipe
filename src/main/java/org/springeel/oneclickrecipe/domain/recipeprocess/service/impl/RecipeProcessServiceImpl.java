@@ -2,18 +2,19 @@ package org.springeel.oneclickrecipe.domain.recipeprocess.service.impl;
 
 
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;
 import org.springeel.oneclickrecipe.domain.recipe.exception.NotFoundRecipeException;
 import org.springeel.oneclickrecipe.domain.recipe.exception.RecipeErrorCode;
 import org.springeel.oneclickrecipe.domain.recipe.repository.RecipeRepository;
 import org.springeel.oneclickrecipe.domain.recipeprocess.dto.service.RecipeProcessCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.recipeprocess.dto.service.RecipeProcessReadResponseDto;
 import org.springeel.oneclickrecipe.domain.recipeprocess.dto.service.RecipeProcessUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipeprocess.entity.RecipeProcess;
 import org.springeel.oneclickrecipe.domain.recipeprocess.exception.NotFoundRecipeProcessException;
 import org.springeel.oneclickrecipe.domain.recipeprocess.exception.RecipeProcessErrorCode;
+import org.springeel.oneclickrecipe.domain.recipeprocess.exception.ValidateRecipeProcessException;
 import org.springeel.oneclickrecipe.domain.recipeprocess.mapper.entity.RecipeProcessEntityMapper;
 import org.springeel.oneclickrecipe.domain.recipeprocess.repository.RecipeProcessRepository;
 import org.springeel.oneclickrecipe.domain.recipeprocess.service.RecipeProcessService;
@@ -44,6 +45,10 @@ public class RecipeProcessServiceImpl implements RecipeProcessService {
         Long recipeId,
         MultipartFile multipartFile
     ) throws IOException {
+        Boolean validator = recipeProcessRepository.existsBySequence(requestDto.sequence());
+        if (validator) {
+            throw new ValidateRecipeProcessException(RecipeProcessErrorCode.USE_VALIDATE_DATA);
+        }
         Recipe recipe = recipeRepository.findByIdAndUser(recipeId, user)
             .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
         String folderName = recipe.getFolderName();
@@ -100,5 +105,16 @@ public class RecipeProcessServiceImpl implements RecipeProcessService {
             requestDto.time(),
             imageName
         );
+    }
+
+    public List<RecipeProcessReadResponseDto> readRecipeProcess(
+        Long recipeId) {
+        Recipe recipe = recipeRepository.findById(recipeId)
+            .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
+        List<RecipeProcess> recipeProcesses = recipeProcessRepository.findAllByRecipeOrderBySequenceAsc(
+            recipe);
+        List<RecipeProcessReadResponseDto> readRecipeProcess =
+            recipeProcessEntityMapper.toReadRecipeProcess(recipeProcesses);
+        return readRecipeProcess;
     }
 }

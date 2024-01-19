@@ -79,7 +79,12 @@ public class WebSecurityConfig {
                 .requestMatchers("/api/v1/users/login").permitAll()
                 .requestMatchers("/api/v1/users/signup").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/recipes").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/v1/recipes/{recipeId}").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/recipes/{recipeId}/reviews").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/v1/recipes/{recipeId}/recipe-processes")
+                .permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/v1/recipes/{recipeId}/recipe-foods")
+                .permitAll()
                 .anyRequest().authenticated()
         );
 

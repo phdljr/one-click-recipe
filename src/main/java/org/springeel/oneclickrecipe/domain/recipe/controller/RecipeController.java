@@ -6,9 +6,12 @@ import org.springeel.oneclickrecipe.domain.recipe.dto.controller.RecipeCreateCon
 import org.springeel.oneclickrecipe.domain.recipe.dto.controller.RecipeUpdateControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeAllReadResponseDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeReadResponseDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.mapper.dto.RecipeDtoMapper;
 import org.springeel.oneclickrecipe.domain.recipe.service.RecipeService;
+import org.springeel.oneclickrecipe.domain.recipefood.controller.RecipeFoodController;
+import org.springeel.oneclickrecipe.domain.recipeprocess.controller.RecipeProcessController;
 import org.springeel.oneclickrecipe.global.security.UserDetailsImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +32,8 @@ public class RecipeController {
 
     private final RecipeService recipeService;
     private final RecipeDtoMapper recipeDtoMapper;
+    private final RecipeProcessController processController;
+    private final RecipeFoodController recipeFoodController;
 
     @PostMapping()
     public ResponseEntity<?> create(
@@ -67,5 +72,15 @@ public class RecipeController {
         List<RecipeAllReadResponseDto> recipeAllReadResponseDto =
             recipeService.readAllRecipe();
         return ResponseEntity.status(HttpStatus.OK).body(recipeAllReadResponseDto);
+    }
+
+    @GetMapping("/{recipeId}")
+    public ResponseEntity<?> readOnce(
+        @PathVariable Long recipeId
+    ) {
+        RecipeReadResponseDto readResponseDto =
+            recipeService.readRecipe(recipeId);
+        return ResponseEntity.status(HttpStatus.OK).body(readResponseDto);
+
     }
 }

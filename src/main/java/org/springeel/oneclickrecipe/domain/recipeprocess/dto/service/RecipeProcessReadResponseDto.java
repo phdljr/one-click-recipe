@@ -1,10 +1,10 @@
 package org.springeel.oneclickrecipe.domain.recipeprocess.dto.service;
 
-public record RecipeProcessUpdateServiceRequestDto(
+public record RecipeProcessReadResponseDto(
     Byte sequence,
     String description,
-    String imageUrl,
-    Short time
+    Short time,
+    String imageUrl
 ) {
 
 }

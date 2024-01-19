@@ -44,6 +44,9 @@ public class Recipe extends BaseEntity {
     @Column
     private String folderName;
 
+    @Column
+    private String imageUrl;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
