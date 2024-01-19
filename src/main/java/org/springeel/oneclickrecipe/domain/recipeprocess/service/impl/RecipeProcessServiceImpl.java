@@ -87,7 +87,7 @@ public class RecipeProcessServiceImpl implements RecipeProcessService {
             String imageName = recipeProcess.getImageUrl().replace(url, "");
             imageName = imageName.substring(imageName.lastIndexOf("/"));
             recipeProcessRepository.delete(recipeProcess);
-            s3Provider.deleteImage(recipeProcess.getRecipe().getFolderName() + imageName);
+            s3Provider.delete(recipeProcess.getRecipe().getFolderName() + imageName);
         }
     }
 
