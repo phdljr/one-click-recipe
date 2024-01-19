@@ -23,7 +23,6 @@ public class CartServiceImpl implements CartService {
 
     @Transactional
     @Override
-    @Transactional
     public void clearCart(User user) {
         // 사용자의 장바구니 데이터를 삭제
         cartRepository.deleteByUser(user);
@@ -50,7 +49,8 @@ public class CartServiceImpl implements CartService {
     public CartReadAllResponseDto getCart(User user) {
         List<Cart> carts = cartRepository.findAllByUser(user);
         int totalPrice = carts.stream()
-            .mapToInt(cart -> cart.getRecipeFood().getFood().getPrice() * cart.getRecipeFood().getAmount())
+            .mapToInt(cart -> cart.getRecipeFood().getFood().getPrice() * cart.getRecipeFood()
+                .getAmount())
             .sum();
 
         List<CartReadResponseDto> foods = carts.stream()
