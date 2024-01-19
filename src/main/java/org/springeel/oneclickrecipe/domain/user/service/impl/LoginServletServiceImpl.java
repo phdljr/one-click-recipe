@@ -28,4 +28,15 @@ public class LoginServletServiceImpl implements LoginServletService {
 
         httpServletResponse.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
     }
+
+    @Override
+    public void addJwtToCookie(final UserLoginServiceRequestDto requestDto,
+        final HttpServletResponse httpServletResponse) {
+        User user = userRepository.findByEmail(requestDto.email())
+            .orElseThrow(() -> new NotFoundUserException(UserErrorCode.NOT_FOUND_USER));
+
+        String token = jwtUtil.createToken(user.getEmail(), user.getRole());
+
+        httpServletResponse.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
+    }
 }

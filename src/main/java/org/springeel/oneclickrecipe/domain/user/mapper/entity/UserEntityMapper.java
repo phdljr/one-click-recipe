@@ -1,14 +1,15 @@
 package org.springeel.oneclickrecipe.domain.user.mapper.entity;
 
+import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingConstants.ComponentModel;
 import org.springeel.oneclickrecipe.domain.user.dto.service.UserSignUpServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springeel.oneclickrecipe.domain.user.entity.UserRole;
 
 @Mapper(
-    componentModel = ComponentModel.SPRING,
+    componentModel = SPRING,
     uses = PasswordTranslator.class
 )
 public interface UserEntityMapper {
