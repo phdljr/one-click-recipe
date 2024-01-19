@@ -9,11 +9,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RecipeFoodRepository extends JpaRepository<RecipeFood, Long> {
 
-    Optional<RecipeFood> findByIdAndRecipe(Long recipeFoodId, Recipe recipe);
-
     Optional<RecipeFood> findByIdAndRecipe_User(Long recipeFoodid, User user);
 
     List<RecipeFood> findAllByRecipeId(Long recipeId);
 
-//    Optional<RecipeFood> findByIdAndRecipe_User(Long recipeFoodId, User user);
 }
