@@ -21,6 +21,7 @@ public class CartServiceImpl implements CartService {
     private final CartRepository cartRepository;
     private final RecipeFoodRepository recipeFoodRepository;
 
+    @Transactional
     @Override
     @Transactional
     public void clearCart(User user) {
@@ -49,7 +50,7 @@ public class CartServiceImpl implements CartService {
     public CartReadAllResponseDto getCart(User user) {
         List<Cart> carts = cartRepository.findAllByUser(user);
         int totalPrice = carts.stream()
-            .mapToInt(cart -> cart.getRecipeFood().getFood().getPrice())
+            .mapToInt(cart -> cart.getRecipeFood().getFood().getPrice() * cart.getRecipeFood().getAmount())
             .sum();
 
         List<CartReadResponseDto> foods = carts.stream()
