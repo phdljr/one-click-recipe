@@ -26,7 +26,7 @@ public class OrderDetail {
     private Long id;
 
     @Column(nullable = false)
-    private String foodName;
+    private String name;
 
     @Column(nullable = false)
     private Short amount;
@@ -40,12 +40,12 @@ public class OrderDetail {
 
     @Builder
     public OrderDetail(
-        final String foodName,
+        final String name,
         final Short amount,
         final Integer price,
         final Order order
     ) {
-        this.foodName = foodName;
+        this.name = name;
         this.amount = amount;
         this.price = price;
         this.order = order;

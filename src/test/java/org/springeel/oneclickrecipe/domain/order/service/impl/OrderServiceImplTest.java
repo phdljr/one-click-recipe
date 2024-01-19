@@ -75,7 +75,7 @@ class OrderServiceImplTest {
         User user = userRepository.findById(1L).get();
 
         // when - then
-        assertThatThrownBy(() -> orderService.getOrderById(100L, user.getId()))
+        assertThatThrownBy(() -> orderService.getOrderById(100L, user))
             .isInstanceOf(NotFoundOrderException.class);
     }
 
@@ -86,7 +86,7 @@ class OrderServiceImplTest {
         User user = userRepository.findById(1L).get();
 
         // when
-        OrderReadResponseDto responseDto = orderService.getOrderById(1L, user.getId());
+        OrderReadResponseDto responseDto = orderService.getOrderById(1L, user);
 
         // then
         assertThat(responseDto).isNotNull();
