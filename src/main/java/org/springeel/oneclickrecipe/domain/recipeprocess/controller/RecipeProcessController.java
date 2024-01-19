@@ -25,14 +25,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/recipes")
+@RequestMapping("/api/v1")
 @RestController
 public class RecipeProcessController {
 
     private final RecipeProcessService processService;
     private final RecipeProcessDtoMapper processDtoMapper;
 
-    @PostMapping("/{recipeId}/recipe-processes")
+    @PostMapping("/recipes/{recipeId}/recipe-processes")
     public ResponseEntity<?> create(
         @RequestPart RecipeProcessCreateControllerRequestDto controllerRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetails,
@@ -47,33 +47,31 @@ public class RecipeProcessController {
     }
 
     // TODO recipeId 제거해보는 방법 해보기
-    @DeleteMapping("/{recipeId}/recipe-processes/{processId}")
+    @DeleteMapping("/recipe-processes/{processId}")
     public ResponseEntity<?> delete(
-        @PathVariable Long recipeId,
         @PathVariable Long processId,
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        processService.deleteRecipeProcess(recipeId, userDetails.user(), processId);
+        processService.deleteRecipeProcess(userDetails.user(), processId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     // TODO recipeId 제거해보는 방법 해보기
-    @PutMapping("/{recipeId}/recipe-processes/{processId}")
+    @PutMapping("/recipe-processes/{processId}")
     public ResponseEntity<?> update(
         @RequestPart RecipeProcessUpdateControllerRequestDto controllerRequestDto,
-        @PathVariable Long recipeId,
         @PathVariable Long processId,
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @RequestPart MultipartFile multipartFile
     ) throws IOException {
         RecipeProcessUpdateServiceRequestDto serviceRequestDto =
             processDtoMapper.toRecipeProcessUpdateServiceRequestDto(controllerRequestDto);
-        processService.updateRecipeProcess(serviceRequestDto, recipeId, userDetails.user(),
+        processService.updateRecipeProcess(serviceRequestDto, userDetails.user(),
             processId, multipartFile);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @GetMapping("/{recipeId}/recipe-processes")
+    @GetMapping("/recipes/{recipeId}/recipe-processes")
     public ResponseEntity<List<RecipeProcessReadResponseDto>> readAll(
         @PathVariable Long recipeId
     ) {
