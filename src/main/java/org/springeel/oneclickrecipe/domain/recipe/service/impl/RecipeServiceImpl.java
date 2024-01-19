@@ -28,7 +28,7 @@ public class RecipeServiceImpl implements RecipeService {
     private final RecipeEntityMapper recipeEntityMapper;
     private final S3Provider s3Provider;
 
-
+    @Override
     public void createRecipe(final RecipeCreateServiceRequestDto requestDto, User user,
         MultipartFile multipartFile) throws IOException {
         String fileName;
@@ -54,6 +54,7 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Transactional
+    @Override
     public void deleteRecipe(Long recipeId, User user) {
         Recipe recipe = recipeRepository.findByIdAndUser(recipeId, user)
             .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
@@ -62,17 +63,20 @@ public class RecipeServiceImpl implements RecipeService {
         // TODO 폴더 삭제시키기
     }
 
+    @Override
     @Transactional
     public void updateRecipe(final RecipeUpdateServiceRequestDto requestDto, User user,
-        Long recipeId) {
+        Long recipeId, MultipartFile multipartFile) throws IOException {
         Recipe recipe = recipeRepository.findByIdAndUser(recipeId, user)
             .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
+        String imageName = s3Provider.updateImage(recipe.getImageUrl(),
+            recipe.getFolderName(), multipartFile);
         recipe.updateRecipe(
             requestDto.title(),
             requestDto.intro(),
             requestDto.serving(),
             requestDto.videoUrl(),
-            null //TODO 이미지 URL 넣기
+            imageName //TODO 이미지 URL 넣기
         );
     }
 
