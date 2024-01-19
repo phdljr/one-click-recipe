@@ -12,6 +12,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springeel.oneclickrecipe.domain.food.entity.Food;
 import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;
 import org.springeel.oneclickrecipe.global.entity.BaseEntity;
@@ -30,6 +32,7 @@ public class RecipeFood extends BaseEntity {
     private Short amount;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "recipe_id", nullable = false)
     private Recipe recipe;
 
@@ -48,9 +51,8 @@ public class RecipeFood extends BaseEntity {
         this.food = food;
     }
 
-    public void updateRecipeFood(Short amount, Recipe recipe, Food food) {
+    public void updateRecipeFood(Short amount, Food food) {
         this.amount = amount;
-        this.recipe = recipe;
         this.food = food;
     }
 }

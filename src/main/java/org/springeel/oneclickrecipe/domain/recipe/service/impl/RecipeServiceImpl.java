@@ -1,5 +1,6 @@
 package org.springeel.oneclickrecipe.domain.recipe.service.impl;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springeel.oneclickrecipe.global.util.S3Provider;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @Service
@@ -26,31 +28,55 @@ public class RecipeServiceImpl implements RecipeService {
     private final RecipeEntityMapper recipeEntityMapper;
     private final S3Provider s3Provider;
 
-    public void createRecipe(final RecipeCreateServiceRequestDto requestDto, User user) {
+    @Override
+    public void createRecipe(final RecipeCreateServiceRequestDto requestDto, User user,
+        MultipartFile multipartFile) throws IOException {
+        String fileName;
+        String fileUrl;
         String folderName = requestDto.title() + UUID.randomUUID();
-        Recipe recipe = recipeEntityMapper.toRecipe(requestDto, user, folderName);
+        if (multipartFile.isEmpty()) {
+            fileUrl = null;
+            fileName = null;
+        } else {
+            fileName = s3Provider.originalFileName(multipartFile);
+            fileUrl = s3Provider.url + folderName + s3Provider.SEPARATOR + fileName;
+        }
+        Recipe recipe = recipeEntityMapper.toRecipe(requestDto, user, folderName, fileUrl);
         recipeRepository.save(recipe);
-        s3Provider.createFolder(folderName);
+        if (fileUrl == null) {
+            s3Provider.createFolder(folderName);
+        } else {
+            s3Provider.createFolder(folderName);
+            fileUrl = folderName + s3Provider.SEPARATOR + fileName;
+            s3Provider.saveFile(multipartFile, fileUrl);
+        }
+
     }
 
+    @Transactional
+    @Override
     public void deleteRecipe(Long recipeId, User user) {
         Recipe recipe = recipeRepository.findByIdAndUser(recipeId, user)
             .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
         recipeRepository.delete(recipe);
+        s3Provider.delete(recipe.getFolderName() + "/");
         // TODO 폴더 삭제시키기
     }
 
+    @Override
     @Transactional
     public void updateRecipe(final RecipeUpdateServiceRequestDto requestDto, User user,
-        Long recipeId) {
+        Long recipeId, MultipartFile multipartFile) throws IOException {
         Recipe recipe = recipeRepository.findByIdAndUser(recipeId, user)
             .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
+        String imageName = s3Provider.updateImage(recipe.getImageUrl(),
+            recipe.getFolderName(), multipartFile);
         recipe.updateRecipe(
             requestDto.title(),
             requestDto.intro(),
             requestDto.serving(),
             requestDto.videoUrl(),
-            null //TODO 이미지 URL 넣기
+            imageName //TODO 이미지 URL 넣기
         );
     }
 

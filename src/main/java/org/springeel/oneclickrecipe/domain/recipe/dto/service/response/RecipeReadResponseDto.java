@@ -4,7 +4,8 @@ public record RecipeReadResponseDto(
     String title,
     String intro,
     String videoUrl,
-    String imageUrl
+    String imageUrl,
+    String writer
 ) {
 
 }

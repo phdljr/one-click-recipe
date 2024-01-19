@@ -52,16 +52,15 @@ public class RecipeFoodController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PutMapping("/recipes/{recipeId}/recipe-foods/{recipeFoodId}")
+    @PutMapping("/recipe-foods/{recipeFoodId}")
     public ResponseEntity<?> update(
-        @PathVariable Long recipeId,
         @PathVariable Long recipeFoodId,
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @RequestBody RecipeFoodUpdateControllerRequestDto controllerRequestDto
     ) {
         RecipeFoodUpdateServiceRequestDto serviceRequestDto =
             recipeFoodDtoMapper.toRecipeFoodUpdateServiceRequestDto(controllerRequestDto);
-        recipeFoodService.updateRecipeFood(recipeId, recipeFoodId, userDetails.user(),
+        recipeFoodService.updateRecipeFood(recipeFoodId, userDetails.user(),
             serviceRequestDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
