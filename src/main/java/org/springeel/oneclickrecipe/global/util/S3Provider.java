@@ -15,10 +15,10 @@ import org.springframework.web.multipart.MultipartFile;
 public class S3Provider {
 
     private final AmazonS3 amazonS3;
-    private final String SEPARATOR = "/";
+    public final String SEPARATOR = "/";
     @Value("${cloud.aws.s3.bucket.name}")
     public String bucket;
-    private final String url = "https://onceclick.s3.ap-northeast-2.amazonaws.com/";
+    public final String url = "https://onceclick.s3.ap-northeast-2.amazonaws.com/";
 
 
     private static ObjectMetadata setObjectMetadata(MultipartFile multipartFile) {
