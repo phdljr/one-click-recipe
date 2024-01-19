@@ -18,7 +18,6 @@ public interface RecipeEntityMapper {
 
     List<RecipeAllReadResponseDto> toRecipeAllRead(List<Recipe> recipe);
 
-    RecipeReadResponseDto toRecipeRead(Recipe recipe, List<RecipeFoodReadResponseDto> recipe_foods,
-        List<RecipeProcessReadResponseDto> recipe_processes);
+    RecipeReadResponseDto toRecipeRead(Recipe recipe);
 
 }

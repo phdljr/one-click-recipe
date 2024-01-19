@@ -8,9 +8,7 @@ public record RecipeReadResponseDto(
     String title,
     String intro,
     String videoPath,
-    String imageUrl,
-    List<RecipeFoodReadResponseDto> recipe_foods,
-    List<RecipeProcessReadResponseDto> recipe_processes
+    String imageUrl
 ) {
 
 }

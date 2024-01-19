@@ -29,8 +29,6 @@ public class RecipeServiceImpl implements RecipeService {
     private final RecipeRepository recipeRepository;
     private final RecipeEntityMapper recipeEntityMapper;
     private final S3Provider s3Provider;
-    private final RecipeProcessService processService;
-    private final RecipeFoodService foodService;
 
     public void createRecipe(final RecipeCreateServiceRequestDto requestDto, User user) {
         String folderName = requestDto.title() + UUID.randomUUID();
@@ -66,12 +64,8 @@ public class RecipeServiceImpl implements RecipeService {
     public RecipeReadResponseDto readRecipe(Long recipeId) {
         Recipe recipe = recipeRepository.findById(recipeId)
             .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
-        List<RecipeFoodReadResponseDto> recipe_foods =
-            foodService.readRecipeFood(recipeId);
-        List<RecipeProcessReadResponseDto> recipe_processes =
-            processService.readRecipeProcess(recipeId);
         RecipeReadResponseDto readResponseDto =
-            recipeEntityMapper.toRecipeRead(recipe, recipe_foods, recipe_processes);
+            recipeEntityMapper.toRecipeRead(recipe);
         return readResponseDto;
     }
 }
