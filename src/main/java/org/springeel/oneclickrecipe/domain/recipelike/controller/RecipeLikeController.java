@@ -26,7 +26,6 @@ public class RecipeLikeController {
     ) {
         recipeLikeService.create(userDetails.user(), recipeId);
         return ResponseEntity.status(HttpStatus.OK).build();
-
     }
 
     @DeleteMapping("/{recipeId}/likes") //좋아요 삭제

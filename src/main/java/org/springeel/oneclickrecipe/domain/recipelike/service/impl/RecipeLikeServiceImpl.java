@@ -7,6 +7,7 @@ import org.springeel.oneclickrecipe.domain.recipe.exception.RecipeErrorCode;
 import org.springeel.oneclickrecipe.domain.recipe.repository.RecipeRepository;
 import org.springeel.oneclickrecipe.domain.recipelike.entity.RecipeLike;
 import org.springeel.oneclickrecipe.domain.recipelike.exception.AlreadyExistsRecipeLikeException;
+import org.springeel.oneclickrecipe.domain.recipelike.exception.NotFoundRecipeLikeException;
 import org.springeel.oneclickrecipe.domain.recipelike.exception.RecipeLikeErrorCode;
 import org.springeel.oneclickrecipe.domain.recipelike.mapper.entity.RecipeLikeEntityMapper;
 import org.springeel.oneclickrecipe.domain.recipelike.repository.RecipeLikeRepository;
@@ -38,9 +39,9 @@ public class RecipeLikeServiceImpl implements RecipeLikeService {
 
     @Override
     public void delete(User user, Long recipeId) {
-
         RecipeLike recipeLike = recipeLikeRepository.findByUserIdAndRecipeId(user.getId(), recipeId)
-            .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
+            .orElseThrow(
+                () -> new NotFoundRecipeLikeException(RecipeLikeErrorCode.NOT_FOUND_RECIPELIKE));
         recipeLikeRepository.delete(recipeLike);
     }
 }
