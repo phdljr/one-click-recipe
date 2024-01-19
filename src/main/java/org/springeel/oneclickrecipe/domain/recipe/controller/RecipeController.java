@@ -57,13 +57,14 @@ public class RecipeController {
 
     @PutMapping("/{recipeId}")
     public ResponseEntity<?> update(
-        @RequestBody RecipeUpdateControllerRequestDto controllerRequestDto,
+        @RequestPart RecipeUpdateControllerRequestDto controllerRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetails,
-        @PathVariable Long recipeId
-    ) {
+        @PathVariable Long recipeId,
+        @RequestPart MultipartFile multipartFile
+    ) throws IOException {
         RecipeUpdateServiceRequestDto serviceRequestDto =
             recipeDtoMapper.toRecipeUpdateServiceRequestDto(controllerRequestDto);
-        recipeService.updateRecipe(serviceRequestDto, userDetails.user(), recipeId);
+        recipeService.updateRecipe(serviceRequestDto, userDetails.user(), recipeId, multipartFile);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
