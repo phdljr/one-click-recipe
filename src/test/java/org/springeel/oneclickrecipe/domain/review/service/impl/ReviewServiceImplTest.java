@@ -1,11 +1,15 @@
 package org.springeel.oneclickrecipe.domain.review.service.impl;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;
 import org.springeel.oneclickrecipe.domain.recipe.exception.NotFoundRecipeException;
 import org.springeel.oneclickrecipe.domain.recipe.repository.RecipeRepository;
-import org.springeel.oneclickrecipe.domain.review.dto.service.ReviewReadResponseDto;
+import org.springeel.oneclickrecipe.domain.review.dto.service.response.ReviewReadResponseDto;
 import org.springeel.oneclickrecipe.domain.review.entity.Review;
 import org.springeel.oneclickrecipe.domain.review.repository.ReviewRepository;
 import org.springeel.oneclickrecipe.domain.review.service.ReviewService;
@@ -15,11 +19,6 @@ import org.springeel.oneclickrecipe.domain.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 class ReviewServiceImplTest {
@@ -51,7 +50,7 @@ class ReviewServiceImplTest {
             .user(user)
             .intro("호로록 짭짭")
             .serving((byte) 4)
-            .videoPath("/videos/스파게티.mp4")
+            .videoUrl("/videos/스파게티.mp4")
             .folderName("스파게티")
             .build());
 

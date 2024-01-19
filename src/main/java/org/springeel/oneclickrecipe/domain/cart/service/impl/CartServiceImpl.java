@@ -2,8 +2,9 @@ package org.springeel.oneclickrecipe.domain.cart.service.impl;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springeel.oneclickrecipe.domain.cart.dto.service.CartCheckResponseDto;
-import org.springeel.oneclickrecipe.domain.cart.dto.service.CartItemCheckDto;
+import org.springeel.oneclickrecipe.domain.cart.dto.service.request.CartAddServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.cart.dto.service.response.CartReadAllResponseDto;
+import org.springeel.oneclickrecipe.domain.cart.dto.service.response.CartReadResponseDto;
 import org.springeel.oneclickrecipe.domain.cart.entity.Cart;
 import org.springeel.oneclickrecipe.domain.cart.repository.CartRepository;
 import org.springeel.oneclickrecipe.domain.cart.service.CartService;
@@ -26,9 +27,10 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void addCartItems(User user, List<Long> recipeFoodIds) {
+    public void addCartFoods(User user, CartAddServiceRequestDto recipeFoodIds) {
         // 한 번의 쿼리로 모든 RdcipeFood 엔티티를 가져옴
-        List<RecipeFood> recipeFoods = recipeFoodRepository.findAllByIdIn(recipeFoodIds);
+        List<RecipeFood> recipeFoods = recipeFoodRepository.findAllById(
+            recipeFoodIds.recipeFoodIds());
 
         // 각 RecipeFood에 대해 Cart 엔티티를 생성하고 저장
         List<Cart> cartItems = recipeFoods.stream()
@@ -42,23 +44,23 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartCheckResponseDto getCart(User user) {
-        List<Cart> carts = cartRepository.findByUser(user);
-        double totalPrice = carts.stream()
-            .mapToDouble(cart -> cart.getRecipeFood().getFood().getPrice())
+    public CartReadAllResponseDto getCart(User user) {
+        List<Cart> carts = cartRepository.findAllByUser(user);
+        int totalPrice = carts.stream()
+            .mapToInt(cart -> cart.getRecipeFood().getFood().getPrice())
             .sum();
 
-        List<CartItemCheckDto> items = carts.stream()
-            .map(cart -> CartItemCheckDto.builder()
-                .foodId(cart.getRecipeFood().getId())
-                .name(null)
+        List<CartReadResponseDto> foods = carts.stream()
+            .map(cart -> CartReadResponseDto.builder()
+                .id(cart.getRecipeFood().getId())
+                .name(cart.getRecipeFood().getFood().getName())
                 .quantity(cart.getRecipeFood().getAmount())
-                .price(cart.getRecipeFood().getAmount())
+                .price(cart.getRecipeFood().getAmount() * cart.getRecipeFood().getFood().getPrice())
                 .build())
             .toList();
-        return CartCheckResponseDto.builder()
+        return CartReadAllResponseDto.builder()
             .totalPrice(totalPrice)
-            .items(items)
+            .foods(foods)
             .build();
     }
 

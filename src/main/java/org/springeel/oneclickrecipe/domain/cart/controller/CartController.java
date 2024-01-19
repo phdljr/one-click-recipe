@@ -1,10 +1,12 @@
 package org.springeel.oneclickrecipe.domain.cart.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.cart.dto.controller.CartAddControllerRequestDto;
-import org.springeel.oneclickrecipe.domain.cart.dto.service.CartCheckResponseDto;
+import org.springeel.oneclickrecipe.domain.cart.dto.service.request.CartAddServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.cart.dto.service.response.CartReadAllResponseDto;
+import org.springeel.oneclickrecipe.domain.cart.mapper.dto.CartDtoMapper;
 import org.springeel.oneclickrecipe.domain.cart.service.CartService;
-import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springeel.oneclickrecipe.global.security.UserDetailsImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CartController {
 
     private final CartService cartService;
+    private final CartDtoMapper cartDtoMapper;
 
     // 장바구니 초기화
     @DeleteMapping
@@ -33,24 +36,23 @@ public class CartController {
 
     // 장바구니 아이템 추가
     @PostMapping
-    public ResponseEntity<Void> addCartItems(
-        @RequestBody CartAddControllerRequestDto requestDto,
+    public ResponseEntity<Void> addCartFoods(
+        @Valid @RequestBody CartAddControllerRequestDto controllerRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         // 현재 로그인한 사용자의 ID를 가져옴
-        User user = userDetails.user();
-        cartService.addCartItems(user, requestDto.recipeFoodIds());
+        CartAddServiceRequestDto serviceRequestDto = cartDtoMapper.toServiceRequestDto(
+            controllerRequestDto);
+        cartService.addCartFoods(userDetails.user(), serviceRequestDto);
         return ResponseEntity.ok().build();
-
     }
 
     // 장바구니 조회
     @GetMapping
-    public ResponseEntity<CartCheckResponseDto> getCart(
+    public ResponseEntity<CartReadAllResponseDto> getCart(
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        User user = userDetails.user();
-        CartCheckResponseDto cartCheckResponseDto = cartService.getCart(user);
+        CartReadAllResponseDto cartCheckResponseDto = cartService.getCart(userDetails.user());
         return ResponseEntity.ok(cartCheckResponseDto);
     }
 }

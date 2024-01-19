@@ -1,11 +1,14 @@
 package org.springeel.oneclickrecipe.domain.order.service.impl;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springeel.oneclickrecipe.domain.order.dto.service.OrderCreateResponseDto;
-import org.springeel.oneclickrecipe.domain.order.dto.service.OrderCreateServiceRequestDto;
-import org.springeel.oneclickrecipe.domain.order.dto.service.OrderReadResponseDto;
+import org.springeel.oneclickrecipe.domain.order.dto.service.response.OrderCreateResponseDto;
+import org.springeel.oneclickrecipe.domain.order.dto.service.request.OrderCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.order.dto.service.response.OrderReadResponseDto;
 import org.springeel.oneclickrecipe.domain.order.entity.Order;
 import org.springeel.oneclickrecipe.domain.order.entity.OrderStatus;
 import org.springeel.oneclickrecipe.domain.order.exception.NotFoundOrderException;
@@ -16,9 +19,6 @@ import org.springeel.oneclickrecipe.domain.user.entity.UserRole;
 import org.springeel.oneclickrecipe.domain.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 class OrderServiceImplTest {
@@ -75,7 +75,7 @@ class OrderServiceImplTest {
         User user = userRepository.findById(1L).get();
 
         // when - then
-        assertThatThrownBy(() -> orderService.getOrderById(100L, user.getId()))
+        assertThatThrownBy(() -> orderService.getOrderById(100L, user))
             .isInstanceOf(NotFoundOrderException.class);
     }
 
@@ -86,7 +86,7 @@ class OrderServiceImplTest {
         User user = userRepository.findById(1L).get();
 
         // when
-        OrderReadResponseDto responseDto = orderService.getOrderById(1L, user.getId());
+        OrderReadResponseDto responseDto = orderService.getOrderById(1L, user);
 
         // then
         assertThat(responseDto).isNotNull();

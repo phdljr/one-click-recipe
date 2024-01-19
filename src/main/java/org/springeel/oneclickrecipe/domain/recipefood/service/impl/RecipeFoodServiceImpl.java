@@ -1,6 +1,5 @@
 package org.springeel.oneclickrecipe.domain.recipefood.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.food.entity.Food;
@@ -11,10 +10,11 @@ import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;
 import org.springeel.oneclickrecipe.domain.recipe.exception.NotFoundRecipeException;
 import org.springeel.oneclickrecipe.domain.recipe.exception.RecipeErrorCode;
 import org.springeel.oneclickrecipe.domain.recipe.repository.RecipeRepository;
-import org.springeel.oneclickrecipe.domain.recipefood.dto.service.RecipeFoodReadResponseDto;
-import org.springeel.oneclickrecipe.domain.recipefood.dto.service.RecipeFoodCreateServiceRequestDto;
-import org.springeel.oneclickrecipe.domain.recipefood.dto.service.RecipeFoodUpdateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.recipefood.dto.service.request.RecipeFoodCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.recipefood.dto.service.request.RecipeFoodUpdateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.recipefood.dto.service.response.RecipeFoodReadResponseDto;
 import org.springeel.oneclickrecipe.domain.recipefood.entity.RecipeFood;
+import org.springeel.oneclickrecipe.domain.recipefood.exception.ForbiddenAccessRecipeFoodException;
 import org.springeel.oneclickrecipe.domain.recipefood.exception.NotFoundRecipeFoodException;
 import org.springeel.oneclickrecipe.domain.recipefood.exception.RecipeFoodErrorCode;
 import org.springeel.oneclickrecipe.domain.recipefood.mapper.service.RecipeFoodEntityMapper;
@@ -33,6 +33,7 @@ public class RecipeFoodServiceImpl implements RecipeFoodService {
     private final RecipeFoodEntityMapper recipeFoodEntityMapper;
     private final RecipeRepository recipeRepository;
 
+    @Override
     public void createRecipeFood(RecipeFoodCreateServiceRequestDto requestDto, Long recipeId,
         User user) {
         Food food = foodRepository.findByName(requestDto.foodName())
@@ -44,15 +45,30 @@ public class RecipeFoodServiceImpl implements RecipeFoodService {
         recipeFoodRepository.save(recipeFood);
     }
 
-    public void deleteRecipeFood(Long recipeId, Long recipeFoodId, User user) {
-        Recipe recipe = recipeRepository.findByIdAndUser(recipeId, user)
-            .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
-        RecipeFood recipeFood = recipeFoodRepository.findByIdAndRecipe(recipeFoodId, recipe)
-            .orElseThrow(
-                () -> new NotFoundRecipeFoodException(RecipeFoodErrorCode.NOT_FOUND_RECIPEFOOD));
+    @Override
+    public void deleteRecipeFood(Long recipeFoodId, User user) {
+        // recipeFood가 있는지 검증
+        RecipeFood recipeFood = recipeFoodRepository.findById(recipeFoodId).orElseThrow(
+            () -> new NotFoundRecipeFoodException(RecipeFoodErrorCode.NOT_FOUND_RECIPEFOOD));
+
+        // 요청자가 레시피를 만든 사람인지 검증
+        if (!recipeFood.getRecipe().getUser().getId().equals(user.getId())) {
+            throw new ForbiddenAccessRecipeFoodException(
+                RecipeFoodErrorCode.FORBIDDEN_ACCESS_RECIPEFOOD);
+        }
+
         recipeFoodRepository.delete(recipeFood);
+
+//        Recipe recipe = recipeRepository.findByIdAndUser(recipeId, user)
+//            .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
+//        RecipeFood recipeFood = recipeFoodRepository.findByIdAndRecipe(recipeFoodId, recipe)
+//            .orElseThrow(
+//                () -> new NotFoundRecipeFoodException(RecipeFoodErrorCode.NOT_FOUND_RECIPEFOOD));
+//        recipeFoodRepository.delete(recipeFood);
     }
 
+    // TODO recipeId 제거해보는 리팩토링 해보기
+    @Override
     @Transactional
     public void updateRecipeFood(Long recipeId, Long recipeFoodId, User user,
         RecipeFoodUpdateServiceRequestDto requestDto) {
@@ -63,6 +79,7 @@ public class RecipeFoodServiceImpl implements RecipeFoodService {
         RecipeFood recipeFood = recipeFoodRepository.findByIdAndRecipe(recipeFoodId, recipe)
             .orElseThrow(
                 () -> new NotFoundRecipeFoodException(RecipeFoodErrorCode.NOT_FOUND_RECIPEFOOD));
+
         recipeFood.updateRecipeFood(
             requestDto.amount(),
             recipe,
@@ -70,24 +87,18 @@ public class RecipeFoodServiceImpl implements RecipeFoodService {
         );
     }
 
+    @Override
     public List<RecipeFoodReadResponseDto> readRecipeFood(
         Long recipeId
     ) {
-        List<RecipeFoodReadResponseDto> dtos = new ArrayList<RecipeFoodReadResponseDto>();
-        List<RecipeFood> recipeFoods = recipeFoodRepository.findAllByRecipeId(recipeId);
-        for (int i = 0; i < recipeFoods.size(); i++) {
-            Food food = foodRepository.findById(recipeFoods.get(i).getFood().getId())
-                .orElseThrow(() -> new NotFoundFoodException(FoodErrorCode.NOT_FOUND_FOOD));
-            Integer total = 0;
-            total = recipeFoods.get(i).getAmount() * food.getPrice();
-            RecipeFoodReadResponseDto responseDto = recipeFoodEntityMapper.toReadRecipeFood(
-                food.getName(),
-                recipeFoods.get(i).getAmount(),
-                total,
-                food.getUnit()
-            );
-            dtos.add(i, responseDto);
-        }
-        return dtos;
+        return recipeFoodRepository.findAllByRecipeId(recipeId)
+            .stream()
+            .map(recipeFood -> RecipeFoodReadResponseDto.builder()
+                .name(recipeFood.getFood().getName())
+                .amount(recipeFood.getAmount())
+                .price(recipeFood.getAmount() * recipeFood.getFood().getPrice())
+                .unit(recipeFood.getFood().getUnit())
+                .build())
+            .toList();
     }
 }

@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
             throw new AlreadyExistsEmailException(UserErrorCode.ALREADY_EXIST_EMAIL);
         }
 
-        // 닉네임이 중복되지 않는지 확인
+        // 닉네임이 중복 체크
         if (userRepository.existsByNickname(serviceRequestDto.nickname())) {
             throw new DuplicateNicknameException(UserErrorCode.DUPLICATE_NICKNAME);
         }

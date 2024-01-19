@@ -5,9 +5,9 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.recipeprocess.dto.controller.RecipeProcessCreateControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.recipeprocess.dto.controller.RecipeProcessUpdateControllerRequestDto;
-import org.springeel.oneclickrecipe.domain.recipeprocess.dto.service.RecipeProcessCreateServiceRequestDto;
-import org.springeel.oneclickrecipe.domain.recipeprocess.dto.service.RecipeProcessReadResponseDto;
-import org.springeel.oneclickrecipe.domain.recipeprocess.dto.service.RecipeProcessUpdateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.recipeprocess.dto.service.request.RecipeProcessCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.recipeprocess.dto.service.request.RecipeProcessUpdateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.recipeprocess.dto.service.response.RecipeProcessReadResponseDto;
 import org.springeel.oneclickrecipe.domain.recipeprocess.mapper.dto.RecipeProcessDtoMapper;
 import org.springeel.oneclickrecipe.domain.recipeprocess.service.RecipeProcessService;
 import org.springeel.oneclickrecipe.global.security.UserDetailsImpl;
@@ -25,8 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
-@RestController
 @RequestMapping("/api/v1/recipes")
+@RestController
 public class RecipeProcessController {
 
     private final RecipeProcessService processService;
@@ -43,9 +43,10 @@ public class RecipeProcessController {
             processDtoMapper.toRecipeProcessCreateServiceRequestDto(controllerRequestDto);
         processService.createRecipeProcess(serviceRequestDto, userDetails.user(), recipeId,
             multipartFile);
-        return ResponseEntity.status(HttpStatus.CREATED).body(HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    // TODO recipeId 제거해보는 방법 해보기
     @DeleteMapping("/{recipeId}/recipe-processes/{processId}")
     public ResponseEntity<?> delete(
         @PathVariable Long recipeId,
@@ -53,9 +54,10 @@ public class RecipeProcessController {
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         processService.deleteRecipeProcess(recipeId, userDetails.user(), processId);
-        return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    // TODO recipeId 제거해보는 방법 해보기
     @PutMapping("/{recipeId}/recipe-processes/{processId}")
     public ResponseEntity<?> update(
         @RequestPart RecipeProcessUpdateControllerRequestDto controllerRequestDto,
@@ -68,17 +70,16 @@ public class RecipeProcessController {
             processDtoMapper.toRecipeProcessUpdateServiceRequestDto(controllerRequestDto);
         processService.updateRecipeProcess(serviceRequestDto, recipeId, userDetails.user(),
             processId, multipartFile);
-        return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @GetMapping("/{recipeId}/recipe-processes")
     public ResponseEntity<List<RecipeProcessReadResponseDto>> readAll(
         @PathVariable Long recipeId
     ) {
-        List<RecipeProcessReadResponseDto> processes =
+        List<RecipeProcessReadResponseDto> responseDto =
             processService.readRecipeProcess(recipeId);
-
-        return ResponseEntity.status(HttpStatus.OK).body(processes);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
 
 }

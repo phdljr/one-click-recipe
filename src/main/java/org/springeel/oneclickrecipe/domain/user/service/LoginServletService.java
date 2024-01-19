@@ -7,4 +7,7 @@ public interface LoginServletService {
 
     void addJwtToHeader(UserLoginServiceRequestDto requestDto,
         HttpServletResponse httpServletResponse);
+
+    void addJwtToCookie(UserLoginServiceRequestDto requestDto,
+        HttpServletResponse httpServletResponse);
 }

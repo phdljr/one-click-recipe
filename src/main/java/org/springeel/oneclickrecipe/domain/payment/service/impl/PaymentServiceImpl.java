@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springeel.oneclickrecipe.domain.order.entity.Order;
 import org.springeel.oneclickrecipe.domain.order.entity.OrderStatus;
+import org.springeel.oneclickrecipe.domain.order.exception.AlreadyProcessesOrderException;
 import org.springeel.oneclickrecipe.domain.order.exception.NotFoundOrderException;
 import org.springeel.oneclickrecipe.domain.order.exception.OrderErrorCode;
 import org.springeel.oneclickrecipe.domain.order.repository.OrderRepository;
@@ -39,8 +40,12 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public KakaoPayReadyResponseDto readyKakaoPay(final Long orderId, final User user) {
-        Order order = orderRepository.findByIdAndUserId(orderId, user.getId())
+        Order order = orderRepository.findByIdAndUser(orderId, user)
             .orElseThrow(() -> new NotFoundOrderException(OrderErrorCode.NOT_FOUND_ORDER));
+
+        if (order.getStatus() != OrderStatus.WAITING) {
+            throw new AlreadyProcessesOrderException(OrderErrorCode.ALREADY_PROCESS_ORDER);
+        }
 
         HttpHeaders headers = getHttpHeaders();
 
@@ -74,6 +79,13 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public KakaoPayApprovalResponseDto approveKakaoPay(final Long orderId,
         final KakaoPayApprovalServiceRequestDto serviceRequestDto, final User user) {
+        Order order = orderRepository.findByIdAndUser(orderId, user)
+            .orElseThrow(() -> new NotFoundOrderException(OrderErrorCode.NOT_FOUND_ORDER));
+
+        if (order.getStatus() != OrderStatus.WAITING) {
+            throw new AlreadyProcessesOrderException(OrderErrorCode.ALREADY_PROCESS_ORDER);
+        }
+
         HttpHeaders headers = getHttpHeaders();
 
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
@@ -90,8 +102,6 @@ public class PaymentServiceImpl implements PaymentService {
             "https://kapi.kakao.com/v1/payment/approve", requestEntity,
             KakaoPayApprovalResponseDto.class);
 
-        Order order = orderRepository.findById(orderId)
-            .orElseThrow(() -> new NotFoundOrderException(OrderErrorCode.NOT_FOUND_ORDER));
         order.updateStatus(OrderStatus.APPROVEMENT);
         orderRepository.save(order);
 

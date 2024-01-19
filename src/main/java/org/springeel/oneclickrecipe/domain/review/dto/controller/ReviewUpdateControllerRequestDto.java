@@ -11,4 +11,5 @@ public record ReviewUpdateControllerRequestDto(
     @Max(value = 5)
     Byte star
 ) {
+
 }
