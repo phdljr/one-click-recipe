@@ -47,24 +47,10 @@ public class RecipeFoodServiceImpl implements RecipeFoodService {
 
     @Override
     public void deleteRecipeFood(Long recipeFoodId, User user) {
-        // recipeFood가 있는지 검증
-        RecipeFood recipeFood = recipeFoodRepository.findById(recipeFoodId).orElseThrow(
-            () -> new NotFoundRecipeFoodException(RecipeFoodErrorCode.NOT_FOUND_RECIPEFOOD));
-
-        // 요청자가 레시피를 만든 사람인지 검증
-        if (!recipeFood.getRecipe().getUser().getId().equals(user.getId())) {
-            throw new ForbiddenAccessRecipeFoodException(
-                RecipeFoodErrorCode.FORBIDDEN_ACCESS_RECIPEFOOD);
-        }
-
+        RecipeFood recipeFood = recipeFoodRepository.findByIdAndRecipe_User(recipeFoodId, user)
+            .orElseThrow(
+                () -> new NotFoundRecipeFoodException(RecipeFoodErrorCode.NOT_FOUND_RECIPEFOOD));
         recipeFoodRepository.delete(recipeFood);
-
-//        Recipe recipe = recipeRepository.findByIdAndUser(recipeId, user)
-//            .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
-//        RecipeFood recipeFood = recipeFoodRepository.findByIdAndRecipe(recipeFoodId, recipe)
-//            .orElseThrow(
-//                () -> new NotFoundRecipeFoodException(RecipeFoodErrorCode.NOT_FOUND_RECIPEFOOD));
-//        recipeFoodRepository.delete(recipeFood);
     }
 
     // TODO recipeId 제거해보는 리팩토링 해보기
