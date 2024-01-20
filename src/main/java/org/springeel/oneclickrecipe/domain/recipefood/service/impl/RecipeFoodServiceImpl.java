@@ -76,6 +76,7 @@ public class RecipeFoodServiceImpl implements RecipeFoodService {
         return recipeFoodRepository.findAllByRecipeId(recipeId)
             .stream()
             .map(recipeFood -> RecipeFoodReadResponseDto.builder()
+                .id(recipeFood.getId())
                 .name(recipeFood.getFood().getName())
                 .amount(recipeFood.getAmount())
                 .price(recipeFood.getAmount() * recipeFood.getFood().getPrice())

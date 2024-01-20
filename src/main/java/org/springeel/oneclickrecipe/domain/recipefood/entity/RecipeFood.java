@@ -31,8 +31,8 @@ public class RecipeFood extends BaseEntity {
     @Column
     private Short amount;
 
-    @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne
     @JoinColumn(name = "recipe_id", nullable = false)
     private Recipe recipe;
 

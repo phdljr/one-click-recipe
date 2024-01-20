@@ -59,6 +59,7 @@ public class CartServiceImpl implements CartService {
                 .name(cart.getRecipeFood().getFood().getName())
                 .quantity(cart.getRecipeFood().getAmount())
                 .price(cart.getRecipeFood().getAmount() * cart.getRecipeFood().getFood().getPrice())
+                .unit(cart.getRecipeFood().getFood().getUnit())
                 .build())
             .toList();
         return CartReadAllResponseDto.builder()
