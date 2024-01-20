@@ -29,8 +29,8 @@ public class PaymentServiceImpl implements PaymentService {
     private final RestTemplate restTemplate;
     private final OrderRepository orderRepository;
 
-    @Value("${custom.front.url}")
-    private String frontUrl;
+    @Value("${custom.front.host}")
+    private String frontHost;
 
     @Value("${custom.kakao.admin-key}")
     private String adminKey;
@@ -59,11 +59,9 @@ public class PaymentServiceImpl implements PaymentService {
         parameters.add("vat_amount", "0");
         parameters.add("tax_free_amount", "0");
         parameters.add("approval_url",
-            frontUrl + String.format("/orders/%d/payment/kakao/approve", order.getId()));
-        parameters.add("cancel_url",
-            frontUrl + String.format("/orders/%d/payment/kakao/cancel", order.getId()));
-        parameters.add("fail_url",
-            frontUrl + String.format("/orders/%d/payment/kakao/fail", order.getId()));
+            frontHost + String.format("/orders/%d/payment/kakao/approve", order.getId()));
+        parameters.add("cancel_url", frontHost + "/payment/kakao/cancel");
+        parameters.add("fail_url", frontHost + "/payment/kakao/fail");
 
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(parameters,
             headers);

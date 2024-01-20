@@ -11,6 +11,7 @@ import org.springeel.oneclickrecipe.domain.orderdetail.entity.OrderDetail;
 @Mapper(componentModel = SPRING)
 public interface OrderDetailEntityMapper {
 
+    @Mapping(source = "cart.recipeFood.food.unit", target = "unit")
     @Mapping(source = "cart.recipeFood.food.name", target = "name")
     @Mapping(source = "cart.recipeFood.amount", target = "amount")
     @Mapping(source = "cart.recipeFood.food.price", target = "price")
