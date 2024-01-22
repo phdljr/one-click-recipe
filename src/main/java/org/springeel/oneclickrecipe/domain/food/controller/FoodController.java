@@ -3,8 +3,8 @@ package org.springeel.oneclickrecipe.domain.food.controller;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.food.dto.controller.FoodCreateControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.food.dto.controller.FoodUpdateControllerRequestDto;
-import org.springeel.oneclickrecipe.domain.food.dto.service.FoodCreateServiceRequestDto;
-import org.springeel.oneclickrecipe.domain.food.dto.service.FoodUpdateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.food.dto.service.request.FoodCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.food.dto.service.request.FoodUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.food.mapper.dto.FoodDtoMapper;
 import org.springeel.oneclickrecipe.domain.food.service.FoodService;
 import org.springeel.oneclickrecipe.global.security.UserDetailsImpl;
@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -56,5 +57,13 @@ public class FoodController {
             dtoMapper.toFoodUpdateServiceDto(controllerRequestDto);
         foodService.updateFood(userDetails.user(), foodId, serviceRequestDto);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @GetMapping("/foods")
+    public ResponseEntity<?> readAllFoods(
+        @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(foodService.readAllFoods(userDetails.user()));
     }
 }
