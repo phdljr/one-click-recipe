@@ -17,7 +17,7 @@ public class FollowServiceImpl implements FollowService {
 
     @Override
     public void create(User user, Long userId) {
-        Follow follow = followRepository.findByFollowerId(userId)
+        Follow follow = followRepository.findByFollowingId(userId)
             .orElseThrow(() -> new NotFoundFollowException(FollowErrorCode.NOT_FOUND_FOLLOW));
 
 
