@@ -8,11 +8,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Email;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;
 import org.springeel.oneclickrecipe.global.entity.BaseEntity;
 
@@ -27,7 +28,7 @@ public class RecipeProcess extends BaseEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String sequence;
+    private Byte sequence;
 
     @Column
     private String description;
@@ -38,6 +39,7 @@ public class RecipeProcess extends BaseEntity {
     @Column
     private String imageUrl;
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne
     @JoinColumn(name = "recipe_Id", nullable = false)
     private Recipe recipe;
@@ -45,7 +47,7 @@ public class RecipeProcess extends BaseEntity {
     @Builder
     public RecipeProcess(
         Recipe recipe,
-        String sequence,
+        Byte sequence,
         String description,
         Short time,
         String imageUrl
@@ -57,7 +59,7 @@ public class RecipeProcess extends BaseEntity {
         this.imageUrl = imageUrl;
     }
 
-    public void updateRecipe(String sequence, String description, short time, String imageUrl) {
+    public void updateRecipe(Byte sequence, String description, short time, String imageUrl) {
         this.sequence = sequence;
         this.description = description;
         this.time = time;

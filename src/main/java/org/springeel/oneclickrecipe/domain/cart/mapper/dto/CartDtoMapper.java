@@ -1,13 +1,13 @@
 package org.springeel.oneclickrecipe.domain.cart.mapper.dto;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.springeel.oneclickrecipe.domain.cart.dto.controller.CartAddControllerRequestDto;
-import org.springeel.oneclickrecipe.domain.cart.dto.service.CartAddServiceRequestDto;
+import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 
-@Mapper(componentModel = "spring")
+import org.mapstruct.Mapper;
+import org.springeel.oneclickrecipe.domain.cart.dto.controller.CartAddControllerRequestDto;
+import org.springeel.oneclickrecipe.domain.cart.dto.service.request.CartAddServiceRequestDto;
+
+@Mapper(componentModel = SPRING)
 public interface CartDtoMapper {
 
-    @Mapping(target = "userId", ignore = true)// userId는 인증 정보에서 가져옴
-    CartAddServiceRequestDto toServiceDto(CartAddControllerRequestDto controllerRequestDto);
+    CartAddServiceRequestDto toServiceRequestDto(CartAddControllerRequestDto controllerRequestDto);
 }

@@ -1,18 +1,19 @@
 package org.springeel.oneclickrecipe.domain.recipe.mapper.dto;
 
+import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
+
 import org.mapstruct.Mapper;
-import org.mapstruct.MappingConstants.ComponentModel;
 import org.springeel.oneclickrecipe.domain.recipe.dto.controller.RecipeCreateControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.controller.RecipeUpdateControllerRequestDto;
-import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeCreateServiceRequestDto;
-import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeUpdateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.recipe.dto.service.request.RecipeCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.recipe.dto.service.request.RecipeUpdateServiceRequestDto;
 
-@Mapper(componentModel = ComponentModel.SPRING)
+@Mapper(componentModel = SPRING)
 public interface RecipeDtoMapper {
 
-    RecipeCreateServiceRequestDto toRecipeServiceRequestDto(
+    RecipeCreateServiceRequestDto toRecipeCreateServiceRequestDto(
         RecipeCreateControllerRequestDto controllerRequestDto);
-    
+
     RecipeUpdateServiceRequestDto toRecipeUpdateServiceRequestDto(
         RecipeUpdateControllerRequestDto controllerRequestDto);
 }

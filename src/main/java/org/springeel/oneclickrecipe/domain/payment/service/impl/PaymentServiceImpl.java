@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springeel.oneclickrecipe.domain.order.entity.Order;
 import org.springeel.oneclickrecipe.domain.order.entity.OrderStatus;
+import org.springeel.oneclickrecipe.domain.order.exception.AlreadyProcessesOrderException;
 import org.springeel.oneclickrecipe.domain.order.exception.NotFoundOrderException;
 import org.springeel.oneclickrecipe.domain.order.exception.OrderErrorCode;
 import org.springeel.oneclickrecipe.domain.order.repository.OrderRepository;
@@ -28,8 +29,8 @@ public class PaymentServiceImpl implements PaymentService {
     private final RestTemplate restTemplate;
     private final OrderRepository orderRepository;
 
-    @Value("${custom.front.url}")
-    private String frontUrl;
+    @Value("${custom.front.host}")
+    private String frontHost;
 
     @Value("${custom.kakao.admin-key}")
     private String adminKey;
@@ -39,8 +40,12 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public KakaoPayReadyResponseDto readyKakaoPay(final Long orderId, final User user) {
-        Order order = orderRepository.findById(orderId)
+        Order order = orderRepository.findByIdAndUser(orderId, user)
             .orElseThrow(() -> new NotFoundOrderException(OrderErrorCode.NOT_FOUND_ORDER));
+
+        if (order.getStatus() != OrderStatus.WAITING) {
+            throw new AlreadyProcessesOrderException(OrderErrorCode.ALREADY_PROCESS_ORDER);
+        }
 
         HttpHeaders headers = getHttpHeaders();
 
@@ -54,11 +59,9 @@ public class PaymentServiceImpl implements PaymentService {
         parameters.add("vat_amount", "0");
         parameters.add("tax_free_amount", "0");
         parameters.add("approval_url",
-            frontUrl + String.format("/orders/%d/payment/kakao/approve", order.getId()));
-        parameters.add("cancel_url",
-            frontUrl + String.format("/orders/%d/payment/kakao/cancel", order.getId()));
-        parameters.add("fail_url",
-            frontUrl + String.format("/orders/%d/payment/kakao/fail", order.getId()));
+            frontHost + String.format("/orders/%d/payment/kakao/approve", order.getId()));
+        parameters.add("cancel_url", frontHost + "/payment/kakao/cancel");
+        parameters.add("fail_url", frontHost + "/payment/kakao/fail");
 
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(parameters,
             headers);
@@ -74,6 +77,13 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public KakaoPayApprovalResponseDto approveKakaoPay(final Long orderId,
         final KakaoPayApprovalServiceRequestDto serviceRequestDto, final User user) {
+        Order order = orderRepository.findByIdAndUser(orderId, user)
+            .orElseThrow(() -> new NotFoundOrderException(OrderErrorCode.NOT_FOUND_ORDER));
+
+        if (order.getStatus() != OrderStatus.WAITING) {
+            throw new AlreadyProcessesOrderException(OrderErrorCode.ALREADY_PROCESS_ORDER);
+        }
+
         HttpHeaders headers = getHttpHeaders();
 
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
@@ -90,8 +100,6 @@ public class PaymentServiceImpl implements PaymentService {
             "https://kapi.kakao.com/v1/payment/approve", requestEntity,
             KakaoPayApprovalResponseDto.class);
 
-        Order order = orderRepository.findById(orderId)
-            .orElseThrow(() -> new NotFoundOrderException(OrderErrorCode.NOT_FOUND_ORDER));
         order.updateStatus(OrderStatus.APPROVEMENT);
         orderRepository.save(order);
 

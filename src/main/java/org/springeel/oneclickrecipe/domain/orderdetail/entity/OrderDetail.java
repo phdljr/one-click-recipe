@@ -13,6 +13,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springeel.oneclickrecipe.domain.food.entity.UnitType;
 import org.springeel.oneclickrecipe.domain.order.entity.Order;
 
 @Getter
@@ -26,10 +27,13 @@ public class OrderDetail {
     private Long id;
 
     @Column(nullable = false)
-    private String foodName;
+    private String name;
 
     @Column(nullable = false)
     private Short amount;
+
+    @Column(nullable = false)
+    private UnitType unit;
 
     @Column(nullable = false)
     private Integer price;
@@ -39,13 +43,12 @@ public class OrderDetail {
     private Order order;
 
     @Builder
-    public OrderDetail(
-        final String foodName,
-        final Short amount,
-        final Integer price
-    ) {
-        this.foodName = foodName;
+    public OrderDetail(final String name, final Short amount, final UnitType unit,
+        final Integer price, final Order order) {
+        this.name = name;
         this.amount = amount;
+        this.unit = unit;
         this.price = price;
+        this.order = order;
     }
 }

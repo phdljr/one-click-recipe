@@ -2,10 +2,28 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.2.1'
     id 'io.spring.dependency-management' version '1.1.4'
+//    id 'com.diffplug.spotless' version '6.24.0'
+}
+
+//spotless {
+//    java {
+//        // 사용하지 않는 import 제거
+//        removeUnusedImports()
+//        // 구글 자바 포맷 적용
+//        googleJavaFormat()
+//        // 공백 제거
+//        trimTrailingWhitespace()
+//        // 끝부분 New Line 처리
+//        endWithNewline()
+//    }
+//}
+
+jar {
+    enabled = false
 }
 
 group = 'org.springeel'
-version = '0.0.1-SNAPSHOT'
+version = '0.1.0-SNAPSHOT'
 
 java {
     sourceCompatibility = '21'
@@ -27,7 +45,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
-    runtimeOnly 'com.h2database:h2'
+    testRuntimeOnly 'com.h2database:h2'
     runtimeOnly 'com.mysql:mysql-connector-j'
     runtimeOnly 'org.postgresql:postgresql'
     annotationProcessor 'org.projectlombok:lombok'

@@ -1,13 +1,15 @@
 package org.springeel.oneclickrecipe.domain.review.service.impl;
 
 import jakarta.transaction.Transactional;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;
 import org.springeel.oneclickrecipe.domain.recipe.exception.NotFoundRecipeException;
 import org.springeel.oneclickrecipe.domain.recipe.exception.RecipeErrorCode;
 import org.springeel.oneclickrecipe.domain.recipe.repository.RecipeRepository;
-import org.springeel.oneclickrecipe.domain.review.dto.service.ReviewCreateServiceRequestDto;
-import org.springeel.oneclickrecipe.domain.review.dto.service.ReviewUpdateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.review.dto.service.request.ReviewCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.review.dto.service.request.ReviewUpdateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.review.dto.service.response.ReviewReadResponseDto;
 import org.springeel.oneclickrecipe.domain.review.entity.Review;
 import org.springeel.oneclickrecipe.domain.review.exception.NotFoundReviewException;
 import org.springeel.oneclickrecipe.domain.review.exception.ReviewErrorCode;
@@ -26,7 +28,8 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewEntityMapper reviewEntityMapper;
 
     @Override
-    public void createReview(User user, ReviewCreateServiceRequestDto serviceRequestDto, Long recipeId) {
+    public void createReview(User user, ReviewCreateServiceRequestDto serviceRequestDto,
+        Long recipeId) {
         Recipe recipe = recipeRepository.findById(recipeId)
             .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
         Review review = reviewEntityMapper.toReview(serviceRequestDto, user, recipe);
@@ -35,7 +38,8 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Transactional
     @Override
-    public void updateReview(Long reviewId, User user, ReviewUpdateServiceRequestDto serviceRequestDto) {
+    public void updateReview(Long reviewId, User user,
+        ReviewUpdateServiceRequestDto serviceRequestDto) {
 
         Review review = reviewRepository.findByIdAndUser(reviewId, user)
             .orElseThrow(() -> new NotFoundReviewException(ReviewErrorCode.NOT_FOUND_REVIEW));
@@ -46,9 +50,19 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public void deleteReview(User user, Long reviewId) {
-
         Review review = reviewRepository.findByIdAndUser(reviewId, user)
             .orElseThrow(() -> new NotFoundReviewException(ReviewErrorCode.NOT_FOUND_REVIEW));
         reviewRepository.delete(review);
+    }
+
+    @Override
+    public List<ReviewReadResponseDto> getReviews(Long recipeId) {
+        recipeRepository.findById(recipeId)
+            .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
+        // 특정 레시피에 대한 리뷰 목록 조회
+        List<Review> reviews = reviewRepository.findAllByRecipeId(recipeId);
+
+        //  댓글 목록을 Dto로 변환해서 반환
+        return reviewEntityMapper.toReviewReadResponseDtos(reviews);
     }
 }

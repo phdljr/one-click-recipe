@@ -1,6 +1,7 @@
 package org.springeel.oneclickrecipe.domain.user.controller;
 
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.user.dto.controller.UserLoginControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.user.dto.controller.UserSignUpControllerRequestDto;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/users")
 @RestController
 public class UserController {
 
@@ -25,9 +26,9 @@ public class UserController {
     private final UserService userService;
     private final LoginServletService loginServletService;
 
-    @PostMapping("/users/signup")
+    @PostMapping("/signup")
     public ResponseEntity<Void> singUp(
-        @RequestBody UserSignUpControllerRequestDto controllerRequestDto
+        @Valid @RequestBody UserSignUpControllerRequestDto controllerRequestDto
     ) {
         UserSignUpServiceRequestDto serviceRequestDto = userDtoMapper.toUserSignUpServiceRequestDto(
             controllerRequestDto);
@@ -35,16 +36,16 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PostMapping("/users/login")
+    @PostMapping("/login")
     public ResponseEntity<Void> login(
-        @RequestBody UserLoginControllerRequestDto controllerRequestDto,
+        @Valid @RequestBody UserLoginControllerRequestDto controllerRequestDto,
         HttpServletResponse httpServletResponse
     ) {
         UserLoginServiceRequestDto serviceRequestDto = userDtoMapper.toUserLoginServiceRequestDto(
             controllerRequestDto);
         userService.login(serviceRequestDto);
-        loginServletService.addJwtToHeader(serviceRequestDto, httpServletResponse);
+//        loginServletService.addJwtToHeader(serviceRequestDto, httpServletResponse);
+        loginServletService.addJwtToCookie(serviceRequestDto, httpServletResponse);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
-
 }
