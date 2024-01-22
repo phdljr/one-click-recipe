@@ -7,5 +7,7 @@ import org.springframework.stereotype.Service;
 
 public interface FoodService {
 
-    void CreateFood(FoodCreateServiceRequestDto requestDto, User user);
+    void createFood(FoodCreateServiceRequestDto requestDto, User user);
+
+    void deleteFood(User user, Long id);
 }
