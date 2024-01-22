@@ -1,8 +1,10 @@
 package org.springeel.oneclickrecipe.domain.food.service.impl;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springeel.oneclickrecipe.domain.food.dto.service.FoodCreateServiceRequestDto;
-import org.springeel.oneclickrecipe.domain.food.dto.service.FoodUpdateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.food.dto.service.request.FoodCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.food.dto.service.request.FoodUpdateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.food.dto.service.response.FoodReadAllServiceResponseDto;
 import org.springeel.oneclickrecipe.domain.food.entity.Food;
 import org.springeel.oneclickrecipe.domain.food.exception.FoodErrorCode;
 import org.springeel.oneclickrecipe.domain.food.exception.NotFoundFoodException;
@@ -42,6 +44,12 @@ public class FoodServiceImpl implements FoodService {
         User admin = findUserRole(user);
         Food food = findFood(id);
         food.updateFood(requestDto.name(), requestDto.price(), requestDto.unit());
+    }
+
+    public List<FoodReadAllServiceResponseDto> readAllFoods(User user) {
+        User admin = findUserRole(user);
+        List<Food> foods = foodRepository.findAll();
+        return foodEntityMapper.toFoodAll(foods);
     }
 
     private User findUserRole(User user) {
