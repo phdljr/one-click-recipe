@@ -5,11 +5,12 @@ import org.springeel.oneclickrecipe.domain.food.dto.controller.FoodCreateControl
 import org.springeel.oneclickrecipe.domain.food.dto.service.FoodCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.food.mapper.dto.FoodDtoMapper;
 import org.springeel.oneclickrecipe.domain.food.service.FoodService;
-import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springeel.oneclickrecipe.global.security.UserDetailsImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +30,16 @@ public class FoodController {
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
         FoodCreateServiceRequestDto createServiceRequestDto =
             dtoMapper.toFoodCreateServiceDto(controllerRequestDto);
-        foodService.CreateFood(createServiceRequestDto, userDetails.user());
+        foodService.createFood(createServiceRequestDto, userDetails.user());
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @DeleteMapping("foods/{foodId}")
+    public ResponseEntity<?> deleteFood(
+        @PathVariable Long foodId,
+        @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        foodService.deleteFood(userDetails.user(), foodId);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
