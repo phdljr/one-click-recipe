@@ -14,15 +14,15 @@ import org.springeel.oneclickrecipe.global.entity.BaseEntity;
 
 @Getter
 @NoArgsConstructor
-@Table(name = "TB_SUBSCRIBE")
+@Table(name = "TB_FOLLOW")
 @Entity
 @IdClass(FollowId.class)
 public class Follow extends BaseEntity {
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "follower_id")
-    private User follower;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Id
     @ManyToOne
@@ -31,10 +31,10 @@ public class Follow extends BaseEntity {
 
     @Builder
     public Follow(
-        final User follower,
+        final User user,
         final User following
     ) {
-        this.follower = follower;
+        this.user = user;
         this.following = following;
     }
 }
