@@ -43,4 +43,10 @@ public class Food {
         this.price = price;
         this.unit = unit;
     }
+
+    public void updateFood(String name, Integer price, UnitType unit) {
+        this.name = name;
+        this.price = price;
+        this.unit = unit;
+    }
 }
