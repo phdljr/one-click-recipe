@@ -1,8 +1,8 @@
-package org.springeel.oneclickrecipe.domain.food.controller;
+package org.springeel.oneclickrecipe.domain.food.dto.controller;
 
 import org.springeel.oneclickrecipe.domain.food.entity.UnitType;
 
-public record FoodCreateControllerDto(
+public record FoodCreateControllerRequestDto(
     String foodName,
     Integer price,
     UnitType unitType
