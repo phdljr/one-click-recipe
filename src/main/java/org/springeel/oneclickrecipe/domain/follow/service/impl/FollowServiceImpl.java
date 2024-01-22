@@ -9,6 +9,7 @@ import org.springeel.oneclickrecipe.domain.follow.repository.FollowRepository;
 import org.springeel.oneclickrecipe.domain.follow.service.FollowService;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -17,6 +18,7 @@ public class FollowServiceImpl implements FollowService {
     private final FollowRepository followRepository;
 
     @Override
+    @Transactional
     public void create(User user, Long userId) {
         Follow follow = followRepository.findByFollowingId(userId)
             .orElseThrow(() -> new NotFoundFollowException(FollowErrorCode.NOT_FOUND_FOLLOW));
