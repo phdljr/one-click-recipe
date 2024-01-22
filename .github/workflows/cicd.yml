@@ -67,4 +67,4 @@ jobs:
           script_stop: true
           script: |
             kill -9 $(ps -ef | grep java | head -n 1 | awk '{print $2}')
-            nohup java -Duser.timezone=Asia/Seoul -Dspring.profiles.active=prod -jar *.jar 1> /dev/null 2>&1 &
+            nohup java -Duser.timezone=Asia/Seoul -Dspring.profiles.active=prod -jar *.jar 1> ~/nohup_log.out 2>&1 &
