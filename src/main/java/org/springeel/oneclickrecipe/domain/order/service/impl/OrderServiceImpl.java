@@ -18,6 +18,7 @@ import org.springeel.oneclickrecipe.domain.orderdetail.entity.OrderDetail;
 import org.springeel.oneclickrecipe.domain.orderdetail.mapper.entity.OrderDetailEntityMapper;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -29,6 +30,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderDetailEntityMapper orderDetailEntityMapper;
 
     // 주문 생성
+    @Transactional
     @Override
     public OrderCreateResponseDto createOrder(OrderCreateServiceRequestDto serviceRequestDto,
         User user) {
