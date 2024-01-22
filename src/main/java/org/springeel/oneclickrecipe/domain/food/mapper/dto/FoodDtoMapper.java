@@ -5,8 +5,8 @@ import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 import org.mapstruct.Mapper;
 import org.springeel.oneclickrecipe.domain.food.dto.controller.FoodCreateControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.food.dto.controller.FoodUpdateControllerRequestDto;
-import org.springeel.oneclickrecipe.domain.food.dto.service.FoodCreateServiceRequestDto;
-import org.springeel.oneclickrecipe.domain.food.dto.service.FoodUpdateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.food.dto.service.request.FoodCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.food.dto.service.request.FoodUpdateServiceRequestDto;
 
 @Mapper(componentModel = SPRING)
 
