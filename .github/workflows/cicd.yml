@@ -1,4 +1,4 @@
-name: Java CI with Gradle
+name: CI/CD
 
 on:
   push:
@@ -50,7 +50,7 @@ jobs:
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
-          username: ec2-user
+          username: ubuntu
           key: ${{ secrets.SSH_KEY }}
           port: 22
           source: "./build/libs/*.jar"
