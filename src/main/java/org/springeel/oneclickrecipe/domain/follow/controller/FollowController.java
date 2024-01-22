@@ -20,7 +20,7 @@ public class FollowController {
     private final FollowService followService;
 
     @PostMapping("/follows/{userId}") //사용자 구독 생성
-    public ResponseEntity<Void> create(
+    public ResponseEntity<?> create(
         @PathVariable(name = "userId") Long userId,
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
