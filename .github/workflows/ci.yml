@@ -37,3 +37,11 @@ jobs:
         run: |
           pwd
           ./gradlew test
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [ test ]
+    steps:
+      - name: test
+        run: |
+          pwd
+          ./gradlew bootJar
