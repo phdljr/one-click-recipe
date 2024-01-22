@@ -2,7 +2,9 @@ package org.springeel.oneclickrecipe.domain.food.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.food.dto.controller.FoodCreateControllerRequestDto;
+import org.springeel.oneclickrecipe.domain.food.dto.controller.FoodUpdateControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.food.dto.service.FoodCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.food.dto.service.FoodUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.food.mapper.dto.FoodDtoMapper;
 import org.springeel.oneclickrecipe.domain.food.service.FoodService;
 import org.springeel.oneclickrecipe.global.security.UserDetailsImpl;
@@ -29,9 +31,9 @@ public class FoodController {
     public ResponseEntity<?> createFood(
         @RequestBody FoodCreateControllerRequestDto controllerRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        FoodCreateServiceRequestDto createServiceRequestDto =
+        FoodCreateServiceRequestDto serviceRequestDto =
             dtoMapper.toFoodCreateServiceDto(controllerRequestDto);
-        foodService.createFood(createServiceRequestDto, userDetails.user());
+        foodService.createFood(serviceRequestDto, userDetails.user());
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -41,6 +43,18 @@ public class FoodController {
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         foodService.deleteFood(userDetails.user(), foodId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PutMapping("/foods/{foodId}")
+    public ResponseEntity<?> updateFood(
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
+        @PathVariable Long foodId,
+        @RequestBody FoodUpdateControllerRequestDto controllerRequestDto
+    ) {
+        FoodUpdateServiceRequestDto serviceRequestDto =
+            dtoMapper.toFoodUpdateServiceDto(controllerRequestDto);
+        foodService.updateFood(userDetails.user(), foodId, serviceRequestDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
