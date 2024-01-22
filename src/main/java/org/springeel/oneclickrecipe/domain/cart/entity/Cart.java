@@ -10,6 +10,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springeel.oneclickrecipe.domain.recipefood.entity.RecipeFood;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 
@@ -25,6 +27,7 @@ public class Cart {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @Id
     @ManyToOne
     @JoinColumn(name = "recipe_food_id")
