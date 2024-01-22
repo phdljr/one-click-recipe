@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FollowId implements Serializable {
 
-    private Long follower;
+    private Long user;
     private Long following;
 
     @Override
@@ -22,12 +22,12 @@ public class FollowId implements Serializable {
             return false;
         }
         FollowId followId = (FollowId) o;
-        return Objects.equals(follower, followId.follower) && Objects.equals(
-            following, followId.following);
+        return Objects.equals(user, followId.user) && Objects.equals(following,
+            followId.following);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(follower, following);
+        return Objects.hash(user, following);
     }
 }
