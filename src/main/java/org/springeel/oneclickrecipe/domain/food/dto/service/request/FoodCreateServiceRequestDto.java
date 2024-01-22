@@ -1,4 +1,4 @@
-package org.springeel.oneclickrecipe.domain.food.dto.service;
+package org.springeel.oneclickrecipe.domain.food.dto.service.request;
 
 import org.springeel.oneclickrecipe.domain.food.entity.UnitType;
 
