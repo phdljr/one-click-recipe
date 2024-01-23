@@ -151,7 +151,6 @@ class OrderServiceCreateTest {
     void testReadAllOrderSuccess() {
         // when
         List<OrderReadAllResponseDto> result = orderService.getAllUserOrders(testUser);
-        OrderReadAllResponseDto firstOrder = result.get(0);
 
         // then
         assertNotNull(result);
