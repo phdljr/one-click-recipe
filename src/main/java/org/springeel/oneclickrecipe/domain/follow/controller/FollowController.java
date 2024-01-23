@@ -21,7 +21,7 @@ public class FollowController {
 
     @PostMapping("/follows/{userId}") //사용자 구독 생성
     public ResponseEntity<?> create(
-        @PathVariable(name = "followingId") Long followingId,
+        @PathVariable(name = "userId") Long followingId,
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         followService.create(userDetails.user(), followingId);
