@@ -1,12 +1,14 @@
 package org.springeel.oneclickrecipe.domain.order.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,6 +20,7 @@ import org.springeel.oneclickrecipe.domain.food.entity.Food;
 import org.springeel.oneclickrecipe.domain.food.entity.UnitType;
 import org.springeel.oneclickrecipe.domain.order.dto.service.request.OrderCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.order.dto.service.response.OrderCreateResponseDto;
+import org.springeel.oneclickrecipe.domain.order.dto.service.response.OrderReadAllResponseDto;
 import org.springeel.oneclickrecipe.domain.order.entity.Order;
 import org.springeel.oneclickrecipe.domain.order.entity.OrderStatus;
 import org.springeel.oneclickrecipe.domain.order.mapper.entity.OrderEntityMapper;
@@ -31,7 +34,7 @@ import org.springeel.oneclickrecipe.domain.user.entity.UserRole;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class OrderServiceCreateTest {
+class OrderServiceCreateTest {
 
     @Mock
     private CartRepository cartRepository;
@@ -53,6 +56,7 @@ public class OrderServiceCreateTest {
     private Food testFood;
     private RecipeFood testRecipeFood;
     private OrderCreateServiceRequestDto testOrderCreateServiceRequestDto;
+    private OrderReadAllResponseDto testOrderReadAllResponseDto;
     private Order testOrder;
     private OrderDetail testOrderDetail;
 
@@ -122,11 +126,16 @@ public class OrderServiceCreateTest {
         when(orderRepository.save(any(Order.class))).thenReturn(testOrder);
         when(orderEntityMapper.toOrderCreateResponseDto(any(Order.class)))
             .thenReturn(new OrderCreateResponseDto(1L, OrderStatus.WAITING));
+
+        List<Order> orderList = Arrays.asList(testOrder);
+        when(orderRepository.findAllByUser(testUser)).thenReturn(orderList);
+        when(orderEntityMapper.toOrderReadAllResponseDto(testOrder))
+            .thenReturn(testOrderReadAllResponseDto);
     }
 
     @Test
     @DisplayName("주문 생성 성공")
-    public void testCreateOrderSuccess() {
+    void testCreateOrderSuccess() {
         // when
         OrderCreateResponseDto result = orderService.createOrder(testOrderCreateServiceRequestDto,
             testUser);
@@ -135,5 +144,18 @@ public class OrderServiceCreateTest {
         assertNotNull(result);
         assertEquals(1L, result.id());
         assertEquals(OrderStatus.WAITING, result.orderStatus());
+    }
+
+    @Test
+    @DisplayName("주문 목록 조회 성공")
+    void testReadAllOrderSuccess() {
+        // when
+        List<OrderReadAllResponseDto> result = orderService.getAllUserOrders(testUser);
+        OrderReadAllResponseDto firstOrder = result.get(0);
+
+        // then
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+        assertEquals(1, result.size());
     }
 }
