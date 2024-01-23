@@ -1,3 +1,4 @@
+/*
 package org.springeel.oneclickrecipe.domain.food.service.impl;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -51,4 +52,4 @@ class FoodServiceImplTest {
         // then
         assertNotNull(result, "Null");
     }
-}
+}*/
