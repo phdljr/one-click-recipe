@@ -52,13 +52,8 @@ class OrderServiceCreateTest {
     private OrderServiceImpl orderService;
 
     private User testUser;
-    private Cart testCart;
-    private Food testFood;
-    private RecipeFood testRecipeFood;
     private OrderCreateServiceRequestDto testOrderCreateServiceRequestDto;
     private OrderReadAllResponseDto testOrderReadAllResponseDto;
-    private Order testOrder;
-    private OrderDetail testOrderDetail;
 
     @BeforeEach
     public void setUp() {
@@ -69,19 +64,19 @@ class OrderServiceCreateTest {
             .role(UserRole.USER)
             .build();
 
-        testFood = Food.builder()
+        Food testFood = Food.builder()
             .name("Test Food")
             .price(100)
             .unit(UnitType.COUNT)
             .build();
 
-        testRecipeFood = RecipeFood.builder()
+        RecipeFood testRecipeFood = RecipeFood.builder()
             .amount((short) 2)
             .recipe(null)
             .food(testFood)
             .build();
 
-        testCart = Cart.builder()
+        Cart testCart = Cart.builder()
             .user(testUser)
             .recipeFood(testRecipeFood)
             .build();
@@ -96,7 +91,7 @@ class OrderServiceCreateTest {
             .requirement("어니부기에게 전해주세요")
             .build();
 
-        testOrder = Order.builder()
+        Order testOrder = Order.builder()
             .receiverName("배규태")
             .receiverPhoneNumber("010-1111-1111")
             .senderName("어니부기")
@@ -109,7 +104,7 @@ class OrderServiceCreateTest {
             .user(testUser)
             .build();
 
-        testOrderDetail = OrderDetail.builder()
+        OrderDetail testOrderDetail = OrderDetail.builder()
             .name("Test Food")
             .amount((short) 2)
             .unit(UnitType.COUNT)
