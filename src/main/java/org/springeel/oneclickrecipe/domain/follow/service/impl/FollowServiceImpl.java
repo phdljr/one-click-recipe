@@ -30,6 +30,7 @@ public class FollowServiceImpl implements FollowService {
                 FollowErrorCode.ALREADY_EXIST_FOLLOW);
         }
         Follow follow = followEntityMapper.tofollow(user);
+        followRepository.save(follow);
 
     }
 }
