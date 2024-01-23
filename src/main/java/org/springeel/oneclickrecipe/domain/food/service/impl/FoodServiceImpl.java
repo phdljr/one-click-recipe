@@ -26,36 +26,26 @@ public class FoodServiceImpl implements FoodService {
     private final UserRepository userRepository;
     private final FoodEntityMapper foodEntityMapper;
 
-    public void createFood(FoodCreateServiceRequestDto requestDto, User user) {
-        User admin = findUserRole(user);
+    public void createFood(FoodCreateServiceRequestDto requestDto) {
         Food food = foodEntityMapper.toFood(requestDto);
         foodRepository.save(food);
     }
 
-    public void deleteFood(User user, Long id) {
-        User admin = findUserRole(user);
+    public void deleteFood(Long id) {
         Food food = foodRepository.findById(id)
             .orElseThrow(() -> new NotFoundFoodException(FoodErrorCode.NOT_FOUND_FOOD));
         foodRepository.delete(food);
     }
 
     @Transactional
-    public void updateFood(User user, Long id, FoodUpdateServiceRequestDto requestDto) {
-        User admin = findUserRole(user);
+    public void updateFood(Long id, FoodUpdateServiceRequestDto requestDto) {
         Food food = findFood(id);
         food.updateFood(requestDto.name(), requestDto.price(), requestDto.unit());
     }
 
-    public List<FoodReadAllServiceResponseDto> readAllFoods(User user) {
-        User admin = findUserRole(user);
+    public List<FoodReadAllServiceResponseDto> readAllFoods() {
         List<Food> foods = foodRepository.findAll();
-        return foodEntityMapper.toFoodAll(foods);
-    }
-
-    private User findUserRole(User user) {
-        User admin = userRepository.findByRole(user.getRole())
-            .orElseThrow(() -> new NotFoundUserException(UserErrorCode.NOT_FOUND_USER));
-        return admin;
+        return foodEntityMapper.toFooReadAllResponseDto(foods);
     }
 
     private Food findFood(Long id) {

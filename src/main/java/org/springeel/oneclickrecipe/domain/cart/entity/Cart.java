@@ -27,8 +27,8 @@ public class Cart {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @Id
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne
     @JoinColumn(name = "recipe_food_id")
     private RecipeFood recipeFood;

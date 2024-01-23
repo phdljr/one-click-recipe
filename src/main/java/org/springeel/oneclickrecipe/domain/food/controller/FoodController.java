@@ -30,40 +30,36 @@ public class FoodController {
 
     @PostMapping("/foods/create-food")
     public ResponseEntity<?> createFood(
-        @RequestBody FoodCreateControllerRequestDto controllerRequestDto,
-        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        @RequestBody FoodCreateControllerRequestDto controllerRequestDto
+    ) {
         FoodCreateServiceRequestDto serviceRequestDto =
             dtoMapper.toFoodCreateServiceDto(controllerRequestDto);
-        foodService.createFood(serviceRequestDto, userDetails.user());
+        foodService.createFood(serviceRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @DeleteMapping("/foods/{foodId}")
     public ResponseEntity<?> deleteFood(
-        @PathVariable Long foodId,
-        @AuthenticationPrincipal UserDetailsImpl userDetails
+        @PathVariable Long foodId
     ) {
-        foodService.deleteFood(userDetails.user(), foodId);
+        foodService.deleteFood(foodId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PutMapping("/foods/{foodId}")
     public ResponseEntity<?> updateFood(
-        @AuthenticationPrincipal UserDetailsImpl userDetails,
         @PathVariable Long foodId,
         @RequestBody FoodUpdateControllerRequestDto controllerRequestDto
     ) {
         FoodUpdateServiceRequestDto serviceRequestDto =
             dtoMapper.toFoodUpdateServiceDto(controllerRequestDto);
-        foodService.updateFood(userDetails.user(), foodId, serviceRequestDto);
+        foodService.updateFood(foodId, serviceRequestDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @GetMapping("/foods")
-    public ResponseEntity<?> readAllFoods(
-        @AuthenticationPrincipal UserDetailsImpl userDetails
-    ) {
+    public ResponseEntity<?> readAllFoods() {
         return ResponseEntity.status(HttpStatus.OK)
-            .body(foodService.readAllFoods(userDetails.user()));
+            .body(foodService.readAllFoods());
     }
 }

@@ -14,6 +14,6 @@ public interface FoodEntityMapper {
 
     Food toFood(FoodCreateServiceRequestDto requestDto);
 
-    List<FoodReadAllServiceResponseDto> toFoodAll(List<Food> foods);
+    List<FoodReadAllServiceResponseDto> toFooReadAllResponseDto(List<Food> foods);
 
 }

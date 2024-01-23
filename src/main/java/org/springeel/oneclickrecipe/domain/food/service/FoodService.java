@@ -8,11 +8,11 @@ import org.springeel.oneclickrecipe.domain.user.entity.User;
 
 public interface FoodService {
 
-    void createFood(FoodCreateServiceRequestDto requestDto, User user);
+    void createFood(FoodCreateServiceRequestDto requestDto);
 
-    void deleteFood(User user, Long id);
+    void deleteFood(Long id);
 
-    void updateFood(User user, Long id, FoodUpdateServiceRequestDto requestDto);
+    void updateFood(Long id, FoodUpdateServiceRequestDto requestDto);
 
-    List<FoodReadAllServiceResponseDto> readAllFoods(User user);
+    List<FoodReadAllServiceResponseDto> readAllFoods();
 }
