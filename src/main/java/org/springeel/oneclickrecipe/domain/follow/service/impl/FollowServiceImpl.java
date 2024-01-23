@@ -17,11 +17,11 @@ public class FollowServiceImpl implements FollowService {
     private final FollowRepository followRepository;
 
     @Override
-    public void create(User user, Long userId) {
-        Follow follow = followRepository.findByFollowingId(userId)
+    public void create(User user, Long followingId) {
+        Follow follow = followRepository.findByFollowingId(followingId)
             .orElseThrow(() -> new NotFoundFollowException(FollowErrorCode.NOT_FOUND_FOLLOW));
 
-        if (followRepository.existsByUserIdAndFollowingId(user.getId(), userId)) {
+        if (followRepository.existsByUserIdAndFollowingId(user.getId(), followingId)) {
             throw new AlreadyExistFollowException(
                 FollowErrorCode.ALREADY_EXIST_FOLLOW);
         }
