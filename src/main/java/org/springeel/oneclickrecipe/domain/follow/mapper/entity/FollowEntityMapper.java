@@ -11,5 +11,6 @@ import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 @Mapper(componentModel = SPRING)
 public interface FollowEntityMapper {
     @Mapping(source = "user", target = "user")
-    Follow tofollow(User user);
+    @Mapping(source = "following", target = "following")
+    Follow tofollow(User user, User following);
 }
