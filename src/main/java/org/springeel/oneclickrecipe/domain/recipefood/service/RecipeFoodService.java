@@ -10,6 +10,8 @@ public interface RecipeFoodService {
 
     void createRecipeFood(RecipeFoodCreateServiceRequestDto requestDto, Long recipeId, User user);
 
+    void createRecipeFoodAll(List<RecipeFoodCreateServiceRequestDto> requestDtos, Long recipeId, User user);
+
     void deleteRecipeFood(Long recipeFoodId, User user);
 
     void updateRecipeFood(Long recipeFoodId, User user,
