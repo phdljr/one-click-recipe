@@ -33,4 +33,9 @@ public class FollowServiceImpl implements FollowService {
         followRepository.save(follow);
 
     }
+
+    @Override
+    public void delete(User user, Long userId) {
+
+    }
 }
