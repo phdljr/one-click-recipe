@@ -6,10 +6,7 @@ import org.springeel.oneclickrecipe.global.security.UserDetailsImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,6 +22,15 @@ public class FollowController {
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         followService.create(userDetails.user(), followingId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @DeleteMapping("/follows/{userId}") // 사용자 구독 취소
+    public ResponseEntity<?> delete(
+        @PathVariable(name = "userId") Long followingId,
+        @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        followService.delete(userDetails.user().followingId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
