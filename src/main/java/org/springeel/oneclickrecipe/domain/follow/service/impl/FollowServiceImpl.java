@@ -39,7 +39,7 @@ public class FollowServiceImpl implements FollowService {
         Follow follow = followRepository.findByUserIdAndFollowingId(user.getId(), followingId)
             .orElseThrow(
                 () -> new NotFoundFollowException(FollowErrorCode.NOT_FOUND_FOLLOW));
-
+        followRepository.delete(follow);
 
     }
 }
