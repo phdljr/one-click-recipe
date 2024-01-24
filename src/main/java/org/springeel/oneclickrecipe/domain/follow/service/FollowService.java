@@ -4,7 +4,7 @@ import org.springeel.oneclickrecipe.domain.user.entity.User;
 
 
 public interface FollowService {
-    void create(User user, Long userId);
+    void create(User user, Long followingId);
 
-    void delete(User user, Long userId);
+    void delete(User user, Long followingId);
 }
