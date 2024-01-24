@@ -30,7 +30,7 @@ public class FollowController {
         @PathVariable(name = "userId") Long followingId,
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        followService.delete(userDetails.user().followingId);
+        followService.delete(userDetails.user(), followingId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
