@@ -4,6 +4,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,11 +39,15 @@ public class S3Provider {
     }
 
     public String originalFileName(MultipartFile multipartFile) {
-        String fileName = multipartFile.getOriginalFilename();
-        String fileType = fileName.substring(fileName.lastIndexOf("."));
-        if (fileType.equals(".png") || fileType.equals(".jpeg")) {
-            fileName = UUID.randomUUID() + fileType;
-            return fileName;
+        if (Objects.equals(multipartFile.getContentType(), "image/png")
+            || Objects.equals(multipartFile.getContentType(), "image/jpeg")) {
+            String fileType = switch (multipartFile.getContentType()) {
+                case "image/png" -> ".png";
+                case "image/jpeg" -> ".jpg";
+                default -> throw new IllegalStateException(
+                    "Unexpected value: " + multipartFile.getContentType());
+            };
+            return UUID.randomUUID() + fileType;
         } else {
             throw new IllegalArgumentException("잘못된 파일 형식입니다");
         }
