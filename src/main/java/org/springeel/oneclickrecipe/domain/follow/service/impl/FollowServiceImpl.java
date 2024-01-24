@@ -22,14 +22,14 @@ public class FollowServiceImpl implements FollowService {
 
     @Override
     public void create(User user, Long followingId) {
-        User user1 = userRepository.findById(followingId)
+        User following = userRepository.findById(followingId)
             .orElseThrow(() -> new NotFoundFollowException(FollowErrorCode.NOT_FOUND_FOLLOW));
 
         if (followRepository.existsByUserIdAndFollowingId(user.getId(), followingId)) {
             throw new AlreadyExistsFollowException(
                 FollowErrorCode.ALREADY_EXIST_FOLLOW);
         }
-        Follow follow = followEntityMapper.tofollow(user);
+        Follow follow = followEntityMapper.tofollow(user, following);
         followRepository.save(follow);
 
     }
