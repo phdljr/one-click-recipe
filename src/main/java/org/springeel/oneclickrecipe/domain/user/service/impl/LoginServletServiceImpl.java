@@ -19,9 +19,9 @@ public class LoginServletServiceImpl implements LoginServletService {
     private final UserRepository userRepository;
 
     @Override
-    public void addJwtToHeader(final UserLoginServiceRequestDto requestDto,
+    public void addJwtToHeader(final String email,
         final HttpServletResponse httpServletResponse) {
-        User user = userRepository.findByEmail(requestDto.email())
+        User user = userRepository.findByEmail(email)
             .orElseThrow(() -> new NotFoundUserException(UserErrorCode.NOT_FOUND_USER));
 
         String token = jwtUtil.createToken(user.getEmail(), user.getRole());
@@ -30,9 +30,9 @@ public class LoginServletServiceImpl implements LoginServletService {
     }
 
     @Override
-    public void addJwtToCookie(final UserLoginServiceRequestDto requestDto,
+    public void addJwtToCookie(final String email,
         final HttpServletResponse httpServletResponse) {
-        User user = userRepository.findByEmail(requestDto.email())
+        User user = userRepository.findByEmail(email)
             .orElseThrow(() -> new NotFoundUserException(UserErrorCode.NOT_FOUND_USER));
 
         String token = jwtUtil.createToken(user.getEmail(), user.getRole());

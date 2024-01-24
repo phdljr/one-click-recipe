@@ -11,6 +11,7 @@ import org.springeel.oneclickrecipe.domain.user.dto.kakao.KakaoUserInfoDto;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springeel.oneclickrecipe.domain.user.entity.UserRole;
 import org.springeel.oneclickrecipe.domain.user.repository.UserRepository;
+import org.springeel.oneclickrecipe.global.util.JwtUtil;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,7 @@ public class KakaoService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final RestTemplate restTemplate;
+    private final JwtUtil jwtUtil;
 
     public String kakaoLogin(String code, HttpServletResponse res) throws JsonProcessingException {
         // 1. "인가 코드"로 "액세스 토큰" 요청
@@ -39,9 +41,9 @@ public class KakaoService {
         // 2. 토큰으로 카카오 API 호출 : "액세스 토큰"으로 "카카오 사용자 정보" 가져오기
         KakaoUserInfoDto kakaoUserInfo = getKakaoUserInfo(accessToken);
 
-        registerKakaoUserIfNeeded(kakaoUserInfo);
+        User user = registerKakaoUserIfNeeded(kakaoUserInfo);
 
-        return "Bearer" + accessToken;
+        return user.getEmail();
     }
 
     private String getToken(String code, HttpServletResponse res) throws JsonProcessingException {
@@ -119,7 +121,7 @@ public class KakaoService {
         return new KakaoUserInfoDto(nickname, email);
     }
 
-    private void registerKakaoUserIfNeeded(KakaoUserInfoDto kakaoUserInfo) {
+    private User registerKakaoUserIfNeeded(KakaoUserInfoDto kakaoUserInfo) {
         // DB 에 중복된 Kakao Id 가 있는지 확인
         String kakaoEmail = kakaoUserInfo.email();
         User kakaoUser = userRepository.findByEmail(kakaoEmail)
@@ -133,7 +135,8 @@ public class KakaoService {
                 .password(encodePassword)
                 .role(UserRole.USER)
                 .build();
+            userRepository.save(kakaoUser);
         }
-        userRepository.save(kakaoUser);
+        return kakaoUser;
     }
 }
