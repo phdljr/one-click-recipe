@@ -5,6 +5,7 @@ public record RecipeAllReadResponseDto(
     String title,
     String intro,
     Byte serving,
+    Short time,
     String imageUrl,
     String writer
 ) {

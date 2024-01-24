@@ -2,7 +2,7 @@ package org.springeel.oneclickrecipe.domain.recipe.service;
 
 import java.io.IOException;
 import java.util.List;
-import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeCreateResponseDto;
+import org.springeel.oneclickrecipe.domain.recipe.dto.service.response.RecipeCreateResponseDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.request.RecipeCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.request.RecipeUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.response.RecipeAllReadResponseDto;

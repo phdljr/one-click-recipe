@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeCreateResponseDto;
+import org.springeel.oneclickrecipe.domain.recipe.dto.service.response.RecipeCreateResponseDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.request.RecipeCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.request.RecipeUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.response.RecipeAllReadResponseDto;
@@ -77,6 +77,7 @@ public class RecipeServiceImpl implements RecipeService {
             requestDto.title(),
             requestDto.intro(),
             requestDto.serving(),
+            requestDto.time(),
             requestDto.videoUrl(),
             imageName //TODO 이미지 URL 넣기
         );

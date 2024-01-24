@@ -35,6 +35,9 @@ public class Recipe extends BaseEntity {
     private Byte serving;
 
     @Column
+    private Short time;
+
+    @Column
     private String videoUrl;
 
     @Column
@@ -52,6 +55,7 @@ public class Recipe extends BaseEntity {
         final String title,
         final String intro,
         final Byte serving,
+        final Short time,
         final String videoUrl,
         final String folderName,
         final String imageUrl,
@@ -60,17 +64,19 @@ public class Recipe extends BaseEntity {
         this.title = title;
         this.intro = intro;
         this.serving = serving;
+        this.time = time;
         this.videoUrl = videoUrl;
         this.folderName = folderName;
         this.imageUrl = imageUrl;
         this.user = user;
     }
 
-    public void updateRecipe(String title, String intro, Byte serving, String videoUrl,
+    public void updateRecipe(String title, String intro, Byte serving, Short time, String videoUrl,
         String imageUrl) {
         this.title = title;
         this.intro = intro;
         this.serving = serving;
+        this.time = time;
         this.videoUrl = videoUrl;
         this.imageUrl = imageUrl;
     }
