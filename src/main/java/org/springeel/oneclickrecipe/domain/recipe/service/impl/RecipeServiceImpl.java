@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeCreateResponseDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.request.RecipeCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.request.RecipeUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.response.RecipeAllReadResponseDto;
@@ -28,8 +29,9 @@ public class RecipeServiceImpl implements RecipeService {
     private final RecipeEntityMapper recipeEntityMapper;
     private final S3Provider s3Provider;
 
+    // TODO S3 사용하는 부분 메소드로 분리해두기
     @Override
-    public void createRecipe(final RecipeCreateServiceRequestDto requestDto, User user,
+    public RecipeCreateResponseDto createRecipe(final RecipeCreateServiceRequestDto requestDto, User user,
         MultipartFile multipartFile) throws IOException {
         String fileName;
         String fileUrl;
@@ -42,7 +44,7 @@ public class RecipeServiceImpl implements RecipeService {
             fileUrl = s3Provider.url + folderName + s3Provider.SEPARATOR + fileName;
         }
         Recipe recipe = recipeEntityMapper.toRecipe(requestDto, user, folderName, fileUrl);
-        recipeRepository.save(recipe);
+        recipe = recipeRepository.save(recipe);
         if (fileUrl == null) {
             s3Provider.createFolder(folderName);
         } else {
@@ -50,7 +52,7 @@ public class RecipeServiceImpl implements RecipeService {
             fileUrl = folderName + s3Provider.SEPARATOR + fileName;
             s3Provider.saveFile(multipartFile, fileUrl);
         }
-
+        return recipeEntityMapper.toRecipeCreateResponseDto(recipe);
     }
 
     @Transactional
