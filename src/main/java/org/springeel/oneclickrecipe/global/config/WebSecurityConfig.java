@@ -78,6 +78,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/api/v1/tests", "/api/v1/tests/**").permitAll()
                 .requestMatchers("/api/v1/users/login").permitAll()
                 .requestMatchers("/api/v1/users/signup").permitAll()
+                .requestMatchers("/api/v1/users/kakao/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/recipes").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/recipes/{recipeId}").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/recipes/{recipeId}/reviews").permitAll()
