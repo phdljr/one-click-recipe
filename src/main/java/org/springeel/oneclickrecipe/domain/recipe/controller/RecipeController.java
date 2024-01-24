@@ -5,6 +5,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.recipe.dto.controller.RecipeCreateControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.controller.RecipeUpdateControllerRequestDto;
+import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeCreateResponseDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.request.RecipeCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.request.RecipeUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.response.RecipeAllReadResponseDto;
@@ -36,14 +37,15 @@ public class RecipeController {
 
     @PostMapping
     public ResponseEntity<?> create(
-        @RequestPart RecipeCreateControllerRequestDto controllerRequestDto,
+        @RequestPart(name = "recipeCreateRequestDto") RecipeCreateControllerRequestDto controllerRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetails,
-        @RequestPart MultipartFile multipartFile
+        @RequestPart(name = "recipeCreateImage", required = false) MultipartFile multipartFile
     ) throws IOException {
         RecipeCreateServiceRequestDto serviceRequestDto =
             recipeDtoMapper.toRecipeCreateServiceRequestDto(controllerRequestDto);
-        recipeService.createRecipe(serviceRequestDto, userDetails.user(), multipartFile);
-        return ResponseEntity.status(HttpStatus.CREATED).body("레시피 생성 완성");
+        RecipeCreateResponseDto responseDto = recipeService.createRecipe(serviceRequestDto,
+            userDetails.user(), multipartFile);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
     @DeleteMapping("/{recipeId}")
