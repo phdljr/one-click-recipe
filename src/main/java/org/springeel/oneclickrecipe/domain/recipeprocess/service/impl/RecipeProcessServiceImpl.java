@@ -108,7 +108,6 @@ public class RecipeProcessServiceImpl implements RecipeProcessService {
         recipeProcess.updateRecipe(
             requestDto.sequence(),
             requestDto.description(),
-            requestDto.time(),
             imageName
         );
     }
