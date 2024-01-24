@@ -33,4 +33,13 @@ public class FollowServiceImpl implements FollowService {
         followRepository.save(follow);
 
     }
+
+    @Override
+    public void delete(User user, Long followingId) {
+        Follow follow = followRepository.findByUserIdAndFollowingId(user.getId(), followingId)
+            .orElseThrow(
+                () -> new NotFoundFollowException(FollowErrorCode.NOT_FOUND_FOLLOW));
+        followRepository.delete(follow);
+
+    }
 }

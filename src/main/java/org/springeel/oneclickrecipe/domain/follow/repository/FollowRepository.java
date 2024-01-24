@@ -4,10 +4,10 @@ import org.springeel.oneclickrecipe.domain.follow.entity.Follow;
 import org.springeel.oneclickrecipe.domain.follow.entity.FollowId;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface FollowRepository extends JpaRepository<Follow, FollowId> {
-    List<Follow> findByUserId(Long userId);
+    Optional<Follow> findByUserIdAndFollowingId(Long userId, Long followingId);
 
-    boolean existsByUserIdAndFollowingId(Long id, Long userId);
+    boolean existsByUserIdAndFollowingId(Long userId, Long followingId);
 }
