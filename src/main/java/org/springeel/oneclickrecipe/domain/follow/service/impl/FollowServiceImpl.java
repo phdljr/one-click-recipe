@@ -35,7 +35,7 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
-    public void delete(User user, Long userId) {
+    public void delete(User user, Long followingId) {
 
     }
 }
