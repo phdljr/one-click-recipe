@@ -6,7 +6,8 @@ import lombok.Builder;
 public record ReviewReadResponseDto(
     Long id,
     String content,
-    Byte star
+    Byte star,
+    String writer
 ) {
 
 }
