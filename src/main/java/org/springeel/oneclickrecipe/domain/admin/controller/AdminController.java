@@ -8,7 +8,6 @@ import org.springeel.oneclickrecipe.domain.order.dto.service.response.OrderReadA
 import org.springeel.oneclickrecipe.domain.order.dto.service.response.OrderReadResponseDto;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
