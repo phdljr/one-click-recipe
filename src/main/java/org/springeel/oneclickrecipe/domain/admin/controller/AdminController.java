@@ -24,14 +24,12 @@ public class AdminController {
     private final AdminService adminService;
 
     // 유저 목록 조회
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(adminService.getAllUsers());
     }
 
     // 유저 롤 변경
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PatchMapping("/users/{userId}/role")
     public ResponseEntity<Void> updateUserRole(@PathVariable(name = "userId") Long userId,
         @RequestBody UserRoleUpdateRequestDto updateRequestDto) {
@@ -40,7 +38,6 @@ public class AdminController {
     }
 
     // 유저의 주문 목록 조회
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/users/{userId}/orders")
     public ResponseEntity<List<OrderReadAllResponseDto>> getUserOrders(
         @PathVariable(name = "userId") Long userId) {
@@ -48,7 +45,6 @@ public class AdminController {
     }
 
     // 유저의 주문 단건 조회
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/users/{userId}/orders/{orderId}")
     public ResponseEntity<OrderReadResponseDto> getUserOrder(
         @PathVariable(name = "userId") Long userId,
