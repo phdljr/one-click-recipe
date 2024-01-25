@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.food.entity.Food;
 import org.springeel.oneclickrecipe.domain.food.exception.FoodErrorCode;
@@ -56,8 +55,7 @@ public class RecipeServiceImpl implements RecipeService {
         String recipeFolderName = recipeCreateServiceRequestDto.title() + UUID.randomUUID();
         String recipeImageName = s3Provider.originalFileName(recipeImage);
         Recipe recipe = recipeEntityMapper.toRecipe(recipeCreateServiceRequestDto, user,
-            recipeFolderName,
-            s3Provider.getImagePath(recipeImageName));
+            recipeFolderName, s3Provider.getImagePath(recipeImageName));
 
         List<RecipeFood> recipeFoods = recipeFoodCreateServiceRequestDtos.stream()
             .map(recipeFoodDto -> {
@@ -69,21 +67,20 @@ public class RecipeServiceImpl implements RecipeService {
             ).toList();
         recipe.getRecipeFoods().addAll(recipeFoods);
 
+        List<RecipeProcess> recipeProcesses = new ArrayList<>();
         List<String> recipeProcessImageNames = new ArrayList<>();
-        List<RecipeProcess> recipeProcesses = IntStream.range(0,
-                recipeProcessCreateServiceRequestDtos.size())
-            .mapToObj(i -> {
-                String recipeProcessImageName = s3Provider.originalFileName(
-                    recipeProcessImage.get(i));
-                String recipeProcessImageUrl = null;
-                if (!recipeProcessImageName.isEmpty()) {
-                    recipeProcessImageUrl = s3Provider.getImagePath(
-                        recipeFolderName + "/" + recipeProcessImageName);
-                }
-                recipeProcessImageNames.add(recipeProcessImageName);
-                return recipeProcessEntityMapper.toRecipeProcess(
-                    recipeProcessCreateServiceRequestDtos.get(i), recipeProcessImageUrl, recipe);
-            }).toList();
+        for (int i = 0; i < recipeProcessCreateServiceRequestDtos.size(); i++) {
+            String recipeProcessImageName =
+                s3Provider.originalFileName(recipeProcessImage.get(i));
+            String recipeProcessImageUrl = null;
+            if (!recipeProcessImageName.isEmpty()) {
+                recipeProcessImageUrl = s3Provider
+                    .getImagePath(recipeFolderName + "/" + recipeProcessImageName);
+            }
+            recipeProcessImageNames.add(recipeProcessImageName);
+            recipeProcesses.add(recipeProcessEntityMapper.toRecipeProcess(
+                recipeProcessCreateServiceRequestDtos.get(i), recipeProcessImageUrl, recipe));
+        }
         recipe.getRecipeProcesses().addAll(recipeProcesses);
 
         recipeRepository.save(recipe);
