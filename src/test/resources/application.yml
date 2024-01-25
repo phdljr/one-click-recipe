@@ -19,8 +19,11 @@ spring:
 custom:
   front:
     host: http://localhost:5173
+  back:
+    host: http://localhost:8080
   kakao:
     admin-key: asdsadsadsadasdaasdasdas
+    client-id: testestestsetsetestsetsetsetsetes
     cid: TC0ONETIME
   jwt:
     expiration-period: 8640000000
