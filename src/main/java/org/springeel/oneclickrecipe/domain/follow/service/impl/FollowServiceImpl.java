@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.follow.entity.Follow;
 import org.springeel.oneclickrecipe.domain.follow.exception.AlreadyExistsFollowException;
 import org.springeel.oneclickrecipe.domain.follow.exception.FollowErrorCode;
+import org.springeel.oneclickrecipe.domain.follow.exception.NotFollowSelfException;
 import org.springeel.oneclickrecipe.domain.follow.exception.NotFoundFollowException;
 import org.springeel.oneclickrecipe.domain.follow.mapper.entity.FollowEntityMapper;
 import org.springeel.oneclickrecipe.domain.follow.repository.FollowRepository;
@@ -23,8 +24,8 @@ public class FollowServiceImpl implements FollowService {
     @Override
     public void create(User user, Long followingId) {
         if (user.getId().equals(followingId)) {
-            throw new AlreadyExistsFollowException(
-                FollowErrorCode.ALREADY_EXIST_FOLLOW);
+            throw new NotFollowSelfException(
+                FollowErrorCode.NOT_FOLLOW_SELF);
         }
 
         User following = userRepository.findById(followingId)
