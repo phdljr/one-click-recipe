@@ -21,14 +21,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/admin")
+@RequestMapping("/api/v1")
 @RestController
 public class FoodController {
 
     private final FoodService foodService;
     private final FoodDtoMapper dtoMapper;
 
-    @PostMapping("/foods/create-food")
+    @PostMapping("/admin/foods/create-food")
     public ResponseEntity<?> createFood(
         @RequestBody FoodCreateControllerRequestDto controllerRequestDto
     ) {
@@ -38,7 +38,7 @@ public class FoodController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @DeleteMapping("/foods/{foodId}")
+    @DeleteMapping("/admin/foods/{foodId}")
     public ResponseEntity<?> deleteFood(
         @PathVariable Long foodId
     ) {
@@ -46,7 +46,7 @@ public class FoodController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PutMapping("/foods/{foodId}")
+    @PutMapping("/admin/foods/{foodId}")
     public ResponseEntity<?> updateFood(
         @PathVariable Long foodId,
         @RequestBody FoodUpdateControllerRequestDto controllerRequestDto
