@@ -5,9 +5,9 @@ import org.springeel.oneclickrecipe.domain.user.dto.service.UserLoginServiceRequ
 
 public interface LoginServletService {
 
-    void addJwtToHeader(UserLoginServiceRequestDto requestDto,
+    void addJwtToHeader(String email,
         HttpServletResponse httpServletResponse);
 
-    void addJwtToCookie(UserLoginServiceRequestDto requestDto,
+    void addJwtToCookie(String email,
         HttpServletResponse httpServletResponse);
 }

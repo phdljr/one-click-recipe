@@ -44,8 +44,7 @@ public class UserController {
         UserLoginServiceRequestDto serviceRequestDto = userDtoMapper.toUserLoginServiceRequestDto(
             controllerRequestDto);
         userService.login(serviceRequestDto);
-//        loginServletService.addJwtToHeader(serviceRequestDto, httpServletResponse);
-        loginServletService.addJwtToCookie(serviceRequestDto, httpServletResponse);
+        loginServletService.addJwtToHeader(serviceRequestDto.email(), httpServletResponse);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

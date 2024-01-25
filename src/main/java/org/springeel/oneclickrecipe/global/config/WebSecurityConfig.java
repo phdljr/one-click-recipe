@@ -50,8 +50,7 @@ public class WebSecurityConfig {
             config.setAllowedOriginPatterns(Arrays.asList(
                 "http://localhost:5173", // local
                 "https://one-click-recipe.netlify.app", // production view
-                "https://develop--one-click-recipe.netlify.app", // deploy view
-                "https://*--one-click-recipe.netlify.app" // pr view
+                "https://develop--one-click-recipe.netlify.app" // deploy view
             ));
             config.setAllowCredentials(true);
             config.setMaxAge(CORS_MAX_AGE_SEC);
@@ -78,6 +77,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/api/v1/tests", "/api/v1/tests/**").permitAll()
                 .requestMatchers("/api/v1/users/login").permitAll()
                 .requestMatchers("/api/v1/users/signup").permitAll()
+                .requestMatchers("/api/v1/users/kakao/**").permitAll()
                 .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET, "/api/v1/recipes").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/recipes/{recipeId}").permitAll()
