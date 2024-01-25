@@ -14,7 +14,6 @@ import org.springeel.oneclickrecipe.domain.recipefood.dto.service.request.Recipe
 import org.springeel.oneclickrecipe.domain.recipefood.dto.service.request.RecipeFoodUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipefood.dto.service.response.RecipeFoodReadResponseDto;
 import org.springeel.oneclickrecipe.domain.recipefood.entity.RecipeFood;
-import org.springeel.oneclickrecipe.domain.recipefood.exception.ForbiddenAccessRecipeFoodException;
 import org.springeel.oneclickrecipe.domain.recipefood.exception.NotFoundRecipeFoodException;
 import org.springeel.oneclickrecipe.domain.recipefood.exception.RecipeFoodErrorCode;
 import org.springeel.oneclickrecipe.domain.recipefood.mapper.service.RecipeFoodEntityMapper;
@@ -32,6 +31,22 @@ public class RecipeFoodServiceImpl implements RecipeFoodService {
     private final FoodRepository foodRepository;
     private final RecipeFoodEntityMapper recipeFoodEntityMapper;
     private final RecipeRepository recipeRepository;
+
+    @Override
+    public void createRecipeFoodAll(List<RecipeFoodCreateServiceRequestDto> requestDtos,
+        Long recipeId,
+        User user) {
+        List<RecipeFood> recipeFoods = requestDtos.stream().map(requestDto -> {
+            Food food = foodRepository.findByName(requestDto.foodName())
+                .orElseThrow(() -> new NotFoundFoodException(FoodErrorCode.NOT_FOUND_FOOD));
+            Recipe recipe = recipeRepository.findByIdAndUser(recipeId, user)
+                .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
+            return recipeFoodEntityMapper.toRecipeFood(requestDto, food,
+                recipe);
+        }).toList();
+
+        recipeFoodRepository.saveAll(recipeFoods);
+    }
 
     @Override
     public void createRecipeFood(RecipeFoodCreateServiceRequestDto requestDto, Long recipeId,

@@ -6,13 +6,12 @@ import org.springeel.oneclickrecipe.domain.recipe.dto.service.request.RecipeCrea
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.request.RecipeUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.response.RecipeAllReadResponseDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.response.RecipeReadResponseDto;
+import org.springeel.oneclickrecipe.domain.recipefood.dto.service.request.RecipeFoodCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.recipeprocess.dto.service.request.RecipeProcessCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface RecipeService {
-
-    void createRecipe(RecipeCreateServiceRequestDto controllerRequestDto, User user,
-        MultipartFile multipartFile) throws IOException;
 
     void deleteRecipe(Long recipeId, User user);
 
@@ -23,4 +22,10 @@ public interface RecipeService {
     List<RecipeAllReadResponseDto> readAllRecipe();
 
     RecipeReadResponseDto readRecipe(Long recipeId);
+
+    void createRecipe(RecipeCreateServiceRequestDto recipeCreateServiceRequestDto,
+        MultipartFile recipeImage,
+        List<RecipeFoodCreateServiceRequestDto> recipeFoodCreateServiceRequestDtos,
+        List<RecipeProcessCreateServiceRequestDto> recipeProcessCreateServiceRequestDtos,
+        List<MultipartFile> recipeProcessImage, User user) throws IOException;
 }

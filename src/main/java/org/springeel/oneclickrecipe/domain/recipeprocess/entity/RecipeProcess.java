@@ -34,9 +34,6 @@ public class RecipeProcess extends BaseEntity {
     private String description;
 
     @Column
-    private Short time;
-
-    @Column
     private String imageUrl;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -49,20 +46,17 @@ public class RecipeProcess extends BaseEntity {
         Recipe recipe,
         Byte sequence,
         String description,
-        Short time,
         String imageUrl
     ) {
         this.recipe = recipe;
         this.sequence = sequence;
         this.description = description;
-        this.time = time;
         this.imageUrl = imageUrl;
     }
 
-    public void updateRecipe(Byte sequence, String description, short time, String imageUrl) {
+    public void updateRecipe(Byte sequence, String description, String imageUrl) {
         this.sequence = sequence;
         this.description = description;
-        this.time = time;
         this.imageUrl = imageUrl;
     }
 }

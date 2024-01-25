@@ -4,7 +4,6 @@ public record RecipeProcessReadResponseDto(
     Long id,
     Byte sequence,
     String description,
-    Short time,
     String imageUrl
 ) {
 
