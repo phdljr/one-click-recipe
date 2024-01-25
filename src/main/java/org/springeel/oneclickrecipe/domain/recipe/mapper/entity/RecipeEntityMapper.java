@@ -24,5 +24,4 @@ public interface RecipeEntityMapper {
 
     @Mapping(source = "user.nickname", target = "writer")
     RecipeAllReadResponseDto toRecipeAllReadResponse(Recipe recipe);
-
 }

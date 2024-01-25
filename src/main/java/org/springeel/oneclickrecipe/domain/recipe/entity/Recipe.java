@@ -1,5 +1,6 @@
 package org.springeel.oneclickrecipe.domain.recipe.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,11 +8,16 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springeel.oneclickrecipe.domain.recipefood.entity.RecipeFood;
+import org.springeel.oneclickrecipe.domain.recipeprocess.entity.RecipeProcess;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springeel.oneclickrecipe.global.entity.BaseEntity;
 
@@ -46,6 +52,12 @@ public class Recipe extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.PERSIST)
+    private List<RecipeProcess> recipeProcesses = new ArrayList<>();
+
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.PERSIST)
+    private List<RecipeFood> recipeFoods = new ArrayList<>();
 
     @Builder
     public Recipe(

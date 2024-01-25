@@ -42,6 +42,18 @@ public class RecipeFoodController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @PostMapping("/recipes/{recipeId}/recipe-foods/all")
+    public ResponseEntity<?> create(
+        @RequestBody List<RecipeFoodCreateControllerRequestDto> controllerRequestDtos,
+        @PathVariable Long recipeId,
+        @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        List<RecipeFoodCreateServiceRequestDto> serviceRequestDto =
+            recipeFoodDtoMapper.toRecipeFoodCreateServiceRequestDtos(controllerRequestDtos);
+        recipeFoodService.createRecipeFoodAll(serviceRequestDto, recipeId, userDetails.user());
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
     @DeleteMapping("/recipe-foods/{recipeFoodId}")
     public ResponseEntity<?> delete(
 //        @PathVariable Long recipeId,

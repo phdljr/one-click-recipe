@@ -2,6 +2,7 @@ package org.springeel.oneclickrecipe.domain.recipefood.mapper.dto;
 
 import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.springeel.oneclickrecipe.domain.recipefood.dto.controller.RecipeFoodCreateControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.recipefood.dto.controller.RecipeFoodUpdateControllerRequestDto;
@@ -11,10 +12,12 @@ import org.springeel.oneclickrecipe.domain.recipefood.dto.service.request.Recipe
 @Mapper(componentModel = SPRING)
 public interface RecipeFoodDtoMapper {
 
-    RecipeFoodCreateServiceRequestDto toRecipeFoodCreateServiceRequestDto(
-        RecipeFoodCreateControllerRequestDto controllerRequestDto);
+    List<RecipeFoodCreateServiceRequestDto> toRecipeFoodCreateServiceRequestDtos(
+        List<RecipeFoodCreateControllerRequestDto> controllerRequestDtos);
 
     RecipeFoodUpdateServiceRequestDto toRecipeFoodUpdateServiceRequestDto(
         RecipeFoodUpdateControllerRequestDto controllerRequestDto);
 
+    RecipeFoodCreateServiceRequestDto toRecipeFoodCreateServiceRequestDto(
+        RecipeFoodCreateControllerRequestDto controllerRequestDto);
 }
