@@ -8,7 +8,6 @@ import org.springeel.oneclickrecipe.domain.recipe.dto.controller.RecipeUpdateCon
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.request.RecipeCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.request.RecipeUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.response.RecipeAllReadResponseDto;
-import org.springeel.oneclickrecipe.domain.recipe.dto.service.response.RecipeCreateResponseDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.response.RecipeReadResponseDto;
 import org.springeel.oneclickrecipe.domain.recipe.mapper.dto.RecipeDtoMapper;
 import org.springeel.oneclickrecipe.domain.recipe.service.RecipeService;
@@ -42,7 +41,7 @@ public class RecipeController {
     private final RecipeFoodDtoMapper recipeFoodDtoMapper;
     private final RecipeProcessDtoMapper recipeProcessDtoMapper;
 
-    @PostMapping("/all")
+    @PostMapping
     public ResponseEntity<?> create(
         @RequestPart(name = "recipeCreateRequestDto") RecipeCreateControllerRequestDto recipeControllerRequestDto,
         @RequestPart(name = "recipeCreateImage") MultipartFile recipeImage,
@@ -60,23 +59,10 @@ public class RecipeController {
             recipeProcessDtoMapper.toRecipeProcessCreateServiceRequestDtos(
                 recipeProcessControllerRequestDto);
 
-        recipeService.createRecipeAll(recipeCreateServiceRequestDto, recipeImage,
+        recipeService.createRecipe(recipeCreateServiceRequestDto, recipeImage,
             recipeFoodCreateServiceRequestDtos, recipeProcessCreateServiceRequestDtos,
             recipeProcessImage, userDetails.user());
         return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
-    @PostMapping
-    public ResponseEntity<?> create(
-        @RequestPart(name = "recipeCreateRequestDto") RecipeCreateControllerRequestDto controllerRequestDto,
-        @AuthenticationPrincipal UserDetailsImpl userDetails,
-        @RequestPart(name = "recipeCreateImage", required = false) MultipartFile multipartFile
-    ) throws IOException {
-        RecipeCreateServiceRequestDto serviceRequestDto =
-            recipeDtoMapper.toRecipeCreateServiceRequestDto(controllerRequestDto);
-        RecipeCreateResponseDto responseDto = recipeService.createRecipe(serviceRequestDto,
-            userDetails.user(), multipartFile);
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
     @DeleteMapping("/{recipeId}")

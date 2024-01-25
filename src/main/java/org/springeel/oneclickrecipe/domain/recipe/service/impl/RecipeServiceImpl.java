@@ -1,10 +1,15 @@
 package org.springeel.oneclickrecipe.domain.recipe.service.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
-import org.springeel.oneclickrecipe.domain.recipe.dto.service.response.RecipeCreateResponseDto;
+import org.springeel.oneclickrecipe.domain.food.entity.Food;
+import org.springeel.oneclickrecipe.domain.food.exception.FoodErrorCode;
+import org.springeel.oneclickrecipe.domain.food.exception.NotFoundFoodException;
+import org.springeel.oneclickrecipe.domain.food.repository.FoodRepository;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.request.RecipeCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.request.RecipeUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.response.RecipeAllReadResponseDto;
@@ -15,6 +20,12 @@ import org.springeel.oneclickrecipe.domain.recipe.exception.RecipeErrorCode;
 import org.springeel.oneclickrecipe.domain.recipe.mapper.entity.RecipeEntityMapper;
 import org.springeel.oneclickrecipe.domain.recipe.repository.RecipeRepository;
 import org.springeel.oneclickrecipe.domain.recipe.service.RecipeService;
+import org.springeel.oneclickrecipe.domain.recipefood.dto.service.request.RecipeFoodCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.recipefood.entity.RecipeFood;
+import org.springeel.oneclickrecipe.domain.recipefood.mapper.service.RecipeFoodEntityMapper;
+import org.springeel.oneclickrecipe.domain.recipeprocess.dto.service.request.RecipeProcessCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.recipeprocess.entity.RecipeProcess;
+import org.springeel.oneclickrecipe.domain.recipeprocess.mapper.entity.RecipeProcessEntityMapper;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springeel.oneclickrecipe.global.util.S3Provider;
 import org.springframework.stereotype.Service;
@@ -27,32 +38,74 @@ public class RecipeServiceImpl implements RecipeService {
 
     private final RecipeRepository recipeRepository;
     private final RecipeEntityMapper recipeEntityMapper;
+    private final RecipeFoodEntityMapper recipeFoodEntityMapper;
+    private final RecipeProcessEntityMapper recipeProcessEntityMapper;
+    private final FoodRepository foodRepository;
     private final S3Provider s3Provider;
 
-    // TODO S3 사용하는 부분 메소드로 분리해두기
     @Override
-    public RecipeCreateResponseDto createRecipe(final RecipeCreateServiceRequestDto requestDto, User user,
-        MultipartFile multipartFile) throws IOException {
-        String fileName;
-        String fileUrl;
-        String folderName = requestDto.title() + UUID.randomUUID();
-        if (multipartFile.isEmpty()) {
-            fileUrl = null;
-            fileName = null;
-        } else {
-            fileName = s3Provider.originalFileName(multipartFile);
-            fileUrl = s3Provider.url + folderName + s3Provider.SEPARATOR + fileName;
+    @Transactional
+    public void createRecipe(
+        final RecipeCreateServiceRequestDto recipeCreateServiceRequestDto,
+        final MultipartFile recipeImage,
+        final List<RecipeFoodCreateServiceRequestDto> recipeFoodCreateServiceRequestDtos,
+        final List<RecipeProcessCreateServiceRequestDto> recipeProcessCreateServiceRequestDtos,
+        final List<MultipartFile> recipeProcessImage,
+        final User user
+    ) throws IOException {
+        String recipeFolderName = recipeCreateServiceRequestDto.title() + UUID.randomUUID();
+        String recipeImageName = s3Provider.originalFileName(recipeImage);
+        Recipe recipe = recipeEntityMapper.toRecipe(recipeCreateServiceRequestDto, user,
+            recipeFolderName,
+            s3Provider.getImagePath(recipeImageName));
+
+        List<RecipeFood> recipeFoods = recipeFoodCreateServiceRequestDtos.stream()
+            .map(recipeFoodDto -> {
+                    Food food = foodRepository.findByName(recipeFoodDto.foodName())
+                        .orElseThrow(() -> new NotFoundFoodException(
+                            FoodErrorCode.NOT_FOUND_FOOD));
+                    return recipeFoodEntityMapper.toRecipeFood(recipeFoodDto, food, recipe);
+                }
+            ).toList();
+        recipe.getRecipeFoods().addAll(recipeFoods);
+
+        List<String> recipeProcessImageNames = new ArrayList<>();
+        List<RecipeProcess> recipeProcesses = IntStream.range(0,
+                recipeProcessCreateServiceRequestDtos.size())
+            .mapToObj(i -> {
+                String recipeProcessImageName = s3Provider.originalFileName(
+                    recipeProcessImage.get(i));
+                String recipeProcessImageUrl = null;
+                if (!recipeProcessImageName.isEmpty()) {
+                    recipeProcessImageUrl = s3Provider.getImagePath(
+                        recipeFolderName + "/" + recipeProcessImageName);
+                }
+                recipeProcessImageNames.add(recipeProcessImageName);
+                return recipeProcessEntityMapper.toRecipeProcess(
+                    recipeProcessCreateServiceRequestDtos.get(i), recipeProcessImageUrl, recipe);
+            }).toList();
+        recipe.getRecipeProcesses().addAll(recipeProcesses);
+
+        recipeRepository.save(recipe);
+        saveImage(recipe.getFolderName(), recipeImage, recipeImageName, recipeProcessImage,
+            recipeProcessImageNames);
+    }
+
+    private void saveImage(
+        String recipeFolderName,
+        MultipartFile recipeImage,
+        String recipeImageName,
+        List<MultipartFile> recipeProcessImage,
+        List<String> recipeProcessImageName
+    ) throws IOException {
+        s3Provider.createFolder(recipeFolderName);
+        s3Provider.saveFile(recipeImage, recipeImageName);
+        for (int i = 0; i < recipeProcessImage.size(); i++) {
+            if (!recipeProcessImage.get(i).isEmpty()) {
+                s3Provider.saveFile(recipeProcessImage.get(i),
+                    recipeFolderName + "/" + recipeProcessImageName.get(i));
+            }
         }
-        Recipe recipe = recipeEntityMapper.toRecipe(requestDto, user, folderName, fileUrl);
-        recipe = recipeRepository.save(recipe);
-        if (fileUrl == null) {
-            s3Provider.createFolder(folderName);
-        } else {
-            s3Provider.createFolder(folderName);
-            fileUrl = folderName + s3Provider.SEPARATOR + fileName;
-            s3Provider.saveFile(multipartFile, fileUrl);
-        }
-        return recipeEntityMapper.toRecipeCreateResponseDto(recipe);
     }
 
     @Transactional
@@ -77,7 +130,6 @@ public class RecipeServiceImpl implements RecipeService {
             requestDto.title(),
             requestDto.intro(),
             requestDto.serving(),
-            requestDto.time(),
             requestDto.videoUrl(),
             imageName //TODO 이미지 URL 넣기
         );
