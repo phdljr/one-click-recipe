@@ -39,6 +39,10 @@ public class S3Provider {
     }
 
     public String originalFileName(MultipartFile multipartFile) {
+        if(multipartFile.isEmpty()){
+            return "";
+        }
+
         if (Objects.equals(multipartFile.getContentType(), "image/png")
             || Objects.equals(multipartFile.getContentType(), "image/jpeg")) {
             String fileType = switch (multipartFile.getContentType()) {
@@ -102,5 +106,9 @@ public class S3Provider {
             }
         }
         return imageName;
+    }
+
+    public String getImagePath(String objectKey) {
+        return amazonS3.getUrl(bucket, objectKey).toString();
     }
 }
