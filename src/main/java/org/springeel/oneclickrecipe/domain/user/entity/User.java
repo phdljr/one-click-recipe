@@ -49,4 +49,9 @@ public class User extends BaseEntity {
         this.nickname = nickname;
         this.role = role;
     }
+
+    // 롤 변경 메소드
+    public void changeRole(UserRole newRole) {
+        this.role = newRole;
+    }
 }
