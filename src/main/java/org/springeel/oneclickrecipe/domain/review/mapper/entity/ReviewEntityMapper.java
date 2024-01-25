@@ -16,6 +16,7 @@ public interface ReviewEntityMapper {
 
     List<ReviewReadResponseDto> toReviewReadResponseDtos(List<Review> reviews);
 
+    @Mapping(source = "user.nickname", target = "writer")
     ReviewReadResponseDto toReviewReadResponseDto(Review review);
 
     @Mapping(source = "user", target = "user")
