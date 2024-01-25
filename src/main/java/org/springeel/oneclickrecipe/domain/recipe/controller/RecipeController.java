@@ -5,13 +5,19 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.recipe.dto.controller.RecipeCreateControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.controller.RecipeUpdateControllerRequestDto;
-import org.springeel.oneclickrecipe.domain.recipe.dto.service.response.RecipeCreateResponseDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.request.RecipeCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.request.RecipeUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.response.RecipeAllReadResponseDto;
+import org.springeel.oneclickrecipe.domain.recipe.dto.service.response.RecipeCreateResponseDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.response.RecipeReadResponseDto;
 import org.springeel.oneclickrecipe.domain.recipe.mapper.dto.RecipeDtoMapper;
 import org.springeel.oneclickrecipe.domain.recipe.service.RecipeService;
+import org.springeel.oneclickrecipe.domain.recipefood.dto.controller.RecipeFoodCreateControllerRequestDto;
+import org.springeel.oneclickrecipe.domain.recipefood.dto.service.request.RecipeFoodCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.recipefood.mapper.dto.RecipeFoodDtoMapper;
+import org.springeel.oneclickrecipe.domain.recipeprocess.dto.controller.RecipeProcessCreateControllerRequestDto;
+import org.springeel.oneclickrecipe.domain.recipeprocess.dto.service.request.RecipeProcessCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.recipeprocess.mapper.dto.RecipeProcessDtoMapper;
 import org.springeel.oneclickrecipe.global.security.UserDetailsImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +39,32 @@ public class RecipeController {
 
     private final RecipeService recipeService;
     private final RecipeDtoMapper recipeDtoMapper;
+    private final RecipeFoodDtoMapper recipeFoodDtoMapper;
+    private final RecipeProcessDtoMapper recipeProcessDtoMapper;
+
+    @PostMapping("/all")
+    public ResponseEntity<?> create(
+        @RequestPart(name = "recipeCreateRequestDto") RecipeCreateControllerRequestDto recipeControllerRequestDto,
+        @RequestPart(name = "recipeCreateImage") MultipartFile recipeImage,
+        @RequestPart(name = "recipeFoodCreateRequestDto") List<RecipeFoodCreateControllerRequestDto> recipeFoodControllerRequestDto,
+        @RequestPart(name = "recipeProcessCreateRequestDto") List<RecipeProcessCreateControllerRequestDto> recipeProcessControllerRequestDto,
+        @RequestPart(name = "recipeProcessCreateImage") List<MultipartFile> recipeProcessImage,
+        @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) throws IOException {
+        RecipeCreateServiceRequestDto recipeCreateServiceRequestDto =
+            recipeDtoMapper.toRecipeCreateServiceRequestDto(recipeControllerRequestDto);
+        List<RecipeFoodCreateServiceRequestDto> recipeFoodCreateServiceRequestDtos =
+            recipeFoodDtoMapper.toRecipeFoodCreateServiceRequestDtos(
+                recipeFoodControllerRequestDto);
+        List<RecipeProcessCreateServiceRequestDto> recipeProcessCreateServiceRequestDtos =
+            recipeProcessDtoMapper.toRecipeProcessCreateServiceRequestDtos(
+                recipeProcessControllerRequestDto);
+
+        recipeService.createRecipeAll(recipeCreateServiceRequestDto, recipeImage,
+            recipeFoodCreateServiceRequestDtos, recipeProcessCreateServiceRequestDtos,
+            recipeProcessImage, userDetails.user());
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
 
     @PostMapping
     public ResponseEntity<?> create(
