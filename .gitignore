@@ -40,3 +40,4 @@ out/
 /src/main/generated/
 /src/test/resources/application.properties
 /src/main/resources/application-prod.yml
+/src/main/resources/data.sql

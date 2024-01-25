@@ -50,8 +50,7 @@ public class WebSecurityConfig {
             config.setAllowedOriginPatterns(Arrays.asList(
                 "http://localhost:5173", // local
                 "https://one-click-recipe.netlify.app", // production view
-                "https://develop--one-click-recipe.netlify.app", // deploy view
-                "https://*--one-click-recipe.netlify.app" // pr view
+                "https://develop--one-click-recipe.netlify.app" // deploy view
             ));
             config.setAllowCredentials(true);
             config.setMaxAge(CORS_MAX_AGE_SEC);

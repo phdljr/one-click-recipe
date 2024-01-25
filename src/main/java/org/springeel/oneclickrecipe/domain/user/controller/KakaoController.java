@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
 @RequiredArgsConstructor
+@RestController
 public class KakaoController {
 
     private final KakaoService kakaoService;
     private final LoginServletService loginServletService;
 
-    @GetMapping("/api/v1/users/kakao/callback")
+    @GetMapping("/api/v1/users/kakao/login/callback")
     public ResponseEntity<Void> kakaoLogin(@RequestParam String code, HttpServletResponse response)
         throws JsonProcessingException {
-        String email = kakaoService.kakaoLogin(code, response);
+        String email = kakaoService.kakaoLogin(code);
         loginServletService.addJwtToHeader(email, response);
         return ResponseEntity.ok().build();
     }
