@@ -12,11 +12,15 @@ import org.springeel.oneclickrecipe.domain.user.dto.service.UserLoginServiceRequ
 import org.springeel.oneclickrecipe.domain.user.dto.service.UserSignUpServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.user.mapper.dto.UserDtoMapper;
 import org.springeel.oneclickrecipe.domain.user.service.UserService;
+import org.springeel.oneclickrecipe.global.jwt.JwtUtil;
+import org.springeel.oneclickrecipe.global.security.UserDetailsImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -50,20 +54,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PostMapping("/logout")
-    public ResponseEntity<Void> logout(
-        HttpServletResponse httpServletResponse
-    ) {
-        userService.logout(httpServletResponse);
-        return ResponseEntity.status(HttpStatus.OK).build();
-    }
-
     @PostMapping("/refresh")
     public ResponseEntity<Void> refreshAccessToken(
-        @CookieValue("Refresh-Token") String refreshToken,
+        @RequestHeader("Authorization") String refreshToken,
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
         HttpServletResponse httpServletResponse
     ) {
-        log.info("refresh Token: {}", URLDecoder.decode(refreshToken, StandardCharsets.UTF_8));
+        userService.refreshAccessToken(refreshToken, userDetails.user(), httpServletResponse);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

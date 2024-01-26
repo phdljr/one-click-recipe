@@ -9,7 +9,7 @@ import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springeel.oneclickrecipe.global.exception.CustomException;
-import org.springeel.oneclickrecipe.global.jwt.JwtErrorCode;
+import org.springeel.oneclickrecipe.global.jwt.exception.JwtErrorCode;
 import org.springeel.oneclickrecipe.global.security.UserDetailsServiceImpl;
 import org.springeel.oneclickrecipe.global.jwt.JwtStatus;
 import org.springeel.oneclickrecipe.global.jwt.JwtUtil;

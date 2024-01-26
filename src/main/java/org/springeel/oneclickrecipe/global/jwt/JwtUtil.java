@@ -13,8 +13,6 @@ import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Date;
 import javax.crypto.SecretKey;
@@ -30,7 +28,7 @@ import org.springframework.util.StringUtils;
 public class JwtUtil {
 
     public static final String ACCESS_TOKEN_HEADER = "Access-Token";
-    public static final String REFRESH_TOKEN_COOKIE = "Refresh-Token";
+    public static final String REFRESH_TOKEN_HEADER = "Refresh-Token";
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String AUTHORIZATION_KEY = "auth";
     public static final String BEARER_PREFIX = "Bearer ";
@@ -82,7 +80,7 @@ public class JwtUtil {
 
     // header 에서 JWT 가져오기
     public String getAccessTokenFromHeader(HttpServletRequest request) {
-        String bearerToken = request.getHeader(ACCESS_TOKEN_HEADER);
+        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
             return bearerToken.substring(7);
         }
@@ -116,6 +114,14 @@ public class JwtUtil {
             .getPayload();
     }
 
+    public void addJwtToHeader(
+        final User user,
+        final HttpServletResponse httpServletResponse
+    ) {
+        addAccessTokenToHeader(user, httpServletResponse);
+        addRefreshTokenToHeader(user, httpServletResponse);
+    }
+
     public void addAccessTokenToHeader(
         final User user,
         final HttpServletResponse httpServletResponse
@@ -125,32 +131,12 @@ public class JwtUtil {
         httpServletResponse.addHeader(ACCESS_TOKEN_HEADER, accessToken);
     }
 
-    public void addRefreshTokenToCookie(
+    public void addRefreshTokenToHeader(
         final User user,
         final HttpServletResponse httpServletResponse
     ) {
-        String refreshToken = URLEncoder
-            .encode(createRefreshToken(user.getEmail(), user.getRole()), StandardCharsets.UTF_8);
+        String refreshToken = createRefreshToken(user.getEmail(), user.getRole());
         log.info("refreshToken 생성 {}", refreshToken);
-        Cookie cookie = new Cookie(REFRESH_TOKEN_COOKIE, refreshToken);
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
-        cookie.setMaxAge((int) refreshTokenExpirationPeriod); // 초 단위
-
-        httpServletResponse.addCookie(cookie);
-
-        // TODO Redis에 refreshToken 저장하기
-    }
-
-    public void removeRefreshToken(final HttpServletResponse httpServletResponse) {
-        Cookie cookie = new Cookie(JwtUtil.REFRESH_TOKEN_COOKIE, "");
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        cookie.setPath("/");
-        cookie.setMaxAge(0); // 초 단위
-
-        httpServletResponse.addCookie(cookie);
-
-        // TODO Redis에 refreshToken 삭제 및 블랙리스트 등록
+        httpServletResponse.addHeader(REFRESH_TOKEN_HEADER, refreshToken);
     }
 }

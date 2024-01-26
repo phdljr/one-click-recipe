@@ -45,8 +45,7 @@ public class KakaoService {
         KakaoUserInfoDto kakaoUserInfo = getKakaoUserInfo(accessToken);
         User user = registerKakaoUserIfNeeded(kakaoUserInfo);
 
-        jwtUtil.addAccessTokenToHeader(user, response);
-        jwtUtil.addRefreshTokenToCookie(user, response);
+        jwtUtil.addJwtToHeader(user, response);
     }
 
     private String getToken(String code) throws JsonProcessingException {

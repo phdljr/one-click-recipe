@@ -1,4 +1,4 @@
-package org.springeel.oneclickrecipe.global.jwt;
+package org.springeel.oneclickrecipe.global.jwt.exception;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
