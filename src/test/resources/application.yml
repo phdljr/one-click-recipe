@@ -26,7 +26,10 @@ custom:
     client-id: testestestsetsetestsetsetsetsetes
     cid: TC0ONETIME
   jwt:
-    expiration-period: 8640000000
+    access:
+      expiration-period: 840000
+    refresh:
+      expiration-period: 20160000
     secret-key: testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
 
 cloud:

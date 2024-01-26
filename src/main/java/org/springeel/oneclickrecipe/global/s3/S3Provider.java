@@ -1,4 +1,4 @@
-package org.springeel.oneclickrecipe.global.util;
+package org.springeel.oneclickrecipe.global.s3;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;

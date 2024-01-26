@@ -26,7 +26,7 @@ import org.springeel.oneclickrecipe.domain.recipeprocess.dto.service.request.Rec
 import org.springeel.oneclickrecipe.domain.recipeprocess.entity.RecipeProcess;
 import org.springeel.oneclickrecipe.domain.recipeprocess.mapper.entity.RecipeProcessEntityMapper;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
-import org.springeel.oneclickrecipe.global.util.S3Provider;
+import org.springeel.oneclickrecipe.global.s3.S3Provider;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;

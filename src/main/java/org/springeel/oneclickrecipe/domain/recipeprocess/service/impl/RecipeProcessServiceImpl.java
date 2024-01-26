@@ -19,7 +19,7 @@ import org.springeel.oneclickrecipe.domain.recipeprocess.mapper.entity.RecipePro
 import org.springeel.oneclickrecipe.domain.recipeprocess.repository.RecipeProcessRepository;
 import org.springeel.oneclickrecipe.domain.recipeprocess.service.RecipeProcessService;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
-import org.springeel.oneclickrecipe.global.util.S3Provider;
+import org.springeel.oneclickrecipe.global.s3.S3Provider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

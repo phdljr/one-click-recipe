@@ -1,5 +1,6 @@
 package org.springeel.oneclickrecipe.domain.user.service.impl;
 
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.user.dto.service.UserLoginServiceRequestDto;
@@ -14,6 +15,10 @@ import org.springeel.oneclickrecipe.domain.user.exception.UserErrorCode;
 import org.springeel.oneclickrecipe.domain.user.mapper.entity.UserEntityMapper;
 import org.springeel.oneclickrecipe.domain.user.repository.UserRepository;
 import org.springeel.oneclickrecipe.domain.user.service.UserService;
+import org.springeel.oneclickrecipe.global.jwt.exception.BadRefreshTokenException;
+import org.springeel.oneclickrecipe.global.jwt.exception.JwtErrorCode;
+import org.springeel.oneclickrecipe.global.jwt.JwtStatus;
+import org.springeel.oneclickrecipe.global.jwt.JwtUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +29,7 @@ public class UserServiceImpl implements UserService {
     private final UserEntityMapper userEntityMapper;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final JwtUtil jwtUtil;
 
     @Override
     public void signUp(final UserSignUpServiceRequestDto serviceRequestDto) {
@@ -48,12 +54,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void login(final UserLoginServiceRequestDto serviceRequestDto) {
+    public void login(
+        final UserLoginServiceRequestDto serviceRequestDto,
+        final HttpServletResponse httpServletResponse
+    ) {
         User user = userRepository.findByEmail(serviceRequestDto.email())
             .orElseThrow(() -> new NotFoundUserException(UserErrorCode.BAD_LOGIN));
 
         if (!passwordEncoder.matches(serviceRequestDto.password(), user.getPassword())) {
             throw new NotMatchPasswordException(UserErrorCode.BAD_LOGIN);
         }
+
+        jwtUtil.addJwtToHeader(user, httpServletResponse);
+    }
+
+    @Override
+    public void refreshAccessToken(final String refreshToken, final User user,
+        final HttpServletResponse httpServletResponse) {
+        String token = refreshToken.substring(7);
+        JwtStatus jwtStatus = jwtUtil.validateToken(token);
+        if(jwtStatus != JwtStatus.ACCESS){
+            throw new BadRefreshTokenException(JwtErrorCode.INVALID_TOKEN);
+        }
+
+        jwtUtil.addAccessTokenToHeader(user, httpServletResponse);
     }
 }
