@@ -4,9 +4,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springeel.oneclickrecipe.global.filter.ExceptionHandlerFilter;
 import org.springeel.oneclickrecipe.global.filter.JwtAuthorizationFilter;
 import org.springeel.oneclickrecipe.global.security.UserDetailsServiceImpl;
-import org.springeel.oneclickrecipe.global.util.JwtUtil;
+import org.springeel.oneclickrecipe.global.jwt.JwtUtil;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
@@ -40,6 +42,11 @@ public class WebSecurityConfig {
     @Bean
     public JwtAuthorizationFilter jwtAuthorizationFilter() {
         return new JwtAuthorizationFilter(jwtUtil, userDetailsService);
+    }
+
+    @Bean
+    public ExceptionHandlerFilter exceptionHandlerFilter(){
+        return new ExceptionHandlerFilter();
     }
 
     private CorsConfigurationSource configurationSource() {
@@ -90,6 +97,7 @@ public class WebSecurityConfig {
         );
 
         http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(exceptionHandlerFilter(), LogoutFilter.class);
 
         return http.build();
     }

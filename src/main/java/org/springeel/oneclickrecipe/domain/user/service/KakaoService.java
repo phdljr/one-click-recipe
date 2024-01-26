@@ -3,6 +3,7 @@ package org.springeel.oneclickrecipe.domain.user.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletResponse;
 import java.net.URI;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +12,7 @@ import org.springeel.oneclickrecipe.domain.user.dto.kakao.KakaoUserInfoDto;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springeel.oneclickrecipe.domain.user.entity.UserRole;
 import org.springeel.oneclickrecipe.domain.user.repository.UserRepository;
-import org.springeel.oneclickrecipe.global.util.JwtUtil;
+import org.springeel.oneclickrecipe.global.jwt.JwtUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.RequestEntity;
@@ -31,6 +32,7 @@ public class KakaoService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final RestTemplate restTemplate;
+    private final JwtUtil jwtUtil;
 
     @Value("${custom.kakao.client-id}")
     private String clientId;
@@ -38,11 +40,13 @@ public class KakaoService {
     @Value("${custom.front.host}")
     private String frontHost;
 
-    public String kakaoLogin(String code) throws JsonProcessingException {
+    public void kakaoLogin(String code, HttpServletResponse response) throws JsonProcessingException {
         String accessToken = getToken(code);
         KakaoUserInfoDto kakaoUserInfo = getKakaoUserInfo(accessToken);
         User user = registerKakaoUserIfNeeded(kakaoUserInfo);
-        return user.getEmail();
+
+        jwtUtil.addAccessTokenToHeader(user, response);
+        jwtUtil.addRefreshTokenToCookie(user, response);
     }
 
     private String getToken(String code) throws JsonProcessingException {
@@ -110,7 +114,6 @@ public class KakaoService {
         );
 
         JsonNode jsonNode = new ObjectMapper().readTree(response.getBody());
-        Long id = jsonNode.get("id").asLong();
         String nickname = jsonNode.get("properties")
             .get("nickname").asText();
         String email = jsonNode.get("kakao_account")
