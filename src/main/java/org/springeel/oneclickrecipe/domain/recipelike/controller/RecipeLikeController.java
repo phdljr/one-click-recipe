@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,5 +36,22 @@ public class RecipeLikeController {
     ) {
         recipeLikeService.delete(userDetails.user(), recipeId);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @GetMapping("/{recipeId}/likes/count") // 특정 레시피 좋아요 수 조회
+    public ResponseEntity<Long> getLikesCount(
+        @PathVariable(name = "recipeId") Long recipeId
+    ) {
+        long likesCount = recipeLikeService.getLikesCount(recipeId);
+        return new ResponseEntity<>(likesCount, HttpStatus.OK);
+    }
+
+    @GetMapping("/{recipeId}/likes/status") // 사용자가 특정 레시피에 좋아요를 눌렀는 지 여부
+    public ResponseEntity<Boolean> getUserLikeStatus(
+        @PathVariable(name = "recipeId") Long recipeId,
+        @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        boolean likeStatus = recipeLikeService.getUserLikeStatus(userDetails.user(), recipeId);
+        return new ResponseEntity<>(likeStatus, HttpStatus.OK);
     }
 }
