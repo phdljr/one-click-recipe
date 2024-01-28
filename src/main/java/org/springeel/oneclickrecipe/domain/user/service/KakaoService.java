@@ -9,8 +9,10 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springeel.oneclickrecipe.domain.user.dto.kakao.KakaoUserInfoDto;
+import org.springeel.oneclickrecipe.domain.user.dto.service.response.UserLoginResponseDto;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springeel.oneclickrecipe.domain.user.entity.UserRole;
+import org.springeel.oneclickrecipe.domain.user.mapper.entity.UserEntityMapper;
 import org.springeel.oneclickrecipe.domain.user.repository.UserRepository;
 import org.springeel.oneclickrecipe.global.jwt.JwtUtil;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,6 +35,7 @@ public class KakaoService {
     private final UserRepository userRepository;
     private final RestTemplate restTemplate;
     private final JwtUtil jwtUtil;
+    private final UserEntityMapper userEntityMapper;
 
     @Value("${custom.kakao.client-id}")
     private String clientId;
@@ -40,12 +43,13 @@ public class KakaoService {
     @Value("${custom.front.host}")
     private String frontHost;
 
-    public void kakaoLogin(String code, HttpServletResponse response) throws JsonProcessingException {
+    public UserLoginResponseDto kakaoLogin(String code, HttpServletResponse response) throws JsonProcessingException {
         String accessToken = getToken(code);
         KakaoUserInfoDto kakaoUserInfo = getKakaoUserInfo(accessToken);
         User user = registerKakaoUserIfNeeded(kakaoUserInfo);
 
         jwtUtil.addJwtToHeader(user, response);
+        return userEntityMapper.toUserLoginResponseDto(user);
     }
 
     private String getToken(String code) throws JsonProcessingException {
