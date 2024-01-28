@@ -6,7 +6,8 @@ public record RecipeAllReadResponseDto(
     String intro,
     Byte serving,
     String imageUrl,
-    String writer
+    String writer,
+    Boolean isLiked
 ) {
 
 }

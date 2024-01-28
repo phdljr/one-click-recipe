@@ -52,12 +52,13 @@ public class UserController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<Void> refreshAccessToken(
+    public ResponseEntity<UserLoginResponseDto> refreshAccessToken(
         @RequestHeader("Authorization") String refreshToken,
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         HttpServletResponse httpServletResponse
     ) {
-        userService.refreshAccessToken(refreshToken, userDetails.user(), httpServletResponse);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        UserLoginResponseDto responseDto = userService.refreshAccessToken(refreshToken,
+            userDetails.user(), httpServletResponse);
+        return ResponseEntity.ok(responseDto);
     }
 }
