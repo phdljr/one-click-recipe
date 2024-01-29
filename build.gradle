@@ -23,7 +23,7 @@ jar {
 }
 
 group = 'org.springeel'
-version = '0.1.0-SNAPSHOT'
+version = 'v1.0.0'
 
 java {
     sourceCompatibility = '21'
