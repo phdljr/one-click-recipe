@@ -7,4 +7,8 @@ public interface RecipeLikeService {
     void create(User user, Long recipeId);
 
     void delete(User user, Long recipeId);
+
+    long getLikesCount(Long recipeId);
+
+    boolean getUserLikeStatus(User user, Long recipeId);
 }
