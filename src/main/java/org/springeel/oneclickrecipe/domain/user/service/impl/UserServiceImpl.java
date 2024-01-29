@@ -3,8 +3,9 @@ package org.springeel.oneclickrecipe.domain.user.service.impl;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
-import org.springeel.oneclickrecipe.domain.user.dto.service.UserLoginServiceRequestDto;
-import org.springeel.oneclickrecipe.domain.user.dto.service.UserSignUpServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.user.dto.service.request.UserLoginServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.user.dto.service.request.UserSignUpServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.user.dto.service.response.UserLoginResponseDto;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springeel.oneclickrecipe.domain.user.entity.UserRole;
 import org.springeel.oneclickrecipe.domain.user.exception.AlreadyExistsEmailException;
@@ -54,7 +55,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void login(
+    public UserLoginResponseDto login(
         final UserLoginServiceRequestDto serviceRequestDto,
         final HttpServletResponse httpServletResponse
     ) {
@@ -66,10 +67,11 @@ public class UserServiceImpl implements UserService {
         }
 
         jwtUtil.addJwtToHeader(user, httpServletResponse);
+        return userEntityMapper.toUserLoginResponseDto(user);
     }
 
     @Override
-    public void refreshAccessToken(final String refreshToken, final User user,
+    public UserLoginResponseDto refreshAccessToken(final String refreshToken, final User user,
         final HttpServletResponse httpServletResponse) {
         String token = refreshToken.substring(7);
         JwtStatus jwtStatus = jwtUtil.validateToken(token);
@@ -78,5 +80,6 @@ public class UserServiceImpl implements UserService {
         }
 
         jwtUtil.addAccessTokenToHeader(user, httpServletResponse);
+        return userEntityMapper.toUserLoginResponseDto(user);
     }
 }

@@ -5,8 +5,8 @@ import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 import org.mapstruct.Mapper;
 import org.springeel.oneclickrecipe.domain.user.dto.controller.UserLoginControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.user.dto.controller.UserSignUpControllerRequestDto;
-import org.springeel.oneclickrecipe.domain.user.dto.service.UserLoginServiceRequestDto;
-import org.springeel.oneclickrecipe.domain.user.dto.service.UserSignUpServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.user.dto.service.request.UserLoginServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.user.dto.service.request.UserSignUpServiceRequestDto;
 
 @Mapper(componentModel = SPRING)
 public interface UserDtoMapper {
