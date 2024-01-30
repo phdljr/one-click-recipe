@@ -55,11 +55,11 @@ public class ReviewServiceImpl implements ReviewService {
     public void deleteReview(User user, Long reviewId) {
         Review review = reviewRepository.findById(reviewId)
             .orElseThrow(() -> new NotFoundReviewException(ReviewErrorCode.NOT_FOUND_REVIEW));
-        User admin = review.getRecipe().getUser();
-        User review_user = review.getUser();
-        if (admin.equals(user)) {
+        Long admin = review.getRecipe().getUser().getId();
+        Long review_user = review.getUser().getId();
+        if (admin.equals(user.getId())) {
             reviewRepository.delete(review);
-        } else if (review_user.equals(user)) {
+        } else if (review_user.equals(user.getId())) {
             reviewRepository.delete(review);
         } else {
             throw new NotFoundUserException(UserErrorCode.NOT_FOUND_USER);
