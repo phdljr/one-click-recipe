@@ -34,7 +34,7 @@ public class FollowController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @GetMapping("/follows/{userId}/count") //특정 구독 조회
+    @GetMapping("/follows/{userId}/count") //특정 사용자의 팔로우(구독) 조회
     public ResponseEntity<Long> getFollowCount(
         @PathVariable(name = "userId") Long followingId
     ) {
@@ -42,7 +42,7 @@ public class FollowController {
         return new ResponseEntity<>(followCount, HttpStatus.OK);
     }
 
-    @GetMapping("/follows/{userId}/status") // 사용자가 특정사용자를 구독 했는지 안했는지
+    @GetMapping("/follows/{userId}/status") // 사용자가 특정사용자를 구독 했는지 안했는지에 대한 여부 조회
     public ResponseEntity<Boolean> getUserFollowStatus(
         @PathVariable(name = "userId") Long followingId,
         @AuthenticationPrincipal UserDetailsImpl userDetails
