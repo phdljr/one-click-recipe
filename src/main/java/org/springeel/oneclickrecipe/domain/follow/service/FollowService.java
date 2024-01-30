@@ -8,7 +8,7 @@ public interface FollowService {
 
     void delete(User user, Long followingId);
 
-    long getLikesCount(Long followingId);
+    long getFollowCount(Long followingId);
 
-    boolean getUserFollowingStatus(User user, Long followingId);
+    boolean getUserFollowStatus(User user, Long followingId);
 }
