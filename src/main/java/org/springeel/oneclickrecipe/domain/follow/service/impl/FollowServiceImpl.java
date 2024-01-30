@@ -48,4 +48,9 @@ public class FollowServiceImpl implements FollowService {
         followRepository.delete(follow);
 
     }
+
+    @Override
+    public long getLikesCount(Long followingId) {
+        return followRepository.countByFollowingId(followingId);
+    }
 }
