@@ -17,6 +17,8 @@ import org.springeel.oneclickrecipe.domain.review.mapper.entity.ReviewEntityMapp
 import org.springeel.oneclickrecipe.domain.review.repository.ReviewRepository;
 import org.springeel.oneclickrecipe.domain.review.service.ReviewService;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
+import org.springeel.oneclickrecipe.domain.user.exception.NotFoundUserException;
+import org.springeel.oneclickrecipe.domain.user.exception.UserErrorCode;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -50,9 +52,15 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public void deleteReview(User user, Long reviewId) {
-        Review review = reviewRepository.findByIdAndUser(reviewId, user)
+        Review review = reviewRepository.findById(reviewId)
             .orElseThrow(() -> new NotFoundReviewException(ReviewErrorCode.NOT_FOUND_REVIEW));
-        reviewRepository.delete(review);
+        Long recipeOwner = review.getRecipe().getUser().getId();
+        Long writer = review.getUser().getId();
+        if (recipeOwner.equals(user.getId()) || writer.equals(user.getId())) {
+            reviewRepository.delete(review);
+        } else {
+            throw new NotFoundUserException(UserErrorCode.NOT_FOUND_USER);
+        }
     }
 
     @Override
