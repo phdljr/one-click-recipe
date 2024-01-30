@@ -1,5 +1,6 @@
 package org.springeel.oneclickrecipe.domain.recipe.controller;
 
+import jakarta.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -43,10 +44,10 @@ public class RecipeController {
 
     @PostMapping
     public ResponseEntity<?> create(
-        @RequestPart(name = "recipeCreateRequestDto") RecipeCreateControllerRequestDto recipeControllerRequestDto,
+        @Valid @RequestPart(name = "recipeCreateRequestDto") RecipeCreateControllerRequestDto recipeControllerRequestDto,
         @RequestPart(name = "recipeCreateImage") MultipartFile recipeImage,
-        @RequestPart(name = "recipeFoodCreateRequestDto") List<RecipeFoodCreateControllerRequestDto> recipeFoodControllerRequestDto,
-        @RequestPart(name = "recipeProcessCreateRequestDto") List<RecipeProcessCreateControllerRequestDto> recipeProcessControllerRequestDto,
+        @Valid @RequestPart(name = "recipeFoodCreateRequestDto") List<RecipeFoodCreateControllerRequestDto> recipeFoodControllerRequestDto,
+        @Valid @RequestPart(name = "recipeProcessCreateRequestDto") List<RecipeProcessCreateControllerRequestDto> recipeProcessControllerRequestDto,
         @RequestPart(name = "recipeProcessCreateImage") List<MultipartFile> recipeProcessImage,
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) throws IOException {
