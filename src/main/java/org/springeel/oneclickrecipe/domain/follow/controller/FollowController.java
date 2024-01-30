@@ -35,11 +35,11 @@ public class FollowController {
     }
 
     @GetMapping("/follows/{userId}/count") //특정 구독 조회
-    public ResponseEntity<Long> getLikesCount(
+    public ResponseEntity<Long> getFollowCount(
         @PathVariable(name = "userId") Long followingId
     ) {
-        long likesCount = followService.getLikesCount(followingId);
-        return new ResponseEntity<>(likesCount, HttpStatus.OK);
+        long followCount = followService.getFollowCount(followingId);
+        return new ResponseEntity<>(followCount, HttpStatus.OK);
     }
 
     @GetMapping("/follows/{userId}/status") // 사용자가 특정사용자를 구독 했는지 안했는지
@@ -47,7 +47,7 @@ public class FollowController {
         @PathVariable(name = "userId") Long followingId,
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        boolean likeStatus = followService.getUserFollowingStatus(userDetails.user(), followingId);
-        return new ResponseEntity<>(likeStatus, HttpStatus.OK);
+        boolean followStatus = followService.getUserFollowStatus(userDetails.user(), followingId);
+        return new ResponseEntity<>(followStatus, HttpStatus.OK);
     }
 }
