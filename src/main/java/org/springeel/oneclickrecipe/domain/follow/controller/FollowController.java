@@ -34,7 +34,7 @@ public class FollowController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @GetMapping("/follows/{userId}/count") //특정 구독 좋아요 수 조회
+    @GetMapping("/follows/{userId}/count") //특정 구독 조회
     public ResponseEntity<Long> getLikesCount(
         @PathVariable(name = "userId") Long followingId
     ) {
