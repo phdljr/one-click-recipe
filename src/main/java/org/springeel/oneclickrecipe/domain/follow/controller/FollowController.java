@@ -42,7 +42,7 @@ public class FollowController {
         return new ResponseEntity<>(likesCount, HttpStatus.OK);
     }
 
-    @GetMapping("/follows/{userId}/status") // 사용자가 구독을 했는지 안했는지
+    @GetMapping("/follows/{userId}/status") // 사용자가 특정사용자를 구독 했는지 안했는지
     public ResponseEntity<Boolean> getUserFollowStatus(
         @PathVariable(name = "userId") Long followingId,
         @AuthenticationPrincipal UserDetailsImpl userDetails
