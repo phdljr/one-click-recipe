@@ -48,4 +48,15 @@ public class FollowServiceImpl implements FollowService {
         followRepository.delete(follow);
 
     }
+
+    @Override
+    public long getFollowCount(Long followingId) {
+        return followRepository.countByFollowingId(followingId);
+    }
+
+    @Override
+    public boolean getUserFollowStatus(User user, Long followingId) {
+        return followRepository.existsByUserIdAndFollowingId(user.getId(), followingId);
+
+    }
 }
