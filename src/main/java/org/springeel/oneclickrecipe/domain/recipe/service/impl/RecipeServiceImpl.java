@@ -20,8 +20,11 @@ import org.springeel.oneclickrecipe.domain.recipe.mapper.entity.RecipeEntityMapp
 import org.springeel.oneclickrecipe.domain.recipe.repository.RecipeRepository;
 import org.springeel.oneclickrecipe.domain.recipe.service.RecipeService;
 import org.springeel.oneclickrecipe.domain.recipefood.dto.service.request.RecipeFoodCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.recipefood.dto.service.response.RecipeFoodReadResponseDto;
 import org.springeel.oneclickrecipe.domain.recipefood.entity.RecipeFood;
 import org.springeel.oneclickrecipe.domain.recipefood.mapper.service.RecipeFoodEntityMapper;
+import org.springeel.oneclickrecipe.domain.recipelike.entity.RecipeLike;
+import org.springeel.oneclickrecipe.domain.recipelike.repository.RecipeLikeRepository;
 import org.springeel.oneclickrecipe.domain.recipeprocess.dto.service.request.RecipeProcessCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipeprocess.entity.RecipeProcess;
 import org.springeel.oneclickrecipe.domain.recipeprocess.mapper.entity.RecipeProcessEntityMapper;
@@ -41,6 +44,8 @@ public class RecipeServiceImpl implements RecipeService {
     private final RecipeProcessEntityMapper recipeProcessEntityMapper;
     private final FoodRepository foodRepository;
     private final S3Provider s3Provider;
+    private final RecipeLikeRepository recipeLikeRepository;
+
 
     @Override
     @Transactional
@@ -133,8 +138,19 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     public List<RecipeAllReadResponseDto> readAllRecipe() {
-        List<Recipe> recipes = recipeRepository.findAll();
-        return recipeEntityMapper.toRecipeAllReadResponseDto(recipes);
+        return recipeRepository.findAll()
+            .stream()
+            .map(recipe -> RecipeAllReadResponseDto.builder()
+                .id(recipe.getId())
+                .title(recipe.getTitle())
+                .intro(recipe.getIntro())
+                .serving(recipe.getServing())
+                .imageUrl(recipe.getImageUrl())
+                .writer(recipe.getUser().getNickname())
+                .isLiked(false)
+                .like_count(recipeLikeRepository.countByRecipeId(recipe.getId()))
+                .build())
+            .toList();
     }
 
     public RecipeReadResponseDto readRecipe(Long recipeId) {
