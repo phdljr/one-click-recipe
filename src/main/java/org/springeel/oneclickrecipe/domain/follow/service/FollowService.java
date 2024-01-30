@@ -9,4 +9,6 @@ public interface FollowService {
     void delete(User user, Long followingId);
 
     long getLikesCount(Long followingId);
+
+    boolean getUserFollowingStatus(User user, Long followingId);
 }
