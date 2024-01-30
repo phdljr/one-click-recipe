@@ -1,5 +1,8 @@
 package org.springeel.oneclickrecipe.domain.recipe.dto.service.response;
 
+import lombok.Builder;
+
+@Builder
 public record RecipeAllReadResponseDto(
     Long id,
     String title,
@@ -7,7 +10,8 @@ public record RecipeAllReadResponseDto(
     Byte serving,
     String imageUrl,
     String writer,
-    Boolean isLiked
+    Boolean isLiked,
+    long like_count
 ) {
 
 }
