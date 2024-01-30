@@ -7,4 +7,6 @@ public interface FollowService {
     void create(User user, Long followingId);
 
     void delete(User user, Long followingId);
+
+    long getLikesCount(Long followingId);
 }
