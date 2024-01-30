@@ -50,12 +50,12 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
-    public long getLikesCount(Long followingId) {
+    public long getFollowCount(Long followingId) {
         return followRepository.countByFollowingId(followingId);
     }
 
     @Override
-    public boolean getUserFollowingStatus(User user, Long followingId) {
+    public boolean getUserFollowStatus(User user, Long followingId) {
         return followRepository.existsByUserIdAndFollowingId(user.getId(), followingId);
 
     }
