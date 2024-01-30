@@ -46,7 +46,15 @@ public class OrderServiceImpl implements OrderService {
 
         // OrderDetail 객체들 생성 및 Order에 연결
         List<OrderDetail> orderDetails = cartItems.stream()
-            .map(cartItem -> orderDetailEntityMapper.toOrderDetail(cartItem, order))
+//            .map(cartItem -> orderDetailEntityMapper.toOrderDetail(cartItem, order))
+            .map(cartItem -> OrderDetail.builder()
+                .order(order)
+                .name(cartItem.getRecipeFood().getFood().getName())
+                .amount(cartItem.getRecipeFood().getAmount())
+                .unit(cartItem.getRecipeFood().getFood().getUnit())
+                .price(cartItem.getRecipeFood().getAmount() * cartItem.getRecipeFood().getFood().getPrice())
+                .build()
+            )
             .toList();
 
         // Order와 OrderDetail 정보 저장

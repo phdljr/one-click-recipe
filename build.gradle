@@ -2,21 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.2.1'
     id 'io.spring.dependency-management' version '1.1.4'
-//    id 'com.diffplug.spotless' version '6.24.0'
 }
-
-//spotless {
-//    java {
-//        // 사용하지 않는 import 제거
-//        removeUnusedImports()
-//        // 구글 자바 포맷 적용
-//        googleJavaFormat()
-//        // 공백 제거
-//        trimTrailingWhitespace()
-//        // 끝부분 New Line 처리
-//        endWithNewline()
-//    }
-//}
 
 jar {
     enabled = false
