@@ -41,4 +41,13 @@ public class FollowController {
         long likesCount = followService.getLikesCount(followingId);
         return new ResponseEntity<>(likesCount, HttpStatus.OK);
     }
+
+    @GetMapping("/follows/{userId}/status") // 사용자가 구독을 했는지 안했는지
+    public ResponseEntity<Boolean> getUserFollowStatus(
+        @PathVariable(name = "userId") Long followingId,
+        @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        boolean likeStatus = followService.getUserFollowingStatus(userDetails.user(), followingId);
+        return new ResponseEntity<>(likeStatus, HttpStatus.OK);
+    }
 }
