@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
                                NicknameUpdateServiceRequestDto serviceRequestDto) {
         //userid 와 user(로그인 한 회원) 의 아이디가 동일한지 검사를하고 아니면 예외처리해야하고,
         if (!user.getId().equals(userId)) {
-            throw new NotSelfUserException(
+            throw new ForbiddenAccessNicknameException(
                 UserErrorCode.DUPLICATE_NICKNAME
             );
         }
