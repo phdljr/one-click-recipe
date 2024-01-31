@@ -1,13 +1,6 @@
 package org.springeel.oneclickrecipe.domain.user.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -53,5 +46,9 @@ public class User extends BaseEntity {
     // 롤 변경 메소드
     public void changeRole(UserRole newRole) {
         this.role = newRole;
+    }
+
+    public void update(String nickname) {
+        this.nickname = nickname;
     }
 }
