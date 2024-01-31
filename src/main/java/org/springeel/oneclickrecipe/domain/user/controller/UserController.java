@@ -61,15 +61,14 @@ public class UserController {
         return ResponseEntity.ok(responseDto);
     }
 
-    @PutMapping("/{userId}/nickname") //닉네임변경(수정)
+    @PutMapping("/nickname") //닉네임변경(수정)
     public ResponseEntity<?> updateNickname(
-        @PathVariable(name = "userId") Long userId,
         @Valid @RequestBody NicknameUpdateControllerRequestDto controllerRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         NicknameUpdateServiceRequestDto serviceRequestDto =
             userDtoMapper.toNicknameUpdateServiceRequestDto(controllerRequestDto);
-        userService.updateNickname(userId, userDetails.user(), serviceRequestDto);
+        userService.updateNickname(userDetails.user(), serviceRequestDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
