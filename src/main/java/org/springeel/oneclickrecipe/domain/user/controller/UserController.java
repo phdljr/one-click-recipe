@@ -62,7 +62,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}/nickname") //닉네임변경(수정)
-    public ResponseEntity<?> update(
+    public ResponseEntity<?> updateNickname(
         @PathVariable(name = "userId") Long userId,
         @Valid @RequestBody NicknameUpdateControllerRequestDto controllerRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetails
