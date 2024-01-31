@@ -137,6 +137,7 @@ public class RecipeServiceImpl implements RecipeService {
         );
     }
 
+    @Transactional(readOnly = true)
     public List<RecipeAllReadResponseDto> readAllRecipe() {
         return recipeRepository.findAll()
             .stream()
@@ -148,7 +149,7 @@ public class RecipeServiceImpl implements RecipeService {
                 .imageUrl(recipe.getImageUrl())
                 .writer(recipe.getUser().getNickname())
                 .isLiked(false)
-                .likeCount(recipeLikeRepository.countByRecipeId(recipe.getId()))
+                .likeCount(recipe.getRecipeLikes().size())
                 .build())
             .toList();
     }

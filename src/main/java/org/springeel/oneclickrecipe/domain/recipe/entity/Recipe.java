@@ -17,6 +17,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springeel.oneclickrecipe.domain.recipefood.entity.RecipeFood;
+import org.springeel.oneclickrecipe.domain.recipelike.entity.RecipeLike;
 import org.springeel.oneclickrecipe.domain.recipeprocess.entity.RecipeProcess;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springeel.oneclickrecipe.global.entity.BaseEntity;
@@ -58,6 +59,9 @@ public class Recipe extends BaseEntity {
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.PERSIST)
     private List<RecipeFood> recipeFoods = new ArrayList<>();
+
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.PERSIST)
+    private List<RecipeLike> recipeLikes = new ArrayList<>();
 
     @Builder
     public Recipe(
