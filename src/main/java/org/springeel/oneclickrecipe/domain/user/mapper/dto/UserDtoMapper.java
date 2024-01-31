@@ -5,8 +5,8 @@ import org.springeel.oneclickrecipe.domain.user.dto.controller.NicknameUpdateCon
 import org.springeel.oneclickrecipe.domain.user.dto.controller.PasswordUpdateControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.user.dto.controller.UserLoginControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.user.dto.controller.UserSignUpControllerRequestDto;
-import org.springeel.oneclickrecipe.domain.user.dto.service.PasswordUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.user.dto.service.request.NicknameUpdateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.user.dto.service.request.PasswordUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.user.dto.service.request.UserLoginServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.user.dto.service.request.UserSignUpServiceRequestDto;
 
