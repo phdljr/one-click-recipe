@@ -16,7 +16,6 @@ public interface UserDtoMapper {
     NicknameUpdateServiceRequestDto toNicknameUpdateServiceRequestDto(
         NicknameUpdateControllerRequestDto controllerRequestDto);
 
-
     UserSignUpServiceRequestDto toUserSignUpServiceRequestDto(
         UserSignUpControllerRequestDto controllerRequestDto);
 
