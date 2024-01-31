@@ -1,11 +1,9 @@
 package org.springeel.oneclickrecipe.domain.user.dto.controller;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Size;
 
 public record NicknameUpdateControllerRequestDto(
-    @Min(value = 4)
-    @Max(value = 20)
+    @Size(min = 4, max = 20)
     String nickname
 ) {
 }
