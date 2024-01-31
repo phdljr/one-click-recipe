@@ -21,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.security.web.header.writers.XXssProtectionHeaderWriter.HeaderValue;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
@@ -70,6 +71,11 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(AbstractHttpConfigurer::disable)
+            .headers(headers -> headers
+                .xssProtection(xss -> xss
+                    .headerValue(HeaderValue.ENABLED_MODE_BLOCK)
+                )
+            )
             .cors(cors -> cors.configurationSource(configurationSource()))
             .formLogin(AbstractHttpConfigurer::disable)
             .sessionManagement((sessionManagement) ->
