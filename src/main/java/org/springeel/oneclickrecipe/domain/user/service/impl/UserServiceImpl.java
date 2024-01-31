@@ -2,6 +2,7 @@ package org.springeel.oneclickrecipe.domain.user.service.impl;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springeel.oneclickrecipe.domain.user.dto.service.PasswordUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.user.dto.service.request.NicknameUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.user.dto.service.request.UserLoginServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.user.dto.service.request.UserSignUpServiceRequestDto;
@@ -94,5 +95,10 @@ public class UserServiceImpl implements UserService {
         }
         user.update(serviceRequestDto.nickname());
         userRepository.save(user);
+    }
+
+    @Override
+    public void updatePassword(Long userId, User user, PasswordUpdateServiceRequestDto serviceRequestDto) {
+
     }
 }
