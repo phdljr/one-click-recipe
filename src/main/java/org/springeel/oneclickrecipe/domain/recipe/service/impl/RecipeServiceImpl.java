@@ -22,6 +22,7 @@ import org.springeel.oneclickrecipe.domain.recipe.service.RecipeService;
 import org.springeel.oneclickrecipe.domain.recipefood.dto.service.request.RecipeFoodCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipefood.entity.RecipeFood;
 import org.springeel.oneclickrecipe.domain.recipefood.mapper.service.RecipeFoodEntityMapper;
+import org.springeel.oneclickrecipe.domain.recipelike.repository.RecipeLikeRepository;
 import org.springeel.oneclickrecipe.domain.recipeprocess.dto.service.request.RecipeProcessCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipeprocess.entity.RecipeProcess;
 import org.springeel.oneclickrecipe.domain.recipeprocess.mapper.entity.RecipeProcessEntityMapper;
@@ -41,6 +42,8 @@ public class RecipeServiceImpl implements RecipeService {
     private final RecipeProcessEntityMapper recipeProcessEntityMapper;
     private final FoodRepository foodRepository;
     private final S3Provider s3Provider;
+    private final RecipeLikeRepository recipeLikeRepository;
+
 
     @Override
     @Transactional
@@ -132,9 +135,21 @@ public class RecipeServiceImpl implements RecipeService {
         );
     }
 
+    @Transactional(readOnly = true)
     public List<RecipeAllReadResponseDto> readAllRecipe() {
-        List<Recipe> recipes = recipeRepository.findAll();
-        return recipeEntityMapper.toRecipeAllReadResponseDto(recipes);
+        return recipeRepository.findAll()
+            .stream()
+            .map(recipe -> RecipeAllReadResponseDto.builder()
+                .id(recipe.getId())
+                .title(recipe.getTitle())
+                .intro(recipe.getIntro())
+                .serving(recipe.getServing())
+                .imageUrl(recipe.getImageUrl())
+                .writer(recipe.getUser().getNickname())
+                .isLiked(false)
+                .likeCount(recipe.getRecipeLikes().size())
+                .build())
+            .toList();
     }
 
     public RecipeReadResponseDto readRecipe(Long recipeId) {

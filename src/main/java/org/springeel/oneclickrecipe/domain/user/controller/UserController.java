@@ -46,7 +46,8 @@ public class UserController {
     ) {
         UserLoginServiceRequestDto serviceRequestDto = userDtoMapper.toUserLoginServiceRequestDto(
             controllerRequestDto);
-        UserLoginResponseDto responseDto = userService.login(serviceRequestDto, httpServletResponse);
+        UserLoginResponseDto responseDto = userService.login(serviceRequestDto,
+            httpServletResponse);
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
 
