@@ -85,5 +85,4 @@ public class UserController {
         userService.updatePassword(userDetails.user(), serviceRequestDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
-
 }
