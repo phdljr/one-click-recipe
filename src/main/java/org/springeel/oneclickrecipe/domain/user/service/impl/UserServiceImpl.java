@@ -16,10 +16,10 @@ import org.springeel.oneclickrecipe.domain.user.exception.UserErrorCode;
 import org.springeel.oneclickrecipe.domain.user.mapper.entity.UserEntityMapper;
 import org.springeel.oneclickrecipe.domain.user.repository.UserRepository;
 import org.springeel.oneclickrecipe.domain.user.service.UserService;
-import org.springeel.oneclickrecipe.global.jwt.exception.BadRefreshTokenException;
-import org.springeel.oneclickrecipe.global.jwt.exception.JwtErrorCode;
 import org.springeel.oneclickrecipe.global.jwt.JwtStatus;
 import org.springeel.oneclickrecipe.global.jwt.JwtUtil;
+import org.springeel.oneclickrecipe.global.jwt.exception.BadRefreshTokenException;
+import org.springeel.oneclickrecipe.global.jwt.exception.JwtErrorCode;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
         final HttpServletResponse httpServletResponse) {
         String token = refreshToken.substring(7);
         JwtStatus jwtStatus = jwtUtil.validateToken(token);
-        if(jwtStatus != JwtStatus.ACCESS){
+        if (jwtStatus != JwtStatus.ACCESS) {
             throw new BadRefreshTokenException(JwtErrorCode.INVALID_TOKEN);
         }
 

@@ -11,10 +11,8 @@ import org.springeel.oneclickrecipe.domain.food.exception.NotFoundFoodException;
 import org.springeel.oneclickrecipe.domain.food.mapper.service.FoodEntityMapper;
 import org.springeel.oneclickrecipe.domain.food.repository.FoodRepository;
 import org.springeel.oneclickrecipe.domain.food.service.FoodService;
-import org.springeel.oneclickrecipe.domain.user.entity.User;
-import org.springeel.oneclickrecipe.domain.user.exception.NotFoundUserException;
-import org.springeel.oneclickrecipe.domain.user.exception.UserErrorCode;
 import org.springeel.oneclickrecipe.domain.user.repository.UserRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,13 +42,12 @@ public class FoodServiceImpl implements FoodService {
     }
 
     public List<FoodReadAllServiceResponseDto> readAllFoods() {
-        List<Food> foods = foodRepository.findAll();
+        List<Food> foods = foodRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
         return foodEntityMapper.toFooReadAllResponseDto(foods);
     }
 
     private Food findFood(Long id) {
-        Food food = foodRepository.findById(id)
+        return foodRepository.findById(id)
             .orElseThrow(() -> new NotFoundFoodException(FoodErrorCode.NOT_FOUND_FOOD));
-        return food;
     }
 }

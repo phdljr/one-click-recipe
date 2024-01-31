@@ -55,13 +55,13 @@ public class Recipe extends BaseEntity {
     private User user;
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.PERSIST)
-    private List<RecipeProcess> recipeProcesses = new ArrayList<>();
+    private final List<RecipeProcess> recipeProcesses = new ArrayList<>();
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.PERSIST)
-    private List<RecipeFood> recipeFoods = new ArrayList<>();
+    private final List<RecipeFood> recipeFoods = new ArrayList<>();
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.PERSIST)
-    private List<RecipeLike> recipeLikes = new ArrayList<>();
+    private final List<RecipeLike> recipeLikes = new ArrayList<>();
 
     @Builder
     public Recipe(

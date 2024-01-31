@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 public enum JwtErrorCode implements ErrorCode {
 
     // 401
-    INVALID_TOKEN(HttpStatus.UNAUTHORIZED,  "유효하지 않은 토큰입니다."),
+    INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."),
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다.");
 
     private final HttpStatus status;

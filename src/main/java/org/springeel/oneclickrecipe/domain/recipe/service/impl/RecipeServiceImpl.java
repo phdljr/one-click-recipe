@@ -20,10 +20,8 @@ import org.springeel.oneclickrecipe.domain.recipe.mapper.entity.RecipeEntityMapp
 import org.springeel.oneclickrecipe.domain.recipe.repository.RecipeRepository;
 import org.springeel.oneclickrecipe.domain.recipe.service.RecipeService;
 import org.springeel.oneclickrecipe.domain.recipefood.dto.service.request.RecipeFoodCreateServiceRequestDto;
-import org.springeel.oneclickrecipe.domain.recipefood.dto.service.response.RecipeFoodReadResponseDto;
 import org.springeel.oneclickrecipe.domain.recipefood.entity.RecipeFood;
 import org.springeel.oneclickrecipe.domain.recipefood.mapper.service.RecipeFoodEntityMapper;
-import org.springeel.oneclickrecipe.domain.recipelike.entity.RecipeLike;
 import org.springeel.oneclickrecipe.domain.recipelike.repository.RecipeLikeRepository;
 import org.springeel.oneclickrecipe.domain.recipeprocess.dto.service.request.RecipeProcessCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipeprocess.entity.RecipeProcess;

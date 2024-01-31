@@ -13,5 +13,6 @@ public interface UserService {
     UserLoginResponseDto login(UserLoginServiceRequestDto serviceRequestDto,
         HttpServletResponse httpServletResponse);
 
-    UserLoginResponseDto refreshAccessToken(String refreshToken, User user, HttpServletResponse httpServletResponse);
+    UserLoginResponseDto refreshAccessToken(String refreshToken, User user,
+        HttpServletResponse httpServletResponse);
 }

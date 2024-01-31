@@ -52,7 +52,8 @@ public class OrderServiceImpl implements OrderService {
                 .name(cartItem.getRecipeFood().getFood().getName())
                 .amount(cartItem.getRecipeFood().getAmount())
                 .unit(cartItem.getRecipeFood().getFood().getUnit())
-                .price(cartItem.getRecipeFood().getAmount() * cartItem.getRecipeFood().getFood().getPrice())
+                .price(cartItem.getRecipeFood().getAmount() * cartItem.getRecipeFood().getFood()
+                    .getPrice())
                 .build()
             )
             .toList();
