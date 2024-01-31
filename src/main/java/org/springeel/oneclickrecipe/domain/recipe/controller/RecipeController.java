@@ -99,11 +99,11 @@ public class RecipeController {
 
     @GetMapping("/{recipeId}")
     public ResponseEntity<?> readOnce(
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
         @PathVariable Long recipeId
     ) {
         RecipeReadResponseDto readResponseDto =
-            recipeService.readRecipe(recipeId);
+            recipeService.readRecipe(recipeId, userDetails);
         return ResponseEntity.status(HttpStatus.OK).body(readResponseDto);
-
     }
 }

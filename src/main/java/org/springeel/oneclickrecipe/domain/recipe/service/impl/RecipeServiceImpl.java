@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springeel.oneclickrecipe.domain.follow.repository.FollowRepository;
 import org.springeel.oneclickrecipe.domain.food.entity.Food;
 import org.springeel.oneclickrecipe.domain.food.exception.FoodErrorCode;
 import org.springeel.oneclickrecipe.domain.food.exception.NotFoundFoodException;
@@ -14,6 +15,7 @@ import org.springeel.oneclickrecipe.domain.recipe.dto.service.request.RecipeUpda
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.response.RecipeAllReadResponseDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.response.RecipeAllReadResponseDto.RecipeAllReadResponseDtoBuilder;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.response.RecipeReadResponseDto;
+import org.springeel.oneclickrecipe.domain.recipe.dto.service.response.RecipeReadResponseDto.RecipeReadResponseDtoBuilder;
 import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;
 import org.springeel.oneclickrecipe.domain.recipe.exception.NotFoundRecipeException;
 import org.springeel.oneclickrecipe.domain.recipe.exception.RecipeErrorCode;
@@ -45,6 +47,7 @@ public class RecipeServiceImpl implements RecipeService {
     private final FoodRepository foodRepository;
     private final S3Provider s3Provider;
     private final RecipeLikeRepository recipeLikeRepository;
+    private final FollowRepository followRepository;
 
 
     @Override
@@ -154,7 +157,6 @@ public class RecipeServiceImpl implements RecipeService {
             .imageUrl(recipe.getImageUrl())
             .writer(recipe.getUser().getNickname())
             .likeCount(recipe.getRecipeLikes().size());
-
         if (userDetails == null) {
             builder.isLiked(false);
         } else {
@@ -162,13 +164,28 @@ public class RecipeServiceImpl implements RecipeService {
                 recipeLikeRepository.existsByUserIdAndRecipeId(userDetails.user().getId(),
                     recipe.getId()));
         }
-
         return builder.build();
     }
 
-    public RecipeReadResponseDto readRecipe(Long recipeId) {
+    public RecipeReadResponseDto readRecipe(Long recipeId, UserDetailsImpl userDetails) {
         Recipe recipe = recipeRepository.findById(recipeId)
             .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
-        return recipeEntityMapper.toRecipeReadResponseDto(recipe);
+        RecipeReadResponseDtoBuilder builder = RecipeReadResponseDto.builder()
+            .id(recipe.getId())
+            .title(recipe.getTitle())
+            .serving(recipe.getServing())
+            .imageUrl(recipe.getImageUrl())
+            .writer(recipe.getUser().getNickname())
+            .imageUrl(recipe.getImageUrl())
+            .writerId(recipe.getUser().getId())
+            .videoUrl(recipe.getVideoUrl());
+        if (userDetails == null) {
+            builder.follow(false);
+        } else {
+            builder.follow(
+                followRepository.existsByUserIdAndFollowingId(userDetails.user().getId(),
+                    recipe.getUser().getId()));
+        }
+        return builder.build();
     }
 }
