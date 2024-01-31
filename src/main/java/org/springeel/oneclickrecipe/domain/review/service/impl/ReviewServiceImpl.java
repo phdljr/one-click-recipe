@@ -9,6 +9,7 @@ import org.springeel.oneclickrecipe.domain.recipe.exception.RecipeErrorCode;
 import org.springeel.oneclickrecipe.domain.recipe.repository.RecipeRepository;
 import org.springeel.oneclickrecipe.domain.review.dto.service.request.ReviewCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.review.dto.service.request.ReviewUpdateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.review.dto.service.response.ReviewCreateResponseDto;
 import org.springeel.oneclickrecipe.domain.review.dto.service.response.ReviewReadResponseDto;
 import org.springeel.oneclickrecipe.domain.review.entity.Review;
 import org.springeel.oneclickrecipe.domain.review.exception.NotFoundReviewException;
@@ -30,12 +31,12 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewEntityMapper reviewEntityMapper;
 
     @Override
-    public void createReview(User user, ReviewCreateServiceRequestDto serviceRequestDto,
+    public ReviewCreateResponseDto createReview(User user, ReviewCreateServiceRequestDto serviceRequestDto,
         Long recipeId) {
         Recipe recipe = recipeRepository.findById(recipeId)
             .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
         Review review = reviewEntityMapper.toReview(serviceRequestDto, user, recipe);
-        reviewRepository.save(review);
+        return reviewEntityMapper.toReviewCreateResponseDto(reviewRepository.save(review));
     }
 
     @Transactional

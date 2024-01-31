@@ -7,6 +7,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;
 import org.springeel.oneclickrecipe.domain.review.dto.service.request.ReviewCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.review.dto.service.response.ReviewCreateResponseDto;
 import org.springeel.oneclickrecipe.domain.review.dto.service.response.ReviewReadResponseDto;
 import org.springeel.oneclickrecipe.domain.review.entity.Review;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
@@ -23,4 +24,6 @@ public interface ReviewEntityMapper {
     @Mapping(source = "recipe", target = "recipe")
     Review toReview(ReviewCreateServiceRequestDto reviewRequestDto, User user, Recipe recipe);
 
+    @Mapping(source = "user.nickname", target = "writer")
+    ReviewCreateResponseDto toReviewCreateResponseDto(Review review);
 }
