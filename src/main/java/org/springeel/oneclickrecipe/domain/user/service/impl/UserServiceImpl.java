@@ -1,18 +1,14 @@
 package org.springeel.oneclickrecipe.domain.user.service.impl;
 
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import org.springeel.oneclickrecipe.domain.user.dto.service.request.NicknameUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.user.dto.service.request.UserLoginServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.user.dto.service.request.UserSignUpServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.user.dto.service.response.UserLoginResponseDto;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springeel.oneclickrecipe.domain.user.entity.UserRole;
-import org.springeel.oneclickrecipe.domain.user.exception.AlreadyExistsEmailException;
-import org.springeel.oneclickrecipe.domain.user.exception.DuplicateNicknameException;
-import org.springeel.oneclickrecipe.domain.user.exception.NotFoundUserException;
-import org.springeel.oneclickrecipe.domain.user.exception.NotMatchPasswordException;
-import org.springeel.oneclickrecipe.domain.user.exception.UserErrorCode;
+import org.springeel.oneclickrecipe.domain.user.exception.*;
 import org.springeel.oneclickrecipe.domain.user.mapper.entity.UserEntityMapper;
 import org.springeel.oneclickrecipe.domain.user.repository.UserRepository;
 import org.springeel.oneclickrecipe.domain.user.service.UserService;
@@ -22,6 +18,9 @@ import org.springeel.oneclickrecipe.global.jwt.exception.BadRefreshTokenExceptio
 import org.springeel.oneclickrecipe.global.jwt.exception.JwtErrorCode;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @Service
@@ -72,7 +71,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserLoginResponseDto refreshAccessToken(final String refreshToken, final User user,
-        final HttpServletResponse httpServletResponse) {
+                                                   final HttpServletResponse httpServletResponse) {
         String token = refreshToken.substring(7);
         JwtStatus jwtStatus = jwtUtil.validateToken(token);
         if (jwtStatus != JwtStatus.ACCESS) {
@@ -81,5 +80,18 @@ public class UserServiceImpl implements UserService {
 
         jwtUtil.addAccessTokenToHeader(user, httpServletResponse);
         return userEntityMapper.toUserLoginResponseDto(user);
+    }
+
+    @Override
+    @Transactional
+    public void updateNickname(User user,
+                               NicknameUpdateServiceRequestDto serviceRequestDto) {
+        //동일한 닉네임이 있는지 검증
+        if (userRepository.existsByNickname(serviceRequestDto.nickname())) {
+            throw new DuplicateNicknameException(UserErrorCode.DUPLICATE_NICKNAME);
+        }
+
+        user.updateNickname(serviceRequestDto.nickname());
+        userRepository.save(user);
     }
 }
