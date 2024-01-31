@@ -43,7 +43,8 @@ public class KakaoService {
     @Value("${custom.front.host}")
     private String frontHost;
 
-    public UserLoginResponseDto kakaoLogin(String code, HttpServletResponse response) throws JsonProcessingException {
+    public UserLoginResponseDto kakaoLogin(String code, HttpServletResponse response)
+        throws JsonProcessingException {
         String accessToken = getToken(code);
         KakaoUserInfoDto kakaoUserInfo = getKakaoUserInfo(accessToken);
         User user = registerKakaoUserIfNeeded(kakaoUserInfo);

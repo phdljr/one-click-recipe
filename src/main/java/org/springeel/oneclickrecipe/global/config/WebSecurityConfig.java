@@ -6,8 +6,8 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.global.filter.ExceptionHandlerFilter;
 import org.springeel.oneclickrecipe.global.filter.JwtAuthorizationFilter;
-import org.springeel.oneclickrecipe.global.security.UserDetailsServiceImpl;
 import org.springeel.oneclickrecipe.global.jwt.JwtUtil;
+import org.springeel.oneclickrecipe.global.security.UserDetailsServiceImpl;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -45,7 +45,7 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public ExceptionHandlerFilter exceptionHandlerFilter(){
+    public ExceptionHandlerFilter exceptionHandlerFilter() {
         return new ExceptionHandlerFilter();
     }
 
