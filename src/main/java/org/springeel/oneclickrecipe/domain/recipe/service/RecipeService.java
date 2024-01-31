@@ -20,7 +20,7 @@ public interface RecipeService {
         MultipartFile multipartFile)
         throws IOException;
 
-    List<RecipeAllReadResponseDto> readAllRecipe(final UserDetailsImpl userDetails);
+    List<RecipeAllReadResponseDto> readAllRecipe(final Integer page, final UserDetailsImpl userDetails);
 
     RecipeReadResponseDto readRecipe(Long recipeId);
 

@@ -11,6 +11,9 @@ import org.springeel.oneclickrecipe.sample.exception.TestErrorCode;
 import org.springeel.oneclickrecipe.sample.mapper.entity.TestEntityMapper;
 import org.springeel.oneclickrecipe.sample.repository.TestRepository;
 import org.springeel.oneclickrecipe.sample.service.TestService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -46,8 +49,8 @@ public class TestServiceImpl implements TestService {
 
     // List<Test> -> List<TestCreateServiceRequestDto>
     @Override
-    public List<TestReadResponseDto> getAll() {
-        List<Test> tests = testRepository.findAll();
-        return testEntityMapper.toTestReadResponseDtos(tests);
+    public List<TestReadResponseDto> getAll(int pageNumber) {
+        Slice<Test> tests = testRepository.findAllBy(PageRequest.of(pageNumber, 9));
+        return testEntityMapper.toTestReadResponseDtos(tests.getContent());
     }
 }
