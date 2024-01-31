@@ -180,9 +180,9 @@ public class RecipeServiceImpl implements RecipeService {
             .writerId(recipe.getUser().getId())
             .videoUrl(recipe.getVideoUrl());
         if (userDetails == null) {
-            builder.follow(false);
+            builder.isFollowed(false);
         } else {
-            builder.follow(
+            builder.isFollowed(
                 followRepository.existsByUserIdAndFollowingId(userDetails.user().getId(),
                     recipe.getUser().getId()));
         }

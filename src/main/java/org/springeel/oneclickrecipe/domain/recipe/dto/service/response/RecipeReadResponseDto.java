@@ -11,7 +11,7 @@ public record RecipeReadResponseDto(
     String videoUrl,
     String imageUrl,
     String writer,
-    Boolean follow,
+    Boolean isFollowed,
     Long writerId
 ) {
 
