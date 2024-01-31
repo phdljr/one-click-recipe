@@ -22,7 +22,7 @@ public interface RecipeService {
 
     List<RecipeAllReadResponseDto> readAllRecipe(final Integer page, final UserDetailsImpl userDetails);
 
-    RecipeReadResponseDto readRecipe(Long recipeId);
+    RecipeReadResponseDto readRecipe(Long recipeId, final UserDetailsImpl userDetails);
 
     void createRecipe(RecipeCreateServiceRequestDto recipeCreateServiceRequestDto,
         MultipartFile recipeImage,
