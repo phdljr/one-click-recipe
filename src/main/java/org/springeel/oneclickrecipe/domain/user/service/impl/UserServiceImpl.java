@@ -99,6 +99,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updatePassword(User user, PasswordUpdateServiceRequestDto serviceRequestDto) {
 
+        if (!passwordEncoder.matches(serviceRequestDto.currentPassword(), user.getPassword())) {
+            throw new NotMatchPasswordException(UserErrorCode.NOT_MATCH_PASSWORD);
+        }
+        if (!serviceRequestDto.newPassword().equals(serviceRequestDto.confirmNewPassword())) {
+            throw new NotMatchPasswordException(UserErrorCode.NOT_MATCH_NEW_PASSWORD);
+        }
+
+        user.updatePassword(passwordEncoder.encode(serviceRequestDto.newPassword()));
+        userRepository.save(user);
+
     }
 
 }
