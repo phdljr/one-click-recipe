@@ -1,27 +1,26 @@
 package org.springeel.oneclickrecipe.domain.user.service.impl;
 
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import org.springeel.oneclickrecipe.domain.user.dto.service.request.NicknameUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.user.dto.service.request.UserLoginServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.user.dto.service.request.UserSignUpServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.user.dto.service.response.UserLoginResponseDto;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springeel.oneclickrecipe.domain.user.entity.UserRole;
-import org.springeel.oneclickrecipe.domain.user.exception.AlreadyExistsEmailException;
-import org.springeel.oneclickrecipe.domain.user.exception.DuplicateNicknameException;
-import org.springeel.oneclickrecipe.domain.user.exception.NotFoundUserException;
-import org.springeel.oneclickrecipe.domain.user.exception.NotMatchPasswordException;
-import org.springeel.oneclickrecipe.domain.user.exception.UserErrorCode;
+import org.springeel.oneclickrecipe.domain.user.exception.*;
 import org.springeel.oneclickrecipe.domain.user.mapper.entity.UserEntityMapper;
 import org.springeel.oneclickrecipe.domain.user.repository.UserRepository;
 import org.springeel.oneclickrecipe.domain.user.service.UserService;
-import org.springeel.oneclickrecipe.global.jwt.exception.BadRefreshTokenException;
-import org.springeel.oneclickrecipe.global.jwt.exception.JwtErrorCode;
 import org.springeel.oneclickrecipe.global.jwt.JwtStatus;
 import org.springeel.oneclickrecipe.global.jwt.JwtUtil;
+import org.springeel.oneclickrecipe.global.jwt.exception.BadRefreshTokenException;
+import org.springeel.oneclickrecipe.global.jwt.exception.JwtErrorCode;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @Service
@@ -72,14 +71,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserLoginResponseDto refreshAccessToken(final String refreshToken, final User user,
-        final HttpServletResponse httpServletResponse) {
+                                                   final HttpServletResponse httpServletResponse) {
         String token = refreshToken.substring(7);
         JwtStatus jwtStatus = jwtUtil.validateToken(token);
-        if(jwtStatus != JwtStatus.ACCESS){
+        if (jwtStatus != JwtStatus.ACCESS) {
             throw new BadRefreshTokenException(JwtErrorCode.INVALID_TOKEN);
         }
 
         jwtUtil.addAccessTokenToHeader(user, httpServletResponse);
         return userEntityMapper.toUserLoginResponseDto(user);
+    }
+
+    @Transactional
+    @Override
+    public void updateNickname(Long userId, User user,
+                               NicknameUpdateServiceRequestDto serviceRequestDto) {
+        //userid 와 user(로그인 한 회원) 의 아이디가 동일한지 검사를하고 아니면 예외처리해야하고,
+        if (!user.getId().equals(userId)) {
+            throw new NotSelfUserException(
+                UserErrorCode.DUPLICATE_NICKNAME
+            );
+        }
+        user.update(serviceRequestDto.nickname());
+        userRepository.save(user);
     }
 }
