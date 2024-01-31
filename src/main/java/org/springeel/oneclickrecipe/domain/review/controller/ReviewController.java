@@ -5,6 +5,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.review.dto.controller.ReviewCreateControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.review.dto.controller.ReviewUpdateControllerRequestDto;
+import org.springeel.oneclickrecipe.domain.review.dto.service.response.ReviewCreateResponseDto;
 import org.springeel.oneclickrecipe.domain.review.dto.service.request.ReviewCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.review.dto.service.request.ReviewUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.review.dto.service.response.ReviewReadResponseDto;
@@ -32,14 +33,15 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @PostMapping("/recipes/{recipeId}/reviews") //후기작성
-    public void create(
+    public ResponseEntity<?> create(
         @PathVariable(name = "recipeId") Long recipeId,
         @Valid @RequestBody ReviewCreateControllerRequestDto controllerRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         ReviewCreateServiceRequestDto serviceRequestDto =
             reviewDtoMapper.toReviewCreateServiceRequestDto(controllerRequestDto);
-        reviewService.createReview(userDetails.user(), serviceRequestDto, recipeId);
+        ReviewCreateResponseDto responseDto = reviewService.createReview(userDetails.user(), serviceRequestDto, recipeId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
     @PutMapping("/reviews/{reviewId}") //후기수정
