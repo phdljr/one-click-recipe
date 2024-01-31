@@ -84,14 +84,10 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void updateNickname(Long userId, User user,
+    public void updateNickname(User user,
                                NicknameUpdateServiceRequestDto serviceRequestDto) {
         //userid 와 user(로그인 한 회원) 의 아이디가 동일한지 검사를하고 아니면 예외처리해야하고,
-        if (!user.getId().equals(userId)) {
-            throw new ForbiddenAccessNicknameException(
-                UserErrorCode.FORBIDDEN_CHANGE_NICKNAME
-            );
-        }
+
         user.update(serviceRequestDto.nickname());
         userRepository.save(user);
     }
