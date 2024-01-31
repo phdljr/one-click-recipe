@@ -75,7 +75,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PutMapping("/passowrd") //비밀번호변경(수정)
+    @PutMapping("/password") //비밀번호변경(수정)
     public ResponseEntity<?> updatePassword(
         @Valid @RequestBody PasswordUpdateControllerRequestDto controllerRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetails
