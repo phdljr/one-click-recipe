@@ -11,7 +11,7 @@ public record RecipeAllReadResponseDto(
     String imageUrl,
     String writer,
     Boolean isLiked,
-    long like_count
+    Long likeCount
 ) {
 
 }

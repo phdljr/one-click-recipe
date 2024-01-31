@@ -148,7 +148,7 @@ public class RecipeServiceImpl implements RecipeService {
                 .imageUrl(recipe.getImageUrl())
                 .writer(recipe.getUser().getNickname())
                 .isLiked(false)
-                .like_count(recipeLikeRepository.countByRecipeId(recipe.getId()))
+                .likeCount(recipeLikeRepository.countByRecipeId(recipe.getId()))
                 .build())
             .toList();
     }
