@@ -9,6 +9,7 @@ import org.springeel.oneclickrecipe.domain.recipe.dto.service.response.RecipeRea
 import org.springeel.oneclickrecipe.domain.recipefood.dto.service.request.RecipeFoodCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipeprocess.dto.service.request.RecipeProcessCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
+import org.springeel.oneclickrecipe.global.security.UserDetailsImpl;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface RecipeService {
@@ -19,7 +20,7 @@ public interface RecipeService {
         MultipartFile multipartFile)
         throws IOException;
 
-    List<RecipeAllReadResponseDto> readAllRecipe();
+    List<RecipeAllReadResponseDto> readAllRecipe(final UserDetailsImpl userDetails);
 
     RecipeReadResponseDto readRecipe(Long recipeId);
 

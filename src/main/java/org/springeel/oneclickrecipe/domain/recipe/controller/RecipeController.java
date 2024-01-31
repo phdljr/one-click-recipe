@@ -89,9 +89,11 @@ public class RecipeController {
     }
 
     @GetMapping
-    public ResponseEntity<?> readAll() {
+    public ResponseEntity<?> readAll(
+        @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
         List<RecipeAllReadResponseDto> recipeAllReadResponseDto =
-            recipeService.readAllRecipe();
+            recipeService.readAllRecipe(userDetails);
         return ResponseEntity.status(HttpStatus.OK).body(recipeAllReadResponseDto);
     }
 

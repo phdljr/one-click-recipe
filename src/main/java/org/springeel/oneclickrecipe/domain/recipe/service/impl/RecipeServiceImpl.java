@@ -12,6 +12,7 @@ import org.springeel.oneclickrecipe.domain.food.repository.FoodRepository;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.request.RecipeCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.request.RecipeUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.response.RecipeAllReadResponseDto;
+import org.springeel.oneclickrecipe.domain.recipe.dto.service.response.RecipeAllReadResponseDto.RecipeAllReadResponseDtoBuilder;
 import org.springeel.oneclickrecipe.domain.recipe.dto.service.response.RecipeReadResponseDto;
 import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;
 import org.springeel.oneclickrecipe.domain.recipe.exception.NotFoundRecipeException;
@@ -28,6 +29,7 @@ import org.springeel.oneclickrecipe.domain.recipeprocess.entity.RecipeProcess;
 import org.springeel.oneclickrecipe.domain.recipeprocess.mapper.entity.RecipeProcessEntityMapper;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springeel.oneclickrecipe.global.s3.S3Provider;
+import org.springeel.oneclickrecipe.global.security.UserDetailsImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -136,20 +138,32 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Transactional(readOnly = true)
-    public List<RecipeAllReadResponseDto> readAllRecipe() {
+    public List<RecipeAllReadResponseDto> readAllRecipe(final UserDetailsImpl userDetails) {
         return recipeRepository.findAll()
             .stream()
-            .map(recipe -> RecipeAllReadResponseDto.builder()
-                .id(recipe.getId())
-                .title(recipe.getTitle())
-                .intro(recipe.getIntro())
-                .serving(recipe.getServing())
-                .imageUrl(recipe.getImageUrl())
-                .writer(recipe.getUser().getNickname())
-                .isLiked(false)
-                .likeCount(recipe.getRecipeLikes().size())
-                .build())
+            .map(recipe -> readDto(recipe, userDetails))
             .toList();
+    }
+
+    private RecipeAllReadResponseDto readDto(Recipe recipe, UserDetailsImpl userDetails) {
+        RecipeAllReadResponseDtoBuilder builder = RecipeAllReadResponseDto.builder()
+            .id(recipe.getId())
+            .title(recipe.getTitle())
+            .intro(recipe.getIntro())
+            .serving(recipe.getServing())
+            .imageUrl(recipe.getImageUrl())
+            .writer(recipe.getUser().getNickname())
+            .likeCount(recipe.getRecipeLikes().size());
+
+        if (userDetails == null) {
+            builder.isLiked(false);
+        } else {
+            builder.isLiked(
+                recipeLikeRepository.existsByUserIdAndRecipeId(userDetails.user().getId(),
+                    recipe.getId()));
+        }
+
+        return builder.build();
     }
 
     public RecipeReadResponseDto readRecipe(Long recipeId) {
