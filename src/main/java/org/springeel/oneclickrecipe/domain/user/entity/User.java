@@ -48,7 +48,7 @@ public class User extends BaseEntity {
         this.role = newRole;
     }
 
-    public void update(String nickname) {
+    public void updateNickname(String nickname) {
         this.nickname = nickname;
     }
 }

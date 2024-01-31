@@ -39,7 +39,7 @@ public class S3Provider {
     }
 
     public String originalFileName(MultipartFile multipartFile) {
-        if(multipartFile.isEmpty()){
+        if (multipartFile.isEmpty()) {
             return "";
         }
 

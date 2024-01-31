@@ -5,10 +5,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springeel.oneclickrecipe.domain.user.dto.controller.NicknameUpdateControllerRequestDto;
-import org.springeel.oneclickrecipe.domain.user.dto.controller.PasswordUpdateControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.user.dto.controller.UserLoginControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.user.dto.controller.UserSignUpControllerRequestDto;
-import org.springeel.oneclickrecipe.domain.user.dto.service.PasswordUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.user.dto.service.request.NicknameUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.user.dto.service.request.UserLoginServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.user.dto.service.request.UserSignUpServiceRequestDto;
@@ -48,7 +46,8 @@ public class UserController {
     ) {
         UserLoginServiceRequestDto serviceRequestDto = userDtoMapper.toUserLoginServiceRequestDto(
             controllerRequestDto);
-        UserLoginResponseDto responseDto = userService.login(serviceRequestDto, httpServletResponse);
+        UserLoginResponseDto responseDto = userService.login(serviceRequestDto,
+            httpServletResponse);
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
 
@@ -63,28 +62,14 @@ public class UserController {
         return ResponseEntity.ok(responseDto);
     }
 
-    @PutMapping("/{userId}/nickname") //닉네임변경(수정)
-    public ResponseEntity<?> update(
-        @PathVariable(name = "userId") Long userId,
+    @PutMapping("/nickname") //닉네임변경(수정)
+    public ResponseEntity<?> updateNickname(
         @Valid @RequestBody NicknameUpdateControllerRequestDto controllerRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         NicknameUpdateServiceRequestDto serviceRequestDto =
             userDtoMapper.toNicknameUpdateServiceRequestDto(controllerRequestDto);
-        userService.updateNickname(userId, userDetails.user(), serviceRequestDto);
+        userService.updateNickname(userDetails.user(), serviceRequestDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
-
-    @PutMapping("/{userId}/password") //비밀번호변경(수정)
-    public ResponseEntity<?> update(
-        @PathVariable(name = "userId") Long userId,
-        @Valid @RequestBody PasswordUpdateControllerRequestDto controllerRequestDto,
-        @AuthenticationPrincipal UserDetailsImpl userDetails
-    ) {
-        PasswordUpdateServiceRequestDto serviceRequestDto =
-            userDtoMapper.toPasswordUpdateServiceRequestDto(controllerRequestDto);
-        userService.updatePassword(userId, userDetails.user(), serviceRequestDto);
-        return ResponseEntity.status(HttpStatus.OK).build();
-    }
-
 }
