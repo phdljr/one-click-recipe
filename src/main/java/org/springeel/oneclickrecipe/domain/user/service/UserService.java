@@ -16,5 +16,5 @@ public interface UserService {
 
     UserLoginResponseDto refreshAccessToken(String refreshToken, User user, HttpServletResponse httpServletResponse);
 
-    void updateNickname(Long userId, User user, NicknameUpdateServiceRequestDto serviceRequestDto);
+    void updateNickname(User user, NicknameUpdateServiceRequestDto serviceRequestDto);
 }
