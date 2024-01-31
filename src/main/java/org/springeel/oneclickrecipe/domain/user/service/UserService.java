@@ -1,6 +1,7 @@
 package org.springeel.oneclickrecipe.domain.user.service;
 
 import jakarta.servlet.http.HttpServletResponse;
+import org.springeel.oneclickrecipe.domain.user.dto.service.PasswordUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.user.dto.service.request.NicknameUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.user.dto.service.request.UserLoginServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.user.dto.service.request.UserSignUpServiceRequestDto;
@@ -17,4 +18,6 @@ public interface UserService {
     UserLoginResponseDto refreshAccessToken(String refreshToken, User user, HttpServletResponse httpServletResponse);
 
     void updateNickname(Long userId, User user, NicknameUpdateServiceRequestDto serviceRequestDto);
+
+    void updatePassword(Long userId, User user, PasswordUpdateServiceRequestDto serviceRequestDto);
 }
