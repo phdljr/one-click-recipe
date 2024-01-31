@@ -30,6 +30,9 @@ import org.springeel.oneclickrecipe.domain.recipeprocess.mapper.entity.RecipePro
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springeel.oneclickrecipe.global.s3.S3Provider;
 import org.springeel.oneclickrecipe.global.security.UserDetailsImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -138,8 +141,9 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Transactional(readOnly = true)
-    public List<RecipeAllReadResponseDto> readAllRecipe(final UserDetailsImpl userDetails) {
-        return recipeRepository.findAll()
+    public List<RecipeAllReadResponseDto> readAllRecipe(final Integer page, final UserDetailsImpl userDetails) {
+        PageRequest pageRequest = PageRequest.of(page, 9, Sort.by(Direction.DESC, "createdAt"));
+        return recipeRepository.findAllSliceBy(pageRequest)
             .stream()
             .map(recipe -> readDto(recipe, userDetails))
             .toList();
