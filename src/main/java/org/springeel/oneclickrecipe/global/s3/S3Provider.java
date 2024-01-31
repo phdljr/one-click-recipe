@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class S3Provider {
 
     private final AmazonS3 amazonS3;
-    public final String SEPARATOR = "/";
+    public static final String SEPARATOR = "/";
     @Value("${cloud.aws.s3.bucket.name}")
     public String bucket;
     public final String url = "https://onceclick.s3.ap-northeast-2.amazonaws.com/";
