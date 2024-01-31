@@ -8,11 +8,11 @@ import org.springeel.oneclickrecipe.domain.user.dto.controller.NicknameUpdateCon
 import org.springeel.oneclickrecipe.domain.user.dto.controller.PasswordUpdateControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.user.dto.controller.UserLoginControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.user.dto.controller.UserSignUpControllerRequestDto;
+import org.springeel.oneclickrecipe.domain.user.dto.service.PasswordUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.user.dto.service.request.NicknameUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.user.dto.service.request.UserLoginServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.user.dto.service.request.UserSignUpServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.user.dto.service.response.UserLoginResponseDto;
-import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springeel.oneclickrecipe.domain.user.mapper.dto.UserDtoMapper;
 import org.springeel.oneclickrecipe.domain.user.service.UserService;
 import org.springeel.oneclickrecipe.global.security.UserDetailsImpl;
@@ -74,11 +74,17 @@ public class UserController {
         userService.updateNickname(userId, userDetails.user(), serviceRequestDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+
     @PutMapping("/{userId}/password") //비밀번호변경(수정)
     public ResponseEntity<?> update(
         @PathVariable(name = "userId") Long userId,
         @Valid @RequestBody PasswordUpdateControllerRequestDto controllerRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetails
-        )
+    ) {
+        PasswordUpdateServiceRequestDto serviceRequestDto =
+            userDtoMapper.toPasswordUpdateServiceRequestDto(controllerRequestDto);
+        userService.updatePassword(userId, userDetails.user(), serviceRequestDto);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 
 }
