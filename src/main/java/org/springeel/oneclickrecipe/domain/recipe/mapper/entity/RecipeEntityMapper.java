@@ -19,6 +19,7 @@ public interface RecipeEntityMapper {
 
     List<RecipeAllReadResponseDto> toRecipeAllReadResponseDto(List<Recipe> recipe);
 
+    @Mapping(source = "user.id", target = "writerId")
     @Mapping(source = "user.nickname", target = "writer")
     RecipeReadResponseDto toRecipeReadResponseDto(Recipe recipe);
 

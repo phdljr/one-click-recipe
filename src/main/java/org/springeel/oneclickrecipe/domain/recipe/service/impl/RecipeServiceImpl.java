@@ -61,7 +61,8 @@ public class RecipeServiceImpl implements RecipeService {
         final User user
     ) throws IOException {
         String recipeFolderName = recipeCreateServiceRequestDto.title() + UUID.randomUUID();
-        String recipeImageName = s3Provider.originalFileName(recipeImage);
+        String recipeImageName =
+            recipeFolderName + S3Provider.SEPARATOR + s3Provider.originalFileName(recipeImage);
         Recipe recipe = recipeEntityMapper.toRecipe(recipeCreateServiceRequestDto, user,
             recipeFolderName, s3Provider.getImagePath(recipeImageName));
 
@@ -83,7 +84,7 @@ public class RecipeServiceImpl implements RecipeService {
             String recipeProcessImageUrl = null;
             if (!recipeProcessImageName.isEmpty()) {
                 recipeProcessImageUrl = s3Provider
-                    .getImagePath(recipeFolderName + "/" + recipeProcessImageName);
+                    .getImagePath(recipeFolderName + S3Provider.SEPARATOR + recipeProcessImageName);
             }
             recipeProcessImageNames.add(recipeProcessImageName);
             recipeProcesses.add(recipeProcessEntityMapper.toRecipeProcess(
@@ -141,7 +142,8 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Transactional(readOnly = true)
-    public List<RecipeAllReadResponseDto> readAllRecipe(final Integer page, final UserDetailsImpl userDetails) {
+    public List<RecipeAllReadResponseDto> readAllRecipe(final Integer page,
+        final UserDetailsImpl userDetails) {
         PageRequest pageRequest = PageRequest.of(page, 9, Sort.by(Direction.DESC, "createdAt"));
         return recipeRepository.findAllSliceBy(pageRequest)
             .stream()

@@ -7,7 +7,8 @@ public record RecipeReadResponseDto(
     Byte serving,
     String videoUrl,
     String imageUrl,
-    String writer
+    String writer,
+    Long writerId
 ) {
 
 }
