@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
             throw new DuplicateNicknameException(UserErrorCode.DUPLICATE_NICKNAME);
         }
 
-        user.update(serviceRequestDto.nickname());
+        user.updateNickname(serviceRequestDto.nickname());
         userRepository.save(user);
     }
 }
