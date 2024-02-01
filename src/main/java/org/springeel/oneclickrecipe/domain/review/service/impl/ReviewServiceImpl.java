@@ -20,6 +20,10 @@ import org.springeel.oneclickrecipe.domain.review.service.ReviewService;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springeel.oneclickrecipe.domain.user.exception.NotFoundUserException;
 import org.springeel.oneclickrecipe.domain.user.exception.UserErrorCode;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -30,8 +34,11 @@ public class ReviewServiceImpl implements ReviewService {
     private final RecipeRepository recipeRepository;
     private final ReviewEntityMapper reviewEntityMapper;
 
+    private final int PAGE_SIZE = 10;
+
     @Override
-    public ReviewCreateResponseDto createReview(User user, ReviewCreateServiceRequestDto serviceRequestDto,
+    public ReviewCreateResponseDto createReview(User user,
+        ReviewCreateServiceRequestDto serviceRequestDto,
         Long recipeId) {
         Recipe recipe = recipeRepository.findById(recipeId)
             .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
@@ -65,13 +72,14 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public List<ReviewReadResponseDto> getReviews(Long recipeId) {
+    public List<ReviewReadResponseDto> getReviews(Long recipeId, final Integer page) {
         recipeRepository.findById(recipeId)
             .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
-        // 특정 레시피에 대한 리뷰 목록 조회
-        List<Review> reviews = reviewRepository.findAllByRecipeId(recipeId);
+
+        PageRequest pageRequest = PageRequest.of(page, PAGE_SIZE, Sort.by(Direction.ASC, "id"));
+        Slice<Review> reviews = reviewRepository.findAllSliceByRecipeId(recipeId, pageRequest);
 
         //  댓글 목록을 Dto로 변환해서 반환
-        return reviewEntityMapper.toReviewReadResponseDtos(reviews);
+        return reviewEntityMapper.toReviewReadResponseDtos(reviews.getContent());
     }
 }

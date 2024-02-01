@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -68,9 +69,10 @@ public class ReviewController {
     // 특정 레시피의 리뷰 목록 조회
     @GetMapping("/recipes/{recipeId}/reviews")
     public ResponseEntity<List<ReviewReadResponseDto>> getReviews(
+        @RequestParam(name = "page", defaultValue = "0") Integer page,
         @PathVariable(name = "recipeId") Long recipeId
     ) {
-        List<ReviewReadResponseDto> reviews = reviewService.getReviews(recipeId);
+        List<ReviewReadResponseDto> reviews = reviewService.getReviews(recipeId, page);
         return new ResponseEntity<>(reviews, HttpStatus.OK);
     }
 }
