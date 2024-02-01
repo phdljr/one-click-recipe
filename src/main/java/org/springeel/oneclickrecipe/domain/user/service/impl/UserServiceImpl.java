@@ -111,10 +111,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(User user, DeleteUserServiceRequestDto serviceRequestDto) {
 
-        if(!serviceRequestDto.password().equals(serviceRequestDto.confirmPassword())){
+        if (!serviceRequestDto.password().equals(serviceRequestDto.confirmPassword())) {
             throw new NotMatchPasswordException(UserErrorCode.NOT_MATCH_PASSWORD);
         }
-
+        userRepository.delete(user);
     }
 
 }
