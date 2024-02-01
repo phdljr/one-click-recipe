@@ -144,7 +144,7 @@ public class RecipeServiceImpl implements RecipeService {
     @Transactional(readOnly = true)
     public List<RecipeAllReadResponseDto> readAllRecipe(final Integer page,
         final UserDetailsImpl userDetails) {
-        PageRequest pageRequest = PageRequest.of(page, 9, Sort.by(Direction.DESC, "createdAt"));
+        PageRequest pageRequest = PageRequest.of(page, 9, Sort.by(Direction.DESC, "id"));
         return recipeRepository.findAllSliceBy(pageRequest)
             .stream()
             .map(recipe -> readDto(recipe, userDetails))

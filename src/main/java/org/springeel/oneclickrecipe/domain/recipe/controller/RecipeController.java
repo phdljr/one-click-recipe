@@ -106,6 +106,5 @@ public class RecipeController {
         RecipeReadResponseDto readResponseDto =
             recipeService.readRecipe(recipeId);
         return ResponseEntity.status(HttpStatus.OK).body(readResponseDto);
-
     }
 }
