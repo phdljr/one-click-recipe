@@ -79,14 +79,15 @@ public class UserController {
         userService.updatePassword(userDetails.user(), serviceRequestDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+
     @DeleteMapping("/withdrawl") //회원탈퇴
     public ResponseEntity<?> deleteUser(
-    @Valid @RequestBody DeleteUserControllerRequestDto controllerRequestDto,
-    @AuthenticationPrincipal UserDetailsImpl userDetails
+        @Valid @RequestBody DeleteUserControllerRequestDto controllerRequestDto,
+        @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-    DeleteUserServiceRequestDto serviceRequestDto =
-        userDtoMapper.toDeleteUserServiceRequestDto(controllerRequestDto);
-    userService.deleteUser(userDetails.user(),serviceRequestDto);
-    return ResponseEntity.status(HttpStatus.OK).build();
+        DeleteUserServiceRequestDto serviceRequestDto =
+            userDtoMapper.toDeleteUserServiceRequestDto(controllerRequestDto);
+        userService.deleteUser(userDetails.user(), serviceRequestDto);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
