@@ -52,6 +52,7 @@ public class RecipeServiceImpl implements RecipeService {
     private final RecipeLikeRepository recipeLikeRepository;
     private final FollowRepository followRepository;
 
+    private final int PAGE_SIZE = 9;
 
     @Override
     @Transactional
@@ -112,7 +113,7 @@ public class RecipeServiceImpl implements RecipeService {
         for (int i = 0; i < recipeProcessImage.size(); i++) {
             if (!recipeProcessImage.get(i).isEmpty()) {
                 s3Provider.saveFile(recipeProcessImage.get(i),
-                    recipeFolderName + "/" + recipeProcessImageName.get(i));
+                    recipeFolderName + S3Provider.SEPARATOR + recipeProcessImageName.get(i));
             }
         }
     }
@@ -123,7 +124,7 @@ public class RecipeServiceImpl implements RecipeService {
         Recipe recipe = recipeRepository.findByIdAndUser(recipeId, user)
             .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
         recipeRepository.delete(recipe);
-        s3Provider.delete(recipe.getFolderName() + "/");
+        s3Provider.delete(recipe.getFolderName() + S3Provider.SEPARATOR);
         // TODO 폴더 삭제시키기
     }
 
@@ -147,7 +148,7 @@ public class RecipeServiceImpl implements RecipeService {
     @Transactional(readOnly = true)
     public List<RecipeAllReadResponseDto> readAllRecipe(final Integer page,
         final UserDetailsImpl userDetails) {
-        PageRequest pageRequest = PageRequest.of(page, 9, Sort.by(Direction.DESC, "createdAt"));
+        PageRequest pageRequest = PageRequest.of(page, PAGE_SIZE, Sort.by(Direction.DESC, "id"));
         return recipeRepository.findAllSliceBy(pageRequest)
             .stream()
             .map(recipe -> readDto(recipe, userDetails))
