@@ -6,7 +6,7 @@ import org.springeel.oneclickrecipe.domain.food.entity.UnitType;
 @Builder
 public record RecipeFoodReadResponseDto(
     Long id,
-    String name,
+    String foodName,
     Short amount,
     Integer price,
     UnitType unit
