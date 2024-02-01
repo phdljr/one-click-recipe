@@ -34,8 +34,11 @@ public class ReviewServiceImpl implements ReviewService {
     private final RecipeRepository recipeRepository;
     private final ReviewEntityMapper reviewEntityMapper;
 
+    private final int PAGE_SIZE = 10;
+
     @Override
-    public ReviewCreateResponseDto createReview(User user, ReviewCreateServiceRequestDto serviceRequestDto,
+    public ReviewCreateResponseDto createReview(User user,
+        ReviewCreateServiceRequestDto serviceRequestDto,
         Long recipeId) {
         Recipe recipe = recipeRepository.findById(recipeId)
             .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
@@ -73,7 +76,7 @@ public class ReviewServiceImpl implements ReviewService {
         recipeRepository.findById(recipeId)
             .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
 
-        PageRequest pageRequest = PageRequest.of(page, 10, Sort.by(Direction.ASC, "id"));
+        PageRequest pageRequest = PageRequest.of(page, PAGE_SIZE, Sort.by(Direction.ASC, "id"));
         Slice<Review> reviews = reviewRepository.findAllSliceByRecipeId(recipeId, pageRequest);
 
         //  댓글 목록을 Dto로 변환해서 반환
