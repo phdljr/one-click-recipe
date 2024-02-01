@@ -184,6 +184,7 @@ public class RecipeServiceImpl implements RecipeService {
             .writer(recipe.getUser().getNickname())
             .imageUrl(recipe.getImageUrl())
             .writerId(recipe.getUser().getId())
+            .intro(recipe.getIntro())
             .videoUrl(recipe.getVideoUrl());
         if (userDetails == null) {
             builder.isFollowed(false);
