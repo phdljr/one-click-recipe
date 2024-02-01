@@ -1,6 +1,7 @@
 package org.springeel.oneclickrecipe.domain.recipelike.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
@@ -24,13 +25,14 @@ import org.springeel.oneclickrecipe.global.entity.BaseEntity;
 public class RecipeLike extends BaseEntity {
 
     @Id
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
     @Id
-    @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_id")
     private Recipe recipe;
 

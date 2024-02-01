@@ -3,6 +3,7 @@ package org.springeel.oneclickrecipe.domain.recipe.entity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,6 +17,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springeel.oneclickrecipe.domain.recipefood.entity.RecipeFood;
 import org.springeel.oneclickrecipe.domain.recipelike.entity.RecipeLike;
 import org.springeel.oneclickrecipe.domain.recipeprocess.entity.RecipeProcess;
@@ -50,6 +53,7 @@ public class Recipe extends BaseEntity {
     @Column
     private String imageUrl;
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -60,7 +64,7 @@ public class Recipe extends BaseEntity {
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.PERSIST)
     private final List<RecipeFood> recipeFoods = new ArrayList<>();
 
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "recipe", fetch = FetchType.EAGER)
     private final List<RecipeLike> recipeLikes = new ArrayList<>();
 
     @Builder
