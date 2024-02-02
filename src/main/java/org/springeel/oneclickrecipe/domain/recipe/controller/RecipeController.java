@@ -81,7 +81,7 @@ public class RecipeController {
         @RequestPart(name = "recipeUpdateRequestDto") RecipeUpdateControllerRequestDto recipeUpdateRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @PathVariable Long recipeId,
-        @RequestPart(name = "recipeUpdateImage") MultipartFile recipeUpdateImage
+        @RequestPart(name = "recipeUpdateImage", required = false) MultipartFile recipeUpdateImage
     ) throws IOException {
         RecipeUpdateServiceRequestDto serviceRequestDto =
             recipeDtoMapper.toRecipeUpdateServiceRequestDto(recipeUpdateRequestDto);

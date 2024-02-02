@@ -134,15 +134,25 @@ public class RecipeServiceImpl implements RecipeService {
         Long recipeId, MultipartFile multipartFile) throws IOException {
         Recipe recipe = recipeRepository.findByIdAndUser(recipeId, user)
             .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
-        String imageName = s3Provider.updateImage(recipe.getImageUrl(),
-            recipe.getFolderName(), multipartFile);
-        recipe.updateRecipe(
-            requestDto.title(),
-            requestDto.intro(),
-            requestDto.serving(),
-            requestDto.videoUrl(),
-            imageName //TODO 이미지 URL 넣기
-        );
+        if (!requestDto.imageChange()) {
+            recipe.updateRecipe(
+                requestDto.title(),
+                requestDto.intro(),
+                requestDto.serving(),
+                requestDto.videoUrl(),
+                recipe.getImageUrl() //TODO 이미지 URL 넣기
+            );
+        } else {
+            String imageName = s3Provider.updateImage(recipe.getImageUrl(),
+                recipe.getFolderName(), multipartFile);
+            recipe.updateRecipe(
+                requestDto.title(),
+                requestDto.intro(),
+                requestDto.serving(),
+                requestDto.videoUrl(),
+                imageName //TODO 이미지 URL 넣기
+            );
+        }
     }
 
     @Transactional(readOnly = true)

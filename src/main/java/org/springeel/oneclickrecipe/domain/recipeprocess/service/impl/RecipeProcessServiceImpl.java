@@ -103,13 +103,21 @@ public class RecipeProcessServiceImpl implements RecipeProcessService {
                 user)
             .orElseThrow(() -> new NotFoundRecipeProcessException(
                 RecipeProcessErrorCode.NOT_FOUND_RECIPE_PROCESS));
-        String imageName = s3Provider.updateImage(recipeProcess.getImageUrl(),
-            recipeProcess.getRecipe().getFolderName(), multipartFile);
-        recipeProcess.updateRecipe(
-            requestDto.sequence(),
-            requestDto.description(),
-            imageName
-        );
+        if (!requestDto.imageChange()) {
+            recipeProcess.updateRecipe(
+                requestDto.sequence(),
+                requestDto.description(),
+                recipeProcess.getImageUrl()
+            );
+        } else {
+            String imageName = s3Provider.updateImage(recipeProcess.getImageUrl(),
+                recipeProcess.getRecipe().getFolderName(), multipartFile);
+            recipeProcess.updateRecipe(
+                requestDto.sequence(),
+                requestDto.description(),
+                imageName
+            );
+        }
     }
 
     @Override
