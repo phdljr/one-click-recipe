@@ -80,7 +80,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @DeleteMapping("/withdrawl") //회원탈퇴
+    @DeleteMapping("/withdrawal") //회원탈퇴
     public ResponseEntity<?> deleteUser(
         @Valid @RequestBody DeleteUserControllerRequestDto controllerRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetails
