@@ -78,14 +78,15 @@ public class RecipeController {
 
     @PutMapping("/{recipeId}")
     public ResponseEntity<?> update(
-        @RequestPart RecipeUpdateControllerRequestDto controllerRequestDto,
+        @RequestPart(name = "recipeUpdateRequestDto") RecipeUpdateControllerRequestDto recipeUpdateRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @PathVariable Long recipeId,
-        @RequestPart MultipartFile multipartFile
+        @RequestPart(name = "recipeUpdateImage") MultipartFile recipeUpdateImage
     ) throws IOException {
         RecipeUpdateServiceRequestDto serviceRequestDto =
-            recipeDtoMapper.toRecipeUpdateServiceRequestDto(controllerRequestDto);
-        recipeService.updateRecipe(serviceRequestDto, userDetails.user(), recipeId, multipartFile);
+            recipeDtoMapper.toRecipeUpdateServiceRequestDto(recipeUpdateRequestDto);
+        recipeService.updateRecipe(serviceRequestDto, userDetails.user(), recipeId,
+            recipeUpdateImage);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
