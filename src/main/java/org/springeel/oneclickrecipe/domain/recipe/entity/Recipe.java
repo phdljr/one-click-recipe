@@ -16,6 +16,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springeel.oneclickrecipe.domain.recipefood.entity.RecipeFood;
 import org.springeel.oneclickrecipe.domain.recipelike.entity.RecipeLike;
 import org.springeel.oneclickrecipe.domain.recipeprocess.entity.RecipeProcess;
@@ -52,6 +54,7 @@ public class Recipe extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.PERSIST)
