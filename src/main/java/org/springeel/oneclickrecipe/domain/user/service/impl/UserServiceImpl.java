@@ -2,10 +2,7 @@ package org.springeel.oneclickrecipe.domain.user.service.impl;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springeel.oneclickrecipe.domain.user.dto.service.request.NicknameUpdateServiceRequestDto;
-import org.springeel.oneclickrecipe.domain.user.dto.service.request.PasswordUpdateServiceRequestDto;
-import org.springeel.oneclickrecipe.domain.user.dto.service.request.UserLoginServiceRequestDto;
-import org.springeel.oneclickrecipe.domain.user.dto.service.request.UserSignUpServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.user.dto.service.request.*;
 import org.springeel.oneclickrecipe.domain.user.dto.service.response.UserLoginResponseDto;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springeel.oneclickrecipe.domain.user.entity.UserRole;
@@ -109,6 +106,15 @@ public class UserServiceImpl implements UserService {
         user.updatePassword(passwordEncoder.encode(serviceRequestDto.newPassword()));
         userRepository.save(user);
 
+    }
+
+    @Override
+    public void deleteUser(User user, DeleteUserServiceRequestDto serviceRequestDto) {
+
+        if (!serviceRequestDto.password().equals(serviceRequestDto.confirmPassword())) {
+            throw new NotMatchPasswordException(UserErrorCode.NOT_MATCH_PASSWORD);
+        }
+        userRepository.delete(user);
     }
 
 }

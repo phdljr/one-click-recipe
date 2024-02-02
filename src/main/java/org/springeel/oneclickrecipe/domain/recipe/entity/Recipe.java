@@ -53,8 +53,8 @@ public class Recipe extends BaseEntity {
     @Column
     private String imageUrl;
 
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 

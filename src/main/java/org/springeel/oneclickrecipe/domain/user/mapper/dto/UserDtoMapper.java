@@ -1,14 +1,8 @@
 package org.springeel.oneclickrecipe.domain.user.mapper.dto;
 
 import org.mapstruct.Mapper;
-import org.springeel.oneclickrecipe.domain.user.dto.controller.NicknameUpdateControllerRequestDto;
-import org.springeel.oneclickrecipe.domain.user.dto.controller.PasswordUpdateControllerRequestDto;
-import org.springeel.oneclickrecipe.domain.user.dto.controller.UserLoginControllerRequestDto;
-import org.springeel.oneclickrecipe.domain.user.dto.controller.UserSignUpControllerRequestDto;
-import org.springeel.oneclickrecipe.domain.user.dto.service.request.NicknameUpdateServiceRequestDto;
-import org.springeel.oneclickrecipe.domain.user.dto.service.request.PasswordUpdateServiceRequestDto;
-import org.springeel.oneclickrecipe.domain.user.dto.service.request.UserLoginServiceRequestDto;
-import org.springeel.oneclickrecipe.domain.user.dto.service.request.UserSignUpServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.user.dto.controller.*;
+import org.springeel.oneclickrecipe.domain.user.dto.service.request.*;
 
 import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 
@@ -26,4 +20,7 @@ public interface UserDtoMapper {
 
     PasswordUpdateServiceRequestDto toPasswordUpdateServiceRequestDto(
         PasswordUpdateControllerRequestDto controllerRequestDto);
+
+    DeleteUserServiceRequestDto toDeleteUserServiceRequestDto(
+        DeleteUserControllerRequestDto controllerRequestDto);
 }
