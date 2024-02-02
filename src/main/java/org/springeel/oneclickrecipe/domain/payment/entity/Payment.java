@@ -31,13 +31,12 @@ public class Payment extends BaseEntity {
 
     @Column(nullable = false)
     private Integer totalPrice;
-
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private PaymentType paymentType;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     @OnDelete(action = OnDeleteAction.SET_NULL)
     private User user;
 
