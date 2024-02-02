@@ -3,6 +3,7 @@ package org.springeel.oneclickrecipe.domain.recipe.entity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -52,6 +53,7 @@ public class Recipe extends BaseEntity {
     @Column
     private String imageUrl;
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -63,7 +65,7 @@ public class Recipe extends BaseEntity {
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.PERSIST)
     private final List<RecipeFood> recipeFoods = new ArrayList<>();
 
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "recipe", fetch = FetchType.EAGER)
     private final List<RecipeLike> recipeLikes = new ArrayList<>();
 
     @Builder

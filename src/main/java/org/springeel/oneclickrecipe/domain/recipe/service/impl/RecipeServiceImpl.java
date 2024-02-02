@@ -167,13 +167,16 @@ public class RecipeServiceImpl implements RecipeService {
         if (userDetails == null) {
             builder.isLiked(false);
         } else {
-            builder.isLiked(
-                recipeLikeRepository.existsByUserIdAndRecipeId(userDetails.user().getId(),
-                    recipe.getId()));
+            boolean check = recipe.getRecipeLikes()
+                .stream()
+                .anyMatch(
+                    recipeLike -> recipeLike.getUser().getId().equals(userDetails.user().getId()));
+            builder.isLiked(check);
         }
         return builder.build();
     }
 
+    @Transactional(readOnly = true)
     public RecipeReadResponseDto readRecipe(Long recipeId, UserDetailsImpl userDetails) {
         Recipe recipe = recipeRepository.findById(recipeId)
             .orElseThrow(() -> new NotFoundRecipeException(RecipeErrorCode.NOT_FOUND_RECIPE));
