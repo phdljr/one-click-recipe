@@ -25,7 +25,6 @@ import org.springeel.oneclickrecipe.global.entity.BaseEntity;
 public class RecipeLike extends BaseEntity {
 
     @Id
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne
     @JoinColumn(name = "user_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
