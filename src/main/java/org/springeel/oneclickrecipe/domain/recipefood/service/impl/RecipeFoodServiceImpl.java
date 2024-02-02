@@ -92,7 +92,7 @@ public class RecipeFoodServiceImpl implements RecipeFoodService {
             .stream()
             .map(recipeFood -> RecipeFoodReadResponseDto.builder()
                 .id(recipeFood.getId())
-                .foodName(recipeFood.getFood().getName())
+                .name(recipeFood.getFood().getName())
                 .amount(recipeFood.getAmount())
                 .price(recipeFood.getAmount() * recipeFood.getFood().getPrice())
                 .unit(recipeFood.getFood().getUnit())
