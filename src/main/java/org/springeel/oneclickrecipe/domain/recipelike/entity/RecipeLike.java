@@ -26,6 +26,7 @@ public class RecipeLike extends BaseEntity {
     @Id
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     @Id
