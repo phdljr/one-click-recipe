@@ -4,7 +4,9 @@ public record RecipeUpdateServiceRequestDto(
     String title,
     String intro,
     Byte serving,
-    String videoUrl
+    String videoUrl,
+    Boolean imageChange
+
 ) {
 
 }

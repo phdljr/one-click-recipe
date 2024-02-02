@@ -43,6 +43,7 @@ public class RecipeProcessController {
             processDtoMapper.toRecipeProcessCreateServiceRequestDto(controllerRequestDto);
         processService.createRecipeProcess(serviceRequestDto, userDetails.user(), recipeId,
             multipartFile);
+        
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -62,7 +63,7 @@ public class RecipeProcessController {
         @RequestPart RecipeProcessUpdateControllerRequestDto controllerRequestDto,
         @PathVariable Long processId,
         @AuthenticationPrincipal UserDetailsImpl userDetails,
-        @RequestPart MultipartFile multipartFile
+        @RequestPart(name = "recipeProcessUpdateImage", required = false) MultipartFile multipartFile
     ) throws IOException {
         RecipeProcessUpdateServiceRequestDto serviceRequestDto =
             processDtoMapper.toRecipeProcessUpdateServiceRequestDto(controllerRequestDto);
