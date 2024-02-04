@@ -34,29 +34,29 @@ public class UserFoodController {
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         UserFoodCreateServiceRequestDto serviceRequestDto =
-            dtoMapper.toFoodCreateServiceDto(controllerRequestDto);
+            dtoMapper.toUserFoodCreateServiceDto(controllerRequestDto);
         userFoodService.createFood(serviceRequestDto, userDetails.user());
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @DeleteMapping("/admin/user_foods/{foodId}")
+    @DeleteMapping("/admin/user_foods/{userFoodId}")
     public ResponseEntity<?> deleteFood(
-        @PathVariable Long foodId,
+        @PathVariable Long userFoodId,
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        userFoodService.deleteFood(foodId, userDetails.user());
+        userFoodService.deleteFood(userFoodId, userDetails.user());
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PutMapping("/admin/user_foods/{foodId}")
+    @PutMapping("/admin/user_foods/{userFoodId}")
     public ResponseEntity<?> updateFood(
-        @PathVariable Long foodId,
+        @PathVariable Long userFoodId,
         @RequestBody UserFoodUpdateControllerRequestDto controllerRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         UserFoodUpdateServiceRequestDto serviceRequestDto =
-            dtoMapper.toFoodUpdateServiceDto(controllerRequestDto);
-        userFoodService.updateFood(foodId, serviceRequestDto, userDetails.user());
+            dtoMapper.toUserFoodUpdateServiceDto(controllerRequestDto);
+        userFoodService.updateFood(userFoodId, serviceRequestDto, userDetails.user());
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
