@@ -3,6 +3,7 @@ package org.springeel.oneclickrecipe.domain.userfood.service.impl;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
+import org.springeel.oneclickrecipe.domain.user.entity.UserRole;
 import org.springeel.oneclickrecipe.domain.user.exception.NotFoundUserException;
 import org.springeel.oneclickrecipe.domain.user.exception.UserErrorCode;
 import org.springeel.oneclickrecipe.domain.userfood.dto.service.request.UserFoodCreateServiceRequestDto;
@@ -30,13 +31,16 @@ public class UserFoodServiceImpl implements UserFoodService {
     public void createFood(UserFoodCreateServiceRequestDto requestDto, User user) {
         User member = userRepository.findById(user.getId())
             .orElseThrow(() -> new NotFoundUserException(UserErrorCode.NOT_FOUND_USER));
-        UserFood userFood = userFoodEntityMapper.toFood(requestDto, member);
+        UserFood userFood = userFoodEntityMapper.toUserFood(requestDto, member);
         userFoodRepository.save(userFood);
     }
 
     public void deleteFood(Long id, User user) {
-        User memberRole = userRepository.findByRole(user.getRole())
-            .orElseThrow(() -> new NotFoundUserException(UserErrorCode.BAD_ROLE));
+        User member = userRepository.findById(user.getId())
+            .orElseThrow(() -> new NotFoundUserException(UserErrorCode.NOT_FOUND_USER));
+        if (member.getRole().equals(UserRole.USER)) {
+            throw new NotFoundUserException(UserErrorCode.BAD_ROLE);
+        }
         UserFood userFood = userFoodRepository.findById(id)
             .orElseThrow(() -> new NotFoundUserFoodException(UserFoodErrorCode.NOT_FOUND_FOOD));
         userFoodRepository.delete(userFood);
@@ -44,7 +48,12 @@ public class UserFoodServiceImpl implements UserFoodService {
 
     @Transactional
     public void updateFood(Long id, UserFoodUpdateServiceRequestDto requestDto, User user) {
-        UserFood userFood = userFoodRepository.findByIdAndName(user.getId(), requestDto.name())
+        User member = userRepository.findById(user.getId())
+            .orElseThrow(() -> new NotFoundUserException(UserErrorCode.NOT_FOUND_USER));
+        if (member.getRole().equals(UserRole.USER)) {
+            throw new NotFoundUserException(UserErrorCode.BAD_ROLE);
+        }
+        UserFood userFood = userFoodRepository.findByName(requestDto.name())
             .orElseThrow(() -> new NotFoundUserFoodException(UserFoodErrorCode.NOT_FOUND_FOOD));
         userFood.updateFood(requestDto.name(), requestDto.unit());
     }
