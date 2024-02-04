@@ -10,10 +10,9 @@ import org.springeel.oneclickrecipe.domain.userfood.dto.service.response.UserFoo
 import org.springeel.oneclickrecipe.domain.userfood.entity.UserFood;
 
 @Mapper(componentModel = SPRING)
-
 public interface UserFoodEntityMapper {
 
-    UserFood toFood(UserFoodCreateServiceRequestDto requestDto, User user);
+    UserFood toUserFood(UserFoodCreateServiceRequestDto requestDto, User user);
 
     List<UserFoodReadAllServiceResponseDto> toFooReadAllResponseDto(List<UserFood> userFoods);
 

@@ -12,10 +12,10 @@ import org.springeel.oneclickrecipe.domain.userfood.dto.service.request.UserFood
 
 public interface UserFoodDtoMapper {
 
-    UserFoodCreateServiceRequestDto toFoodCreateServiceDto(
+    UserFoodCreateServiceRequestDto toUserFoodCreateServiceDto(
         UserFoodCreateControllerRequestDto controllerDto);
 
-    UserFoodUpdateServiceRequestDto toFoodUpdateServiceDto(
+    UserFoodUpdateServiceRequestDto toUserFoodUpdateServiceDto(
         UserFoodUpdateControllerRequestDto controllerDto);
 
 }
