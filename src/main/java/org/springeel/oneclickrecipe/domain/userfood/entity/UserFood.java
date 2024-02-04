@@ -42,10 +42,12 @@ public class UserFood {
     @Builder
     public UserFood(
         final String name,
-        final UnitType unit
+        final UnitType unit,
+        final User user
     ) {
         this.name = name;
         this.unit = unit;
+        this.user = user;
     }
 
     public void updateFood(String name, UnitType unit) {
