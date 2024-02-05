@@ -16,4 +16,6 @@ public interface OrderService {
     List<OrderReadAllResponseDto> getAllUserOrders(User user);
 
     void deleteOrder(Long orderId, User user);
+
+    void checkWaitingOrder(User user);
 }

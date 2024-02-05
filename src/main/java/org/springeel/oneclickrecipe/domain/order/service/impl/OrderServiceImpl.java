@@ -99,6 +99,14 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.delete(order);
     }
 
+    @Override
+    public void checkWaitingOrder(final User user) {
+        if (orderRepository.existsByUserAndStatusEquals(user, OrderStatus.WAITING)) {
+            throw new AlreadyExistsWaitingOrderException(
+                OrderErrorCode.ALREADY_EXIST_WAITING_ORDER);
+        }
+    }
+
     // 주문 내역 단건 조회
     @Override
     public OrderReadResponseDto getOrderById(Long orderId, User user) {

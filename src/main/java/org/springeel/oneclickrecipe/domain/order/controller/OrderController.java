@@ -62,6 +62,14 @@ public class OrderController {
         return ResponseEntity.ok(readResponseDto);
     }
 
+    @GetMapping("/waiting")
+    public ResponseEntity<Void> checkWaitingOrder(
+        @AuthenticationPrincipal UserDetailsImpl userDetails
+    ){
+        orderService.checkWaitingOrder(userDetails.user());
+        return ResponseEntity.ok().build();
+    }
+
     @DeleteMapping("/{orderId}")
     public ResponseEntity<Void> deleteOrder(
         @PathVariable(name = "orderId") Long orderId,
