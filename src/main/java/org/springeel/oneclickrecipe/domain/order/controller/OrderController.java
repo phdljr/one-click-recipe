@@ -28,7 +28,6 @@ public class OrderController {
     private final OrderDtoMapper orderDtoMapper;
     private final OrderService orderService;
 
-    // 주문 생성
     @PostMapping
     public ResponseEntity<OrderCreateResponseDto> createOrder(
         @RequestBody OrderCreateControllerRequestDto controllerRequestDto,
@@ -41,7 +40,6 @@ public class OrderController {
         return ResponseEntity.ok(responseDto);
     }
 
-    // 주문 내역 목록 조회
     @GetMapping
     public ResponseEntity<List<OrderReadAllResponseDto>> getAllUserOrders(
         @AuthenticationPrincipal UserDetailsImpl userDetails
@@ -51,7 +49,6 @@ public class OrderController {
         return ResponseEntity.ok(orderReadAllResponseDtoList);
     }
 
-    // 주문 내역 단건 조회
     @GetMapping("/{orderId}")
     public ResponseEntity<OrderReadResponseDto> getOrderById(
         @PathVariable(name = "orderId") Long orderId,
@@ -65,7 +62,7 @@ public class OrderController {
     @GetMapping("/waiting")
     public ResponseEntity<Void> checkWaitingOrder(
         @AuthenticationPrincipal UserDetailsImpl userDetails
-    ){
+    ) {
         orderService.checkWaitingOrder(userDetails.user());
         return ResponseEntity.ok().build();
     }
