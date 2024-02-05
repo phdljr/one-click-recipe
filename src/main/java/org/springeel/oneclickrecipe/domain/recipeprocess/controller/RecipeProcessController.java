@@ -60,7 +60,7 @@ public class RecipeProcessController {
     // TODO recipeId 제거해보는 방법 해보기
     @PutMapping("/recipe-processes/{processId}")
     public ResponseEntity<?> update(
-        @RequestPart RecipeProcessUpdateControllerRequestDto controllerRequestDto,
+        @RequestPart(name = "recipeProcessUpdateRequestDto") RecipeProcessUpdateControllerRequestDto controllerRequestDto,
         @PathVariable Long processId,
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @RequestPart(name = "recipeProcessUpdateImage", required = false) MultipartFile multipartFile
