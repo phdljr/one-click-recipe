@@ -60,7 +60,8 @@ public class PaymentServiceImpl implements PaymentService {
         parameters.add("tax_free_amount", "0");
         parameters.add("approval_url",
             frontHost + String.format("/orders/%d/payment/kakao/approve", order.getId()));
-        parameters.add("cancel_url", frontHost + "/payment/kakao/cancel");
+        parameters.add("cancel_url",
+            frontHost + String.format("/orders/%d/payment/kakao/cancel", order.getId()));
         parameters.add("fail_url", frontHost + "/payment/kakao/fail");
 
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(parameters,
