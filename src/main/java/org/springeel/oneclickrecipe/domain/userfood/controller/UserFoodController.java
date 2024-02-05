@@ -28,7 +28,7 @@ public class UserFoodController {
     private final UserFoodService userFoodService;
     private final UserFoodDtoMapper dtoMapper;
 
-    @PostMapping("/user_foods/create-food")
+    @PostMapping("/user-foods/create-food")
     public ResponseEntity<?> createFood(
         @RequestBody UserFoodCreateControllerRequestDto controllerRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetails
@@ -39,7 +39,7 @@ public class UserFoodController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @DeleteMapping("/admin/user_foods/{userFoodId}")
+    @DeleteMapping("/admin/user-foods/{userFoodId}")
     public ResponseEntity<?> deleteFood(
         @PathVariable Long userFoodId,
         @AuthenticationPrincipal UserDetailsImpl userDetails
@@ -48,7 +48,7 @@ public class UserFoodController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PutMapping("/admin/user_foods/{userFoodId}")
+    @PutMapping("/admin/user-foods/{userFoodId}")
     public ResponseEntity<?> updateFood(
         @PathVariable Long userFoodId,
         @RequestBody UserFoodUpdateControllerRequestDto controllerRequestDto,
@@ -60,7 +60,7 @@ public class UserFoodController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @GetMapping("/user_foods")
+    @GetMapping("/user-foods")
     public ResponseEntity<?> readAllFoods() {
         return ResponseEntity.status(HttpStatus.OK)
             .body(userFoodService.readAllFoods());
