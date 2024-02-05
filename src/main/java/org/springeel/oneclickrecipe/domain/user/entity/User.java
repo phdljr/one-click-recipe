@@ -30,6 +30,19 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
+    // 배송 정보
+    @Column
+    private String receiverName;
+
+    @Column
+    private String receiverPhoneNumber;
+
+    @Column
+    private String deliveryAddress;
+
+    @Column
+    private String deliveryAddressDetail;
+
     @Builder
     public User(
         final String email,
