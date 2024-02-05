@@ -13,7 +13,7 @@ public interface OrderService {
 
     OrderReadResponseDto getOrderById(Long orderId, User user);
 
-    List<OrderReadAllResponseDto> getAllUserOrders(User user);
+    List<OrderReadAllResponseDto> getAllUserOrders(final Integer page, User user);
 
     void deleteOrder(Long orderId, User user);
 

@@ -88,11 +88,10 @@ class ReviewServiceImplTest {
     }
 
     @Test
-
     @DisplayName("존재하지 않는 레시피 조회 시 예외발생")
     @Transactional
     public void notFoundReviewTest() {
-        assertThatThrownBy(() -> reviewService.getReviews(100L, 1))
+        assertThatThrownBy(() -> reviewService.getReviews(-100L, 0))
             .isInstanceOf(NotFoundRecipeException.class);
     }
     @Test
