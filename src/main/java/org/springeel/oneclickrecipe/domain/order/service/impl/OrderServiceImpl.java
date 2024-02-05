@@ -21,6 +21,10 @@ import org.springeel.oneclickrecipe.domain.order.repository.OrderRepository;
 import org.springeel.oneclickrecipe.domain.order.service.OrderService;
 import org.springeel.oneclickrecipe.domain.orderdetail.entity.OrderDetail;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +35,8 @@ public class OrderServiceImpl implements OrderService {
     private final CartRepository cartRepository;
     private final OrderRepository orderRepository;
     private final OrderEntityMapper orderEntityMapper;
+
+    private final int PAGE_SIZE = 10;
 
     // 주문 생성
     @Override
@@ -79,8 +85,9 @@ public class OrderServiceImpl implements OrderService {
 
     // 주문 내역 목록 조회
     @Override
-    public List<OrderReadAllResponseDto> getAllUserOrders(User user) {
-        List<Order> orders = orderRepository.findAllByUser(user);
+    public List<OrderReadAllResponseDto> getAllUserOrders(final Integer page, User user) {
+        PageRequest pageRequest = PageRequest.of(page, PAGE_SIZE, Sort.by(Direction.DESC, "id"));
+        Slice<Order> orders = orderRepository.findAllSliceByUser(user, pageRequest);
         return orders.stream()
             .map(orderEntityMapper::toOrderReadAllResponseDto)
             .toList();
