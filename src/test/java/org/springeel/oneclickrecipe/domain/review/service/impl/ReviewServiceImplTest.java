@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;
 import org.springeel.oneclickrecipe.domain.recipe.exception.NotFoundRecipeException;
 import org.springeel.oneclickrecipe.domain.recipe.repository.RecipeRepository;
+import org.springeel.oneclickrecipe.domain.review.dto.service.request.ReviewCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.review.dto.service.response.ReviewCreateResponseDto;
 import org.springeel.oneclickrecipe.domain.review.dto.service.response.ReviewReadResponseDto;
 import org.springeel.oneclickrecipe.domain.review.entity.Review;
 import org.springeel.oneclickrecipe.domain.review.repository.ReviewRepository;
@@ -92,5 +94,37 @@ class ReviewServiceImplTest {
     public void notFoundReviewTest() {
         assertThatThrownBy(() -> reviewService.getReviews(100L, 1))
             .isInstanceOf(NotFoundRecipeException.class);
+    }
+    @Test
+    @DisplayName("리뷰 작성 테스트")
+    @Transactional
+    public void createReview() {
+        //given
+        User user = userRepository.save(User.builder()
+            .email("test1@test.com")
+            .password("12345678")
+            .nickname("test1")
+            .role(UserRole.USER)
+            .build());
+
+        Recipe recipe = recipeRepository.save(Recipe.builder()
+            .title("간장계란밥")
+            .user(user)
+            .intro("황금레시피 간장계란밥")
+            .serving((byte) 2)
+            .videoUrl("/videos/간장계란밥.mp4")
+            .folderName("간장계란밥좋아요")
+            .build());
+
+        ReviewCreateServiceRequestDto requestDto = new ReviewCreateServiceRequestDto("맛있어요!", (byte) 5);
+
+        //when
+        ReviewCreateResponseDto createdReview = reviewService.createReview(user, requestDto, recipe.getId());
+
+        //then
+        assertThat(createdReview.id()).isNotNull();
+
+
+
     }
 }
