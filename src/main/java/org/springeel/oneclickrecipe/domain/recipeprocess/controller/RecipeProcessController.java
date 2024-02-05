@@ -47,7 +47,6 @@ public class RecipeProcessController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    // TODO recipeId 제거해보는 방법 해보기
     @DeleteMapping("/recipe-processes/{processId}")
     public ResponseEntity<?> delete(
         @PathVariable Long processId,
@@ -57,7 +56,6 @@ public class RecipeProcessController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    // TODO recipeId 제거해보는 방법 해보기
     @PutMapping("/recipe-processes/{processId}")
     public ResponseEntity<?> update(
         @RequestPart(name = "recipeProcessUpdateRequestDto") RecipeProcessUpdateControllerRequestDto controllerRequestDto,
