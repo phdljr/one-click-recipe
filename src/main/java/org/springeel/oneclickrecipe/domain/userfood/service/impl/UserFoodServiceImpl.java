@@ -1,7 +1,10 @@
 package org.springeel.oneclickrecipe.domain.userfood.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springeel.oneclickrecipe.domain.food.entity.Food;
+import org.springeel.oneclickrecipe.domain.food.repository.FoodRepository;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springeel.oneclickrecipe.domain.user.entity.UserRole;
 import org.springeel.oneclickrecipe.domain.user.exception.NotFoundUserException;
@@ -27,12 +30,17 @@ public class UserFoodServiceImpl implements UserFoodService {
     private final UserFoodRepository userFoodRepository;
     private final UserRepository userRepository;
     private final UserFoodEntityMapper userFoodEntityMapper;
+    private final FoodRepository foodRepository;
 
     public void createFood(UserFoodCreateServiceRequestDto requestDto, User user) {
-        User member = userRepository.findById(user.getId())
-            .orElseThrow(() -> new NotFoundUserException(UserErrorCode.NOT_FOUND_USER));
-        UserFood userFood = userFoodEntityMapper.toUserFood(requestDto, member);
-        userFoodRepository.save(userFood);
+        Optional<Food> findFood = foodRepository.findByName(requestDto.name());
+        Optional<UserFood> finduserFood = userFoodRepository.findByName(requestDto.name());
+        if (findFood.isEmpty() && finduserFood.isEmpty()) {
+            UserFood userFood = userFoodEntityMapper.toUserFood(requestDto, user);
+            userFoodRepository.save(userFood);
+        } else {
+            throw new NotFoundUserFoodException(UserFoodErrorCode.ALREADY_EXIST_FOOD);
+        }
     }
 
     public void deleteFood(Long id, User user) {
