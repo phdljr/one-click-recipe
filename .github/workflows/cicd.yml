@@ -18,13 +18,6 @@ jobs:
           distribution: 'corretto'
           java-version: '21'
 
-      - name: Make application-prod.yml
-        run: |
-          cd ./src/main/resources
-          touch ./application-prod.yml
-          echo "${{ secrets.YML_PROD }}" > ./application-prod.yml
-        shell: bash
-
       # Gradle caching
       - name: Gradle Caching
         uses: actions/cache@v4
@@ -36,31 +29,37 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
+      - name: Make application-prod.yml
+        run: |
+          cd ./src/main/resources
+          touch ./application-prod.yml
+          echo "${{ secrets.YML_PROD }}" > ./application-prod.yml
+        shell: bash
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
       - name: gradlew bootJar
         run: ./gradlew bootJar
 
-      - name: copy jar to server
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ec2-user
-          key: ${{ secrets.SSH_KEY }}
-          port: 22
-          source: "./build/libs/*.jar"
-          target: "~"
-          strip_components: 2
+      - name: Docker build & push
+        run: |
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker build -t one-click-recipe:latest .
+          docker tag one-click-recipe:latest ${{ secrets.DOCKER_USERNAME }}/one-click-recipe:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/one-click-recipe:latest
 
       - name: SSH Commands
-        uses: appleboy/ssh-action@v0.1.6
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ec2-user
           key: ${{ secrets.SSH_KEY }}
           port: 22
-          script_stop: true
+          script_stop: false
           script: |
-            kill -9 $(ps -ef | grep java | head -n 1 | awk '{print $2}')
-            nohup java -Duser.timezone=Asia/Seoul -Dspring.profiles.active=prod -jar *.jar 1> ~/nohup_log.out 2>&1 &
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/one-click-recipe
+            sudo docker stop one-click-recipe
+            sudo docker rm one-click-recipe
+            sudo docker run -d -p 8080:8080 --name one-click-recipe ${{ secrets.DOCKER_USERNAME }}/one-click-recipe
+            sudo docker image prune -f

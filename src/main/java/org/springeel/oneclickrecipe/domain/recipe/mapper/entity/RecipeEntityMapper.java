@@ -16,13 +16,4 @@ public interface RecipeEntityMapper {
 
     Recipe toRecipe(RecipeCreateServiceRequestDto requestDto, User user, String folderName,
         String imageUrl);
-
-    List<RecipeAllReadResponseDto> toRecipeAllReadResponseDto(List<Recipe> recipe);
-
-    @Mapping(source = "user.id", target = "writerId")
-    @Mapping(source = "user.nickname", target = "writer")
-    RecipeReadResponseDto toRecipeReadResponseDto(Recipe recipe);
-
-    @Mapping(source = "user.nickname", target = "writer")
-    RecipeAllReadResponseDto toRecipeAllReadResponse(Recipe recipe);
 }
