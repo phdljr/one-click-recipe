@@ -43,7 +43,6 @@ jobs:
         run: ./gradlew bootJar
 
       - name: Docker build & push
-        if: contains(github.ref, 'main')
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker build -t ${{ secrets.DOCKER_USERNAME }}/one-click-recipe:latest .
