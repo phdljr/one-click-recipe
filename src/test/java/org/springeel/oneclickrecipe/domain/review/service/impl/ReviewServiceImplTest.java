@@ -5,10 +5,14 @@ import org.junit.jupiter.api.Test;
 import org.springeel.oneclickrecipe.domain.recipe.entity.Recipe;
 import org.springeel.oneclickrecipe.domain.recipe.exception.NotFoundRecipeException;
 import org.springeel.oneclickrecipe.domain.recipe.repository.RecipeRepository;
+import org.springeel.oneclickrecipe.domain.review.dto.controller.ReviewUpdateControllerRequestDto;
 import org.springeel.oneclickrecipe.domain.review.dto.service.request.ReviewCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.review.dto.service.request.ReviewUpdateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.review.dto.service.response.ReviewCreateResponseDto;
 import org.springeel.oneclickrecipe.domain.review.dto.service.response.ReviewReadResponseDto;
 import org.springeel.oneclickrecipe.domain.review.entity.Review;
+import org.springeel.oneclickrecipe.domain.review.exception.NotFoundReviewException;
+import org.springeel.oneclickrecipe.domain.review.exception.ReviewErrorCode;
 import org.springeel.oneclickrecipe.domain.review.repository.ReviewRepository;
 import org.springeel.oneclickrecipe.domain.review.service.ReviewService;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
@@ -94,6 +98,7 @@ class ReviewServiceImplTest {
         assertThatThrownBy(() -> reviewService.getReviews(-100L, 0))
             .isInstanceOf(NotFoundRecipeException.class);
     }
+
     @Test
     @DisplayName("리뷰 작성 테스트")
     @Transactional
@@ -123,6 +128,40 @@ class ReviewServiceImplTest {
         //then
         assertThat(createdReview.id()).isNotNull();
 
+    }
+
+    @Test
+    @DisplayName("리뷰 수정 테스트")
+    @Transactional
+    public void updateReview() {
+        //given
+        User user = userRepository.save(User.builder()
+            .email("test1@test.com")
+            .password("12345678")
+            .nickname("test1")
+            .role(UserRole.USER)
+            .build());
+
+        Review originalReview = reviewRepository.save(Review.builder()
+            .content("원래 리뷰 내용")
+            .star((byte) 4)
+            .user(user)
+            .build());
+
+        ReviewUpdateControllerRequestDto requestDto = new ReviewUpdateControllerRequestDto("수정된 리뷰 내용", (byte) 5);
+
+        //when
+        ReviewUpdateServiceRequestDto serviceRequestDto = new ReviewUpdateServiceRequestDto(requestDto.content(), requestDto.star());
+        reviewService.updateReview(originalReview.getId(), user, serviceRequestDto);
+
+        //then
+        // 리뷰 수정 후에 변경된 리뷰를 다시 조회
+        Review updatedReview = reviewRepository.findById(originalReview.getId())
+            .orElseThrow(() -> new NotFoundReviewException(ReviewErrorCode.NOT_FOUND_REVIEW));
+
+        // 변경된 리뷰의 내용과 평점이 예상한 대로 변경되었는지 확인
+        assertThat(updatedReview.getContent()).isEqualTo(requestDto.content());
+        assertThat(updatedReview.getStar()).isEqualTo(requestDto.star());
 
 
     }
