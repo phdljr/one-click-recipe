@@ -44,11 +44,6 @@ public class UserFoodServiceImpl implements UserFoodService {
     }
 
     public void deleteFood(Long id, User user) {
-        User member = userRepository.findById(user.getId())
-            .orElseThrow(() -> new NotFoundUserException(UserErrorCode.NOT_FOUND_USER));
-        if (member.getRole().equals(UserRole.USER)) {
-            throw new NotFoundUserException(UserErrorCode.BAD_ROLE);
-        }
         UserFood userFood = userFoodRepository.findById(id)
             .orElseThrow(() -> new NotFoundUserFoodException(UserFoodErrorCode.NOT_FOUND_FOOD));
         userFoodRepository.delete(userFood);
@@ -56,11 +51,6 @@ public class UserFoodServiceImpl implements UserFoodService {
 
     @Transactional
     public void updateFood(Long id, UserFoodUpdateServiceRequestDto requestDto, User user) {
-        User member = userRepository.findById(user.getId())
-            .orElseThrow(() -> new NotFoundUserException(UserErrorCode.NOT_FOUND_USER));
-        if (member.getRole().equals(UserRole.USER)) {
-            throw new NotFoundUserException(UserErrorCode.BAD_ROLE);
-        }
         UserFood userFood = userFoodRepository.findByName(requestDto.name())
             .orElseThrow(() -> new NotFoundUserFoodException(UserFoodErrorCode.NOT_FOUND_FOOD));
         userFood.updateFood(requestDto.name(), requestDto.unit());
