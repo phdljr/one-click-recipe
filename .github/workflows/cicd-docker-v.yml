@@ -61,5 +61,5 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/one-click-recipe
             sudo docker stop one-click-recipe
             sudo docker rm one-click-recipe
-            sudo docker run -d -p 8082:8082 --name one-click-recipe ${{ secrets.DOCKER_USERNAME }}/one-click-recipe
+            sudo docker run -d -p 8080:8080 --name one-click-recipe ${{ secrets.DOCKER_USERNAME }}/one-click-recipe
             sudo docker image prune -f
