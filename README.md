@@ -13,19 +13,17 @@
 
 레시피를 따라 요리를 하고 싶을 때, 필요한 재료를 일일이 구매하는 번거로움을 해결하기 위해 `딸깍! 레시피`가 탄생했습니다. 이 서비스를 통해 사용자는 원하는 레시피에 나열된 모든 재료를 버튼 클릭 한 번으로 쉽게 주문할 수 있습니다.
 
+
+
 ## 👥 팀원 소개
-- **이종렬** (팀 리더, ESFJ)
-    - [블로그](https://velog.io/@phdljr)
-    - [GitHub](https://github.com/phdljr)
-- **배규태** (부팀 리더, INTP)
-    - [블로그](https://velog.io/@qoxowkd0716/posts)
-    - [GitHub](https://github.com/baegyutae)
-- **박창선** (팀원, ENFP)
-    - [블로그](https://mdpang.tistory.com/)
-    - [GitHub](https://github.com/pangseon)
-- **고도윤** (팀원, INFP)
-    - [블로그](https://velog.io/@rhehdbs0621/posts)
-    - [GitHub](https://github.com/kodoyoon)
+
+| 이름   | 역할        | 성격 유형 | 블로그                                    | GitHub                      |
+|--------|-------------|-----------|------------------------------------------|-----------------------------|
+| 이종렬 | 팀 리더     | ESFJ      | [블로그](https://velog.io/@phdljr)       | [GitHub](https://github.com/phdljr)       |
+| 배규태 | 부팀 리더  | INTP      | [블로그](https://velog.io/@qoxowkd0716/posts) | [GitHub](https://github.com/baegyutae) |
+| 박창선 | 팀원        | ENFP      | [블로그](https://mdpang.tistory.com/)    | [GitHub](https://github.com/pangseon)   |
+| 고도윤 | 팀원        | INFP      | [블로그](https://velog.io/@rhehdbs0621/posts) | [GitHub](https://github.com/kodoyoon)  |
+
 
 ## 📜 Ground Rules
 1. 연락은 반드시 응답하되, 사전에 이유를 밝히거나 즉시 설명하기.
