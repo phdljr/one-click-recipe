@@ -16,19 +16,19 @@
 
 레시피를 따라 요리를 하고 싶을 때, 필요한 재료를 일일이 구매하는 번거로움을 해결하기 위해 `딸깍! 레시피`가 탄생했습니다. 이 서비스를 통해 사용자는 원하는 레시피에 나열된 모든 재료를 버튼 클릭 한 번으로 쉽게 주문할 수 있습니다.
 
+![움짤](https://github.com/phdljr/one-click-recipe/assets/141345981/738ba62f-2ba8-4cc7-8070-e5dbe24c08ae)
+
 ## 👥 팀원 소개
-- **이종렬** (팀 리더, ESFJ)
-    - [블로그](https://velog.io/@phdljr)
-    - [GitHub](https://github.com/phdljr)
-- **배규태** (부팀 리더, INTP)
-    - [블로그](https://velog.io/@qoxowkd0716/posts)
-    - [GitHub](https://github.com/baegyutae)
-- **박창선** (팀원, ENFP)
-    - [블로그](https://mdpang.tistory.com/)
-    - [GitHub](https://github.com/pangseon)
-- **고도윤** (팀원, INFP)
-    - [블로그](https://velog.io/@rhehdbs0621/posts)
-    - [GitHub](https://github.com/kodoyoon)
+
+|      | 이종렬                                                              | 배규태                                                                | 박창선                                   | 고도윤                                        |
+|------|------------------------------------------------------------------|--------------------------------------------------------------------|---------------------------------------|--------------------------------------------|
+| 사진   | <img src="https://avatars.githubusercontent.com/u/68233342?v=4"> | <img src="https://avatars.githubusercontent.com/u/141345981?v=4">  | <img src="https://avatars.githubusercontent.com/u/107198171?v=4">                                     | <img src="https://avatars.githubusercontent.com/u/127570031?v=4">                                          |
+| 이름   | 이종렬                                                              | 배규태                                                                | 박창선                                   | 고도윤                                        |
+| 성격 유형 | ESFJ                                                             | INTP                                                               | ENFP                                  | INFP                                       |
+| 블로그  | [블로그](https://velog.io/@phdljr)                                  | [블로그](https://velog.io/@qoxowkd0716/posts)                         | [블로그](https://mdpang.tistory.com/)    | [블로그](https://velog.io/@rhehdbs0621/posts) |
+| GitHub | [GitHub](https://github.com/phdljr)                              | [GitHub](https://github.com/baegyutae)                             | [GitHub](https://github.com/pangseon) | [GitHub](https://github.com/kodoyoon)      |
+| 담당 기능 |    - 로그인<br>- 회원가입<br>- 카카오 페이 연동<br>- 레시피 생성<br>- CI/CD (Netlify 구축, Github Actions 구축)<br>- Infra (AWS EC2, RDS, ELB, ACM 설정)                                                        | - 주문, 주문 상세 내역<br>- 카트<br>- 프론트엔드 (주문 내역 및 상세 내역, 관리자 페이지, 마이 페이지) |                            | - 구독<br>- 레시피 좋아요<br>- 리뷰(댓글)<br>- 비밀번호, 닉네임 수정<br>- 회원탈퇴                                  |
+
 
 ## 📜 Ground Rules
 1. 연락은 반드시 응답하되, 사전에 이유를 밝히거나 즉시 설명하기.
@@ -48,24 +48,24 @@
 
 ## 🛠 기술 스택
 - **Frontend**
-    - Svelte
-    - Svelte Material UI
-    - Netlify 배포
+    - Svelte 4.2.8
+    - Svelte Material UI 7.0.0-beta.16
 - **Backend**
     - Java 21
     - Spring boot 3.2.1
     - OAuth
-    - Swagger
+    - Swagger 2.3.0
 - **Database**
-    - PostgreSQL
-    - Redis
+    - MySQL 8.0.35
 - **Infrastructure**
-    - AWS EC2, S3, RDS, ElastiCache
+    - AWS EC2, S3, RDS, Route53, ACM, ELB
     - Nginx
     - Docker
+    - Gradle
 - **CI/CD**
     - Gradle
     - GitHub Actions
+    - Netlify 배포
 
 ## 🤝 우리들의 약속
 
@@ -386,3 +386,4 @@
 
 각 채널의 사용 목적과 특징에 따라 적절하게 선택하여 효율적인 커뮤니케이션을 유지하고 있습니다.
 </details>
+
