@@ -5,8 +5,11 @@
 - [팀원 소개](#팀원-소개)
 - [Ground Rules](#ground-rules)
 - [목표](#목표)
-- [기술 스택](#기술-스택)
 - [우리들의 약속](#우리들의-약속)
+- [기술 스택](#기술-스택)
+- [기술적 의사 결정](#기술적-의사-결정)
+- [트러블 슈팅](#트러블-슈팅)
+
 
 ## 🌟 프로젝트 소개
 **한 줄 정리**: 내가 원하는 레시피의 재료를 클릭 한번으로 주문할 수 있는 서비스.
@@ -24,8 +27,8 @@
 | 이름   | 이종렬                                                              | 배규태                                                                | 박창선                                   | 고도윤                                        |
 | 성격 유형 | ESFJ                                                             | INTP                                                               | ENFP                                  | INFP                                       |
 | 블로그  | [블로그](https://velog.io/@phdljr)                                  | [블로그](https://velog.io/@qoxowkd0716/posts)                         | [블로그](https://mdpang.tistory.com/)    | [블로그](https://velog.io/@rhehdbs0621/posts) |
-| GitHub | [GitHub](https://github.com/phdljr)                              | [GitHub](https://github.com/baegyutae)                             | [GitHub](https://github.com/pangseon) | [GitHub](https://github.com/kodoyoon)      |
-| 담당 기능 |    - 로그인<br>- 회원가입<br>- 카카오 페이 연동<br>- 레시피 생성<br>- CI/CD (Netlify 구축, Github Actions 구축)<br>- Infra (AWS EC2, RDS, ELB, ACM 설정)                                                        | - 주문, 주문 상세 내역<br>- 카트<br>- 프론트엔드 (주문 내역 및 상세 내역, 관리자 페이지, 마이 페이지) |                            | - 구독<br>- 레시피 좋아요<br>- 리뷰(댓글)<br>- 비밀번호, 닉네임 수정<br>- 회원탈퇴                                  |
+| GitHub | <a href="https://github.com/phdljr">![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)</a>                              | <a href="[https:///phdljr](https://github.com/baegyutae)">![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)</a>                             | <a href="https://github.com/pangseon">![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)</a> | <a href="[https://github.com/pangseon](https://github.com/kodoyoon)">![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)</a>     |
+| 담당 기능 |    - 로그인<br>- 회원가입<br>- 카카오 페이 연동<br>- 레시피 생성<br>- CI/CD (Netlify 구축, Github Actions 구축)<br>- Infra (AWS EC2, RDS, ELB, ACM 설정)                                                        | - 주문, 주문 상세 내역<br>- 카트<br>- 프론트엔드 (주문 내역 및 상세 내역, 관리자 페이지, 마이 페이지) | - S3 연결 및 CUD 구현<br>- 소셜 로그인 연결 <br>- 레시피 CRUD<br>- 레시피 조리과정 CRUD<br>- 레시피 식재료 CRUD<br>- 식재료 CRUD                           | - 구독<br>- 레시피 좋아요<br>- 리뷰(댓글)<br>- 비밀번호, 닉네임 수정<br>- 회원탈퇴                                  |
 
 
 ## 📜 Ground Rules
@@ -393,5 +396,18 @@
 
 ## 🗣️기술적 의사결정
 
++ [식재료 활용 방안](https://github.com/phdljr/one-click-recipe/wiki/%EC%8B%9D%EC%9E%AC%EB%A3%8C-%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%99%9C%EC%9A%A9-%EB%B0%A9%EC%95%88)
+
++ [버튼 클릭 시, 장바구니에 식재료를 담는 방식](https://github.com/phdljr/one-click-recipe/wiki/%EB%B2%84%ED%8A%BC-%ED%81%B4%EB%A6%AD-%EC%8B%9C,-%EC%9E%A5%EB%B0%94%EA%B5%AC%EB%8B%88%EC%97%90-%EC%8B%9D%EC%9E%AC%EB%A3%8C%EB%A5%BC-%EB%8B%B4%EB%8A%94-%EB%B0%A9%EC%8B%9D)
 
 ## 🛠 트러블슈팅
+
++ [HTTP & HTTPS 혼합 컨텐츠(Mixed Content) 차단](https://github.com/phdljr/one-click-recipe/wiki/HTTP-&-HTTPS-%ED%98%BC%ED%95%A9-%EC%BB%A8%ED%85%90%EC%B8%A0(Mixed-Content)-%EC%B0%A8%EB%8B%A8)
+
++ [Recipe 엔티티 생성 시, 연관된 엔티티도 같이 생성하는 방식 채택](https://github.com/phdljr/one-click-recipe/wiki/Recipe-%EC%97%94%ED%8B%B0%ED%8B%B0-%EC%83%9D%EC%84%B1-%EC%8B%9C,-%EC%97%B0%EA%B4%80%EB%90%9C-%EC%97%94%ED%8B%B0%ED%8B%B0%EB%8F%84-%EA%B0%99%EC%9D%B4-%EC%83%9D%EC%84%B1%ED%95%98%EB%8A%94-%EB%B0%A9%EC%8B%9D-%EC%B1%84%ED%83%9D)
+
++ [SSH를 통한 CD 구축할 시, 가끔씩 실패하는 경우 발생](https://github.com/phdljr/one-click-recipe/wiki/SSH%EB%A5%BC-%ED%86%B5%ED%95%9C-CD-%EA%B5%AC%EC%B6%95%ED%95%A0-%EC%8B%9C,-%EA%B0%80%EB%81%94%EC%94%A9-%EC%8B%A4%ED%8C%A8%ED%95%98%EB%8A%94-%EA%B2%BD%EC%9A%B0-%EB%B0%9C%EC%83%9D)
+
++ [SpringBoot 3.2.1 에서의 @PathVariable 파라미터 인식 오류](https://github.com/phdljr/one-click-recipe/wiki/SpringBoot-3.2.1-%EC%97%90%EC%84%9C%EC%9D%98-@PathVariable-%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0-%EC%9D%B8%EC%8B%9D-%EC%98%A4%EB%A5%98)
+
++ [좋아요 조회 기능을 레시피 조회 API에 병합](https://github.com/phdljr/one-click-recipe/wiki/%EC%A2%8B%EC%95%84%EC%9A%94-%EC%A1%B0%ED%9A%8C-%EA%B8%B0%EB%8A%A5%EC%9D%84-%EB%A0%88%EC%8B%9C%ED%94%BC-%EC%A1%B0%ED%9A%8C-API%EC%97%90-%EB%B3%91%ED%95%A9)
