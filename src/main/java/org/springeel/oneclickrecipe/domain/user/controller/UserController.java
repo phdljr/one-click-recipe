@@ -1,33 +1,33 @@
 package org.springeel.oneclickrecipe.domain.user.controller;
 
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springeel.oneclickrecipe.domain.user.dto.controller.UserLoginControllerRequestDto;
-import org.springeel.oneclickrecipe.domain.user.dto.controller.UserSignUpControllerRequestDto;
-import org.springeel.oneclickrecipe.domain.user.dto.service.UserLoginServiceRequestDto;
-import org.springeel.oneclickrecipe.domain.user.dto.service.UserSignUpServiceRequestDto;
+import lombok.extern.slf4j.Slf4j;
+import org.springeel.oneclickrecipe.domain.user.dto.controller.*;
+import org.springeel.oneclickrecipe.domain.user.dto.service.request.*;
+import org.springeel.oneclickrecipe.domain.user.dto.service.response.UserLoginResponseDto;
 import org.springeel.oneclickrecipe.domain.user.mapper.dto.UserDtoMapper;
-import org.springeel.oneclickrecipe.domain.user.service.LoginServletService;
 import org.springeel.oneclickrecipe.domain.user.service.UserService;
+import org.springeel.oneclickrecipe.global.security.UserDetailsImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/users")
 @RestController
 public class UserController {
 
     private final UserDtoMapper userDtoMapper;
     private final UserService userService;
-    private final LoginServletService loginServletService;
 
-    @PostMapping("/users/signup")
+
+    @PostMapping("/signup")
     public ResponseEntity<Void> singUp(
-        @RequestBody UserSignUpControllerRequestDto controllerRequestDto
+        @Valid @RequestBody UserSignUpControllerRequestDto controllerRequestDto
     ) {
         UserSignUpServiceRequestDto serviceRequestDto = userDtoMapper.toUserSignUpServiceRequestDto(
             controllerRequestDto);
@@ -35,16 +35,59 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PostMapping("/users/login")
-    public ResponseEntity<Void> login(
-        @RequestBody UserLoginControllerRequestDto controllerRequestDto,
+    @PostMapping("/login")
+    public ResponseEntity<UserLoginResponseDto> login(
+        @Valid @RequestBody UserLoginControllerRequestDto controllerRequestDto,
         HttpServletResponse httpServletResponse
     ) {
         UserLoginServiceRequestDto serviceRequestDto = userDtoMapper.toUserLoginServiceRequestDto(
             controllerRequestDto);
-        userService.login(serviceRequestDto);
-        loginServletService.addJwtToHeader(serviceRequestDto, httpServletResponse);
+        UserLoginResponseDto responseDto = userService.login(serviceRequestDto,
+            httpServletResponse);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<UserLoginResponseDto> refreshAccessToken(
+        @RequestHeader("Authorization") String refreshToken,
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
+        HttpServletResponse httpServletResponse
+    ) {
+        UserLoginResponseDto responseDto = userService.refreshAccessToken(refreshToken,
+            userDetails.user(), httpServletResponse);
+        return ResponseEntity.ok(responseDto);
+    }
+
+    @PutMapping("/nickname") //닉네임변경(수정)
+    public ResponseEntity<?> updateNickname(
+        @Valid @RequestBody NicknameUpdateControllerRequestDto controllerRequestDto,
+        @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        NicknameUpdateServiceRequestDto serviceRequestDto =
+            userDtoMapper.toNicknameUpdateServiceRequestDto(controllerRequestDto);
+        userService.updateNickname(userDetails.user(), serviceRequestDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    @PutMapping("/password") //비밀번호변경(수정)
+    public ResponseEntity<?> updatePassword(
+        @Valid @RequestBody PasswordUpdateControllerRequestDto controllerRequestDto,
+        @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        PasswordUpdateServiceRequestDto serviceRequestDto =
+            userDtoMapper.toPasswordUpdateServiceRequestDto(controllerRequestDto);
+        userService.updatePassword(userDetails.user(), serviceRequestDto);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @DeleteMapping("/withdrawal") //회원탈퇴
+    public ResponseEntity<?> deleteUser(
+        @Valid @RequestBody DeleteUserControllerRequestDto controllerRequestDto,
+        @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        DeleteUserServiceRequestDto serviceRequestDto =
+            userDtoMapper.toDeleteUserServiceRequestDto(controllerRequestDto);
+        userService.deleteUser(userDetails.user(), serviceRequestDto);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }

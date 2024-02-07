@@ -1,10 +1,10 @@
 package org.springeel.oneclickrecipe.domain.order.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,6 +18,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springeel.oneclickrecipe.domain.orderdetail.entity.OrderDetail;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
 import org.springeel.oneclickrecipe.global.entity.BaseEntity;
@@ -30,6 +32,7 @@ public class Order extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
 
     @Column(nullable = false)
@@ -60,13 +63,14 @@ public class Order extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    // OrderDetail 엔티티와 양방향 매핑
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
-    private List<OrderDetail> orderDetails = new ArrayList<>();
-
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private User user;
+
+    // OrderDetail 엔티티와 양방향 매핑
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private final List<OrderDetail> orderDetails = new ArrayList<>();
 
     @Builder
     public Order(
@@ -91,5 +95,9 @@ public class Order extends BaseEntity {
         this.totalPrice = totalPrice;
         this.status = status;
         this.user = user;
+    }
+
+    public void updateStatus(final OrderStatus orderStatus) {
+        this.status = orderStatus;
     }
 }

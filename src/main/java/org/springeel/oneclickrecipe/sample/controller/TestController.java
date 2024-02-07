@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -35,8 +37,10 @@ public class TestController {
     }
 
     @GetMapping("/tests")
-    public ResponseEntity<List<TestReadResponseDto>> getAll() {
-        List<TestReadResponseDto> responseDto = testService.getAll();
+    public ResponseEntity<List<TestReadResponseDto>> getAll(
+        @RequestParam("page") Integer pageNumber
+    ) {
+        List<TestReadResponseDto> responseDto = testService.getAll(pageNumber);
         return ResponseEntity.ok(responseDto);
     }
 

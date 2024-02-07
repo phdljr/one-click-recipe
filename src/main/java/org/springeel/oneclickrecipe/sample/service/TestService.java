@@ -11,5 +11,5 @@ public interface TestService {
 
     TestReadResponseDto get(Long id);
 
-    List<TestReadResponseDto> getAll();
+    List<TestReadResponseDto> getAll(int pageNumber);
 }

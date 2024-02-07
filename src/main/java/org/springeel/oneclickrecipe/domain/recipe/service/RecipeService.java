@@ -1,15 +1,32 @@
 package org.springeel.oneclickrecipe.domain.recipe.service;
 
-import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeCreateServiceRequestDto;
-import org.springeel.oneclickrecipe.domain.recipe.dto.service.RecipeUpdateServiceRequestDto;
+import java.io.IOException;
+import java.util.List;
+import org.springeel.oneclickrecipe.domain.recipe.dto.service.request.RecipeCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.recipe.dto.service.request.RecipeUpdateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.recipe.dto.service.response.RecipeAllReadResponseDto;
+import org.springeel.oneclickrecipe.domain.recipe.dto.service.response.RecipeReadResponseDto;
+import org.springeel.oneclickrecipe.domain.recipefood.dto.service.request.RecipeFoodCreateServiceRequestDto;
+import org.springeel.oneclickrecipe.domain.recipeprocess.dto.service.request.RecipeProcessCreateServiceRequestDto;
 import org.springeel.oneclickrecipe.domain.user.entity.User;
+import org.springeel.oneclickrecipe.global.security.UserDetailsImpl;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface RecipeService {
 
-    void createRecipe(RecipeCreateServiceRequestDto controllerRequestDto, User user);
-
     void deleteRecipe(Long recipeId, User user);
 
-    void updateRecipe(RecipeUpdateServiceRequestDto requestDto, User user, Long recipeId);
+    void updateRecipe(RecipeUpdateServiceRequestDto requestDto, User user, Long recipeId,
+        MultipartFile multipartFile)
+        throws IOException;
 
+    List<RecipeAllReadResponseDto> readAllRecipe(final Integer page, final UserDetailsImpl userDetails);
+
+    RecipeReadResponseDto readRecipe(Long recipeId, final UserDetailsImpl userDetails);
+
+    void createRecipe(RecipeCreateServiceRequestDto recipeCreateServiceRequestDto,
+        MultipartFile recipeImage,
+        List<RecipeFoodCreateServiceRequestDto> recipeFoodCreateServiceRequestDtos,
+        List<RecipeProcessCreateServiceRequestDto> recipeProcessCreateServiceRequestDtos,
+        List<MultipartFile> recipeProcessImage, User user) throws IOException;
 }

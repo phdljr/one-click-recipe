@@ -1,0 +1,44 @@
+spring:
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        format_sql: false
+        use_sql_comments: true
+    defer-datasource-initialization: false
+
+  sql:
+    init:
+      mode: never
+
+custom:
+  front:
+    host: http://localhost:5173
+  back:
+    host: http://localhost:8080
+  kakao:
+    admin-key: asdsadsadsadasdaasdasdas
+    client-id: testestestsetsetestsetsetsetsetes
+    cid: TC0ONETIME
+  jwt:
+    access:
+      expiration-period: 840000
+    refresh:
+      expiration-period: 20160000
+    secret-key: testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
+
+cloud:
+  aws:
+    s3:
+      bucket:
+        name: asdsad
+        url: asdsadasdasdas
+    credentials:
+      access-key: asdasdasdas
+      secret-key: asdasdsadasdasdasdsadas
+    region: ap-northeast-2

@@ -23,11 +23,11 @@ public class Food {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Column(nullable = false)
-    private Float price;
+    private Integer price;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -36,9 +36,15 @@ public class Food {
     @Builder
     public Food(
         final String name,
-        final Float price,
+        final Integer price,
         final UnitType unit
     ) {
+        this.name = name;
+        this.price = price;
+        this.unit = unit;
+    }
+
+    public void updateFood(String name, Integer price, UnitType unit) {
         this.name = name;
         this.price = price;
         this.unit = unit;

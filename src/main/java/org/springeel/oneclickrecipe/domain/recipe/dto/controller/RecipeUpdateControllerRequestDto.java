@@ -4,7 +4,8 @@ public record RecipeUpdateControllerRequestDto(
     String title,
     String intro,
     Byte serving,
-    String videoPath
+    String videoUrl,
+    Boolean imageChange
 ) {
 
 }

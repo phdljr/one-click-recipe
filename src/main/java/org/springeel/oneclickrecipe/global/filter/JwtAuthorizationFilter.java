@@ -8,8 +8,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springeel.oneclickrecipe.global.exception.CustomException;
+import org.springeel.oneclickrecipe.global.jwt.JwtStatus;
+import org.springeel.oneclickrecipe.global.jwt.JwtUtil;
+import org.springeel.oneclickrecipe.global.jwt.exception.JwtErrorCode;
 import org.springeel.oneclickrecipe.global.security.UserDetailsServiceImpl;
-import org.springeel.oneclickrecipe.global.util.JwtUtil;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -33,34 +36,30 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
 
-        String tokenValue = jwtUtil.getJwtFromHeader(request);
+        String tokenValue = jwtUtil.getAccessTokenFromHeader(request);
 
-        if (StringUtils.hasText(tokenValue)) {
+        if (!StringUtils.hasText(tokenValue)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
-            if (!jwtUtil.validateToken(tokenValue)) {
-                log.error("Token Error");
-                filterChain.doFilter(request, response);
-                return;
-            }
+        JwtStatus accessTokenStatus = jwtUtil.validateToken(tokenValue);
 
-            Claims info = jwtUtil.getUserInfoFromToken(tokenValue);
-
-            try {
-                setAuthentication(info.getSubject());
-            } catch (Exception e) {
-                log.error(e.getMessage());
-                filterChain.doFilter(request, response);
-                return;
-            }
+        switch (accessTokenStatus) {
+            case ACCESS -> setAuthentication(tokenValue);
+            case EXPIRED -> throw new CustomException(JwtErrorCode.EXPIRED_TOKEN);
+            case DENIED -> throw new CustomException(JwtErrorCode.INVALID_TOKEN);
         }
 
         filterChain.doFilter(request, response);
     }
 
     // 인증 처리
-    public void setAuthentication(String email) {
+    public void setAuthentication(String tokenValue) {
+        Claims info = jwtUtil.getUserInfoFromToken(tokenValue);
+
         SecurityContext context = SecurityContextHolder.createEmptyContext();
-        Authentication authentication = createAuthentication(email);
+        Authentication authentication = createAuthentication(info.getSubject());
         context.setAuthentication(authentication);
 
         SecurityContextHolder.setContext(context);
