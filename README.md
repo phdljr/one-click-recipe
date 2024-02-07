@@ -6,26 +6,26 @@
 - [Ground Rules](#ground-rules)
 - [목표](#목표)
 - [기술 스택](#기술-스택)
-- [우리들의 약속](#우리들의 약속)
+- [우리들의 약속](#우리들의-약속)
 
 ## 🌟 프로젝트 소개
 **한 줄 정리**: 내가 원하는 레시피의 재료를 클릭 한번으로 주문할 수 있는 서비스.
 
 레시피를 따라 요리를 하고 싶을 때, 필요한 재료를 일일이 구매하는 번거로움을 해결하기 위해 `딸깍! 레시피`가 탄생했습니다. 이 서비스를 통해 사용자는 원하는 레시피에 나열된 모든 재료를 버튼 클릭 한 번으로 쉽게 주문할 수 있습니다.
 
+![움짤](https://github.com/phdljr/one-click-recipe/assets/141345981/738ba62f-2ba8-4cc7-8070-e5dbe24c08ae)
+
 ## 👥 팀원 소개
-- **이종렬** (팀 리더, ESFJ)
-    - [블로그](https://velog.io/@phdljr)
-    - [GitHub](https://github.com/phdljr)
-- **배규태** (부팀 리더, INTP)
-    - [블로그](https://velog.io/@qoxowkd0716/posts)
-    - [GitHub](https://github.com/baegyutae)
-- **박창선** (팀원, ENFP)
-    - [블로그](https://mdpang.tistory.com/)
-    - [GitHub](https://github.com/pangseon)
-- **고도윤** (팀원, INFP)
-    - [블로그](https://velog.io/@rhehdbs0621/posts)
-    - [GitHub](https://github.com/kodoyoon)
+
+|      | 이종렬                                                              | 배규태                                                                | 박창선                                   | 고도윤                                        |
+|------|------------------------------------------------------------------|--------------------------------------------------------------------|---------------------------------------|--------------------------------------------|
+| 사진   | <img src="https://avatars.githubusercontent.com/u/68233342?v=4"> | <img src="https://avatars.githubusercontent.com/u/141345981?v=4">  | <img src="https://avatars.githubusercontent.com/u/107198171?v=4">                                     | <img src="https://avatars.githubusercontent.com/u/127570031?v=4">                                          |
+| 이름   | 이종렬                                                              | 배규태                                                                | 박창선                                   | 고도윤                                        |
+| 성격 유형 | ESFJ                                                             | INTP                                                               | ENFP                                  | INFP                                       |
+| 블로그  | [블로그](https://velog.io/@phdljr)                                  | [블로그](https://velog.io/@qoxowkd0716/posts)                         | [블로그](https://mdpang.tistory.com/)    | [블로그](https://velog.io/@rhehdbs0621/posts) |
+| GitHub | [GitHub](https://github.com/phdljr)                              | [GitHub](https://github.com/baegyutae)                             | [GitHub](https://github.com/pangseon) | [GitHub](https://github.com/kodoyoon)      |
+| 담당 기능 |    - 로그인<br>- 회원가입<br>- 카카오 페이 연동<br>- 레시피 생성<br>- CI/CD (Netlify 구축, Github Actions 구축)<br>- Infra (AWS EC2, RDS, ELB, ACM 설정)                                                        | - 주문, 주문 상세 내역<br>- 카트<br>- 프론트엔드 (주문 내역 및 상세 내역, 관리자 페이지, 마이 페이지) |                            | - 구독<br>- 레시피 좋아요<br>- 리뷰(댓글)<br>- 비밀번호, 닉네임 수정<br>- 회원탈퇴                                  |
+
 
 ## 📜 Ground Rules
 1. 연락은 반드시 응답하되, 사전에 이유를 밝히거나 즉시 설명하기.
@@ -42,27 +42,6 @@
 - 요구사항을 충실히 구현하고,
 - 프로젝트를 설명할 수 있으며,
 - 포트폴리오로 활용할 수 있는 품질의 프로젝트 완성하기.
-
-## 🛠 기술 스택
-- **Frontend**
-    - Svelte
-    - Svelte Material UI
-    - Netlify 배포
-- **Backend**
-    - Java 21
-    - Spring boot 3.2.1
-    - OAuth
-    - Swagger
-- **Database**
-    - PostgreSQL
-    - Redis
-- **Infrastructure**
-    - AWS EC2, S3, RDS, ElastiCache
-    - Nginx
-    - Docker
-- **CI/CD**
-    - Gradle
-    - GitHub Actions
 
 ## 🤝 우리들의 약속
 
@@ -271,47 +250,47 @@
 
 ### GitHub의 원격 `develop` 브랜치 내용을 현재 브랜치에 바로 `merge`하는 방법
 1. 현재 브랜치에서 최종 `git commit` 진행
-  - 만약, 커밋을 못하는 상황이라면 `git stash`로 현재 작업 내용 임시 저장
+- 만약, 커밋을 못하는 상황이라면 `git stash`로 현재 작업 내용 임시 저장
 2. `git pull origin develop` 실행 (develop 업데이트 시 수시로 진행 권장)
 3. 현재 브랜치에서 `원격 develop`의 내용 추가 확인
 4. 충돌 발생 시 해결 후 `git push origin (현재 브랜치 명)`
-  - `git stash`로 임시 저장한 경우, `git stash apply`로 불러오기
+- `git stash`로 임시 저장한 경우, `git stash apply`로 불러오기
 
 ### GitHub의 원격 `develop` 브랜치 내용을 `로컬 브랜치 develop`에 옮겨서 `merge`하는 방법
 1. 현재 브랜치에서 최종 `git commit` 진행
-  - 커밋 못하는 상황이면 `git stash`로 현재 작업 내용 임시 저장
+- 커밋 못하는 상황이면 `git stash`로 현재 작업 내용 임시 저장
 2. `git switch develop`으로 `로컬 develop` 이동
 3. `git pull origin develop`으로 원격 develop 내용 가져오기
 4. 작업 중인 브랜치로 `git switch (작업중인 브랜치)` 이동
 5. `git merge develop` 실행
 6. 충돌 발생 시 해결 후 `git push origin (현재 브랜치 명)`
-  - `git stash`로 임시 저장한 경우, `git stash apply`로 불러오기
+- `git stash`로 임시 저장한 경우, `git stash apply`로 불러오기
 
 ## 깃허브 사용 순서
 
 1. **Issue 생성**:
-  - 하나의 이슈에는 여러 개의 서브 이슈가 있을 수 있습니다.
-  - `Assignees`와 `Labels` 등을 연결시켜 가독성을 높입니다.
+- 하나의 이슈에는 여러 개의 서브 이슈가 있을 수 있습니다.
+- `Assignees`와 `Labels` 등을 연결시켜 가독성을 높입니다.
 
 2. **Issue를 Projects와 연결**:
-  - 처음 만들어진 이슈는 `Projects`의 `TODO`에 배치합니다.
+- 처음 만들어진 이슈는 `Projects`의 `TODO`에 배치합니다.
 
 3. **브랜치 생성 및 작업**:
-  - 작업을 위한 브랜치를 생성하고 해당 브랜치에서 작업을 진행합니다.
+- 작업을 위한 브랜치를 생성하고 해당 브랜치에서 작업을 진행합니다.
 
 4. **Commit 시 Issue 넘버 포함**:
-  - 커밋 시, 관련된 이슈 번호를 포함하여 코멘트를 남깁니다.
-  - 예) `[#12]Feat: 로그인 기능 구현`
+- 커밋 시, 관련된 이슈 번호를 포함하여 코멘트를 남깁니다.
+- 예) `[#12]Feat: 로그인 기능 구현`
 
 5. **PR(풀 리퀘스트) 작성**:
-  - PR 제목은 `브랜치 명 - 작업 내용`으로 작성합니다.
-  - 예) `Feature/swagger - Swagger 의존성 추가`
+- PR 제목은 `브랜치 명 - 작업 내용`으로 작성합니다.
+- 예) `Feature/swagger - Swagger 의존성 추가`
 
 6. **코드 리뷰 수행**:
-  - 작성한 코드에 대해 리뷰를 받습니다.
+- 작성한 코드에 대해 리뷰를 받습니다.
 
 7. **Merge 수행**:
-  - 리뷰 후 문제가 없다면 코드를 `merge`합니다.
+- 리뷰 후 문제가 없다면 코드를 `merge`합니다.
 
 ## 깃허브 커밋 컨벤션
 
@@ -383,3 +362,35 @@
 
 각 채널의 사용 목적과 특징에 따라 적절하게 선택하여 효율적인 커뮤니케이션을 유지하고 있습니다.
 </details>
+
+## 🛠 기술 스택
+- **Frontend**
+    - Svelte 4.2.8
+    - Svelte Material UI 7.0.0-beta.16
+- **Backend**
+    - Java 21
+    - Spring boot 3.2.1
+    - OAuth
+    - Swagger 2.3.0
+- **Database**
+    - MySQL 8.0.35
+- **Infrastructure**
+    - AWS EC2, S3, RDS, Route53, ACM, ELB
+    - Nginx
+    - Docker
+    - Gradle
+- **CI/CD**
+    - Gradle
+    - GitHub Actions
+    - Netlify 배포
+
+## ERD
+![ERD2](https://github.com/phdljr/one-click-recipe/assets/141345981/b1983b67-a702-4445-b687-bf6cf890b065)
+
+## 아키텍쳐
+![Untitled (4)](https://github.com/phdljr/one-click-recipe/assets/141345981/66ec7a73-c414-431b-a0cc-865cbc8054f1)
+
+## 🗣️기술적 의사결정
+
+
+## 🛠 트러블슈팅
