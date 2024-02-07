@@ -23,6 +23,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -162,6 +163,45 @@ class ReviewServiceImplTest {
         // 변경된 리뷰의 내용과 평점이 예상한 대로 변경되었는지 확인
         assertThat(updatedReview.getContent()).isEqualTo(requestDto.content());
         assertThat(updatedReview.getStar()).isEqualTo(requestDto.star());
+
+
+    }
+
+    @Test
+    @DisplayName("리뷰 삭제 테스트")
+    @Transactional
+    public void deleteReview() {
+        //given
+        User user = userRepository.save(User.builder()
+            .email("test1@test.com")
+            .password("12345678")
+            .nickname("test1")
+            .role(UserRole.USER)
+            .build());
+
+        // Recipe 생성
+        Recipe recipe = recipeRepository.save(Recipe.builder()
+            .title("레시피 제목")
+            .user(user)
+            .build());
+
+        Review review = reviewRepository.save(Review.builder()
+            .content("삭제할 리뷰")
+            .star((byte) 4)
+            .user(user)
+            .recipe(recipe)
+            .build());
+
+        //리뷰가 실제로 존재하는지 확인
+        Optional<Review> existingReview = reviewRepository.findById(review.getId());
+        assertThat(existingReview).isPresent();
+
+        //when
+        reviewService.deleteReview(user, review.getId());
+
+        //then
+        Optional<Review> deleterReview = reviewRepository.findById(review.getId());
+        assertThat(deleterReview).isEmpty();
 
 
     }
